@@ -1,0 +1,16 @@
+.content{
+  background-color: var(--surface);
+  min-height: 100vh;
+  position: fixed;
+}
+
+.nav__list{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.logo{
+  padding: 24px;
+}

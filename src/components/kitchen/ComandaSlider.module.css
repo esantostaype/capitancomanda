@@ -1,0 +1,24 @@
+.comandaSlider{
+  align-items: baseline;
+  display: flex;
+  gap: 16px;
+  position: relative;
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  transition: all 0.2s;
+  will-change: transform;
+  user-select: none;
+  padding-right: 40px;
+  cursor: pointer;
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0) 100%);
+}
+
+.comandaSlider::-webkit-scrollbar {
+  display: none;
+}
+
+.active {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+}
