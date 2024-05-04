@@ -5,18 +5,18 @@ import ComandaSlider from '@/components/kitchen/ComandaSlider'
 import Image from 'next/image'
 import { OrderWithProducts } from '@/types'
 import { useEffect } from 'react'
-import { createNotificationSound } from '@/utils'
+import { apiUrl, createNotificationSound } from '@/utils'
 
 export default function KitchenPage() {
 
   const notificationSound = createNotificationSound()
   
-  const receivedUrl = '/api/orders/received'
-  const preparationUrl = '/api/orders/in-preparation'
+  const receivedUrl = `${ apiUrl }/orders/received`
+  const preparationUrl = `${ apiUrl }/orders/in-preparation`
 
   const fetcherReceived = () => fetch( receivedUrl ).then( res => res.json() ).then( data => data )
 
-  const { data: receivedData, error: receivedError, isLoading: receivedLoading } = useSWR<OrderWithProducts[]>(
+  const { data: receivedData, isLoading: receivedLoading } = useSWR<OrderWithProducts[]>(
     receivedUrl,
     fetcherReceived,
     {
@@ -27,7 +27,7 @@ export default function KitchenPage() {
 
   const fetcherPreparation = () => fetch( preparationUrl ).then( res => res.json() ).then( data => data )
 
-  const { data: preparationData, error: preparationError, isLoading: preparationLoading } = useSWR<OrderWithProducts[]>(
+  const { data: preparationData, isLoading: preparationLoading } = useSWR<OrderWithProducts[]>(
     preparationUrl,
     fetcherPreparation,
     {
@@ -37,13 +37,13 @@ export default function KitchenPage() {
   )
 
   useEffect(() => {
-    if ( receivedData && receivedData.length > 0 ) {
-      const hasNewReceivedOrder = receivedData.some(( order ) => order.status === 'Recibida');
+    if ( notificationSound && receivedData && receivedData.length > 0 ) {
+      const hasNewReceivedOrder = receivedData.some((order) => order.status === 'Recibida')
       if ( hasNewReceivedOrder ) {
-        notificationSound.play();
+        notificationSound.play()
       }
     }
-  }, [ receivedData ]);
+  }, [ notificationSound, receivedData ])
 
   return (
     <section className="kitchen">
@@ -59,7 +59,7 @@ export default function KitchenPage() {
                 <ul className='kitchen__list'>
                 {
                   preparationData.map(( order ) => (
-                    <Comanda key={ order.id } order={ order } className='inPreparation' />
+                    <Comanda key={ order.id } order={ order } status='ready' textButton='Listo' className='inPreparation' />
                   ))
                 }
                 </ul>

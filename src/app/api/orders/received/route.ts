@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma"
 export async function GET() {
   const ordes = await prisma.order.findMany({
     where: {
-      status: 'Recibida'
+      status: 'received'
     },
     include: {
       orderProducts: {

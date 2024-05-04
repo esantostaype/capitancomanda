@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgres"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -32,8 +32,8 @@ model Order {
   total Float
   table String
   delivery Boolean @default( false )
+  status String @default( "received" )
   date DateTime @default( now() )
-  status String @default( "Recibida" )
   orderReadyAt DateTime?
   orderProducts OrderProducts[]
 }

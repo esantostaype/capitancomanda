@@ -42,10 +42,7 @@ export default function ComandaSlider({ orders }: Props) {
     const x = e.pageX - (sliderRef.current.offsetLeft || 0);
     const walk = (x - startX) * 3;
     sliderRef.current.scrollLeft = scrollLeft - walk;
-    console.log(walk);
   };
-
-  console.log( 'Cliente Orders: ', orders )
 
   return (
     <ul
@@ -58,7 +55,7 @@ export default function ComandaSlider({ orders }: Props) {
     >
       {
         orders.map(( order ) => (
-          <Comanda key={ order.id } order={ order } className='received' />
+          <Comanda key={ order.id } order={ order } status='in-preparation' textButton='Preparar' className='received' />
         ))
       }
     </ul>

@@ -1,16 +1,12 @@
 'use client'
 import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '@/store';
-import { OrderSummaryItem } from '@/components';
+import { OrderForm, OrderSummaryItem } from '@/components';
 import { formatCurrency } from '@/utils';
-import axios from 'axios';
 
-import styles from './OrderSummary.module.css';
-import { sendOrder } from '@/actions/send-order-action';
-import { OrderSchema } from '@/schema';
-import { toast } from 'react-toastify';
+import styles from './OrderSummaryFormik.module.css';
 
-export const OrderSummary = () => {
+export const OrderSummaryFormik = () => {
   
   const order = useStore(( state ) => state.order )
   const setOrder = useStore((state) => state.setOrder)
@@ -31,45 +27,6 @@ export const OrderSummary = () => {
       setDelivery( false )
     }
   }, [ order ])
-
-  const handleSendOrder = async( formData: FormData ) => {
-    
-    const data = {
-      table: formData.get('table'),
-      delivery,
-      total,
-      order
-    }
-
-    const result = OrderSchema.safeParse( data )
-
-    if( !result.success ) {
-      result.error.issues.forEach(( issue ) => {
-        toast.error( issue.message )
-      })
-      return
-    }
-
-    const response = await sendOrder( data )
-
-    console.log( "Resultado GAAA: ", response )
-
-    if( response?.errors ) {
-      response.errors.forEach(( issue ) => {
-        toast.error( issue.message )
-      })
-    }
-
-    setDelivery( false )
-
-    toast.success('¡Comanda enviada!')
-
-    clearOrder()
-  }
-
-  const handleDeliveryChange = ( e: React.ChangeEvent<HTMLInputElement> ) => {
-    setDelivery( e.target.checked );
-  };
 
   return (
     <div className={ styles.summary }>
@@ -107,23 +64,7 @@ export const OrderSummary = () => {
               <div className={ styles.summary__footer__label }>Total:</div>
               <div className={ styles.summary__footer__price }>{ formatCurrency( total ) }</div>
             </div>
-            <form action={ handleSendOrder } className={ styles.summary__send }>
-              <div className={ styles.summary__send__fields }>
-                <div className={ styles.summary__send__delivery }>
-                  <input
-                    type="checkbox"
-                    id="delivery"
-                    name="delivery"
-                    checked={ delivery }
-                    onChange={ handleDeliveryChange }
-                  />
-                  <label htmlFor="delivery"></label>
-                  <span>Para Llevar</span>
-                </div>
-                <input type="text" name='table' placeholder='Mesa N°' className={ styles.summary__input } />
-              </div>
-              <button className='button main-button'>Enviar Comanda GAAA</button>
-            </form>
+            <OrderForm/>
           </div>
         </div>
         </>

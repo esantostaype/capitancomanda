@@ -8,7 +8,7 @@ export const ReadyOrders = () => {
 
   const notificationSound = createNotificationSound()
   
-  const url = '/api/orders/ready'
+  const url = 'http://localhost:3000/api/orders/ready'
 
   const fetcher = () => fetch( url ).then( res => res.json() ).then( data => data )
 
@@ -43,10 +43,10 @@ export const ReadyOrders = () => {
   }
 
   useEffect(() => {
-    if ( lastOrder && lastOrder.status === 'Lista' ) {
+    if ( notificationSound && lastOrder && lastOrder.status === 'ready' ) {
       notificationSound.play()
     }
-  }, [ lastOrder ])
+  }, [ notificationSound, lastOrder ])
 
   return (
     <section className="ready">

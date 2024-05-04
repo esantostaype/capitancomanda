@@ -4,19 +4,22 @@ import { getSpicyLevelText } from '@/utils';
 import styles from './Comanda.module.css';
 import moment from "moment";
 import 'moment/locale/es'
+import { ComandaButton } from './ComandaButton';
 moment.locale('es')
 
 type Props = {
   order: OrderWithProducts
   className?: string
+  status: string
+  textButton: string
 }
 
-export const Comanda = ({ order, className }: Props) => {
+export const Comanda = ({ order, className, status, textButton }: Props) => {
 
   const timeAgo = moment( order.date ).fromNow();
   const isLate = moment().diff(moment( order.date ), 'minutes' ) > 30;
 
-  const combinedClassName = `${ styles.comanda} ${className || '' } ${ isLate && order.status != "Lista" ? styles.isLate : '' }`;
+  const combinedClassName = `${ styles.comanda} ${className || '' } ${ isLate && order.status != "ready" ? styles.isLate : '' }`;
 
   return (
     <li  className={ combinedClassName.trim() }>
@@ -41,23 +44,8 @@ export const Comanda = ({ order, className }: Props) => {
         }
       </ul>
       <div className={ styles.footer }>
-        {
-          order.status === "Recibida" && (
-            <form action={ inPreparationOrder }>
-              <input type="hidden" value={ order.id } name="order_id" />
-              <button className='button ghost-button'>Preparar</button>
-            </form>
-          )
-        }
-        {
-          order.status === "En Preparación" && (
-            <form action={ readyOrder }>
-              <input type="hidden" value={ order.id } name="order_id" />
-              <button className='button ghost-button'>Lista para Servir</button>
-            </form>
-          )
-        }
-        { isLate && order.status != "Lista" && ( <div className={ styles.isLate }>Este pedido está tarde</div> ) }
+        <ComandaButton text={ textButton } status={ status } orderId={ order.id } />
+        { isLate && order.status !== "ready" && ( <div className={ styles.isLate }>Este pedido está tarde</div> ) }
       </div>
     </li>
   )

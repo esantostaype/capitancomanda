@@ -12,7 +12,7 @@ export async function inPreparationOrder( formData: FormData ) {
         id: +orderId
       },
       data: {
-        status: "En Preparación",
+        status: "in-preparation",
         orderReadyAt: new Date( Date.now() )
       }
     })
@@ -32,7 +32,7 @@ export async function readyOrder( formData: FormData ) {
         id: +orderId
       },
       data: {
-        status: "Lista",
+        status: "ready",
         orderReadyAt: new Date( Date.now() )
       }
     })

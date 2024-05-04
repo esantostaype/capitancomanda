@@ -1,4 +1,5 @@
 import { OrderSidebar, OrderSummary, ReadyOrders, ToastNotification } from "@/components";
+import { OrderSummaryFormik } from "@/components/order/OrderSummaryFormik";
 import moment from "moment";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
@@ -16,9 +17,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </div>
         { children }
       </section>
-      <OrderSummary/>
+      <OrderSummaryFormik/>
     </section>
-    <ReadyOrders/>
+    {/* <ReadyOrders/> */}
     <ToastNotification/>
     </>
   );
