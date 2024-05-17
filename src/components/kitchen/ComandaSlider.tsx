@@ -2,7 +2,7 @@
 import { useRef, useState, MouseEvent } from 'react';
 import { Comanda } from './Comanda';
 import styles from './ComandaSlider.module.css';
-import { OrderWithProducts } from '@/types';
+import { OrderWithProducts } from '@/interfaces';
 
 type Props = {
   orders: OrderWithProducts[]

@@ -1,7 +1,9 @@
 'use client'
 
-import { fetchData } from '@/utils';
-import { Formik, Form, FormikHelpers } from 'formik';
+import { Formik, Form, FormikHelpers } from 'formik'
+import { Button, TextField } from '@/components'
+import { changeStatusOrder } from '@/actions/change-status-order-action'
+import { toast } from 'react-toastify'
 
 type Props = {
   text: string
@@ -19,18 +21,22 @@ export const ComandaButton = ({ text, orderId, status }: Props ) => {
     status
   }
 
-  const handleSubmit = async ( values: FormValues, actions: FormikHelpers<FormValues> ) => {
-    const orderUpdateData = {
-      status: values.status
-    }
-    await fetchData({ url: `/orders/${ orderId }`, method: 'PUT', body: orderUpdateData })
+  const handleSubmit = async ( values: FormValues ) => {
+    await changeStatusOrder( orderId, values )
+    toast.success('Orden Actualizada!')
   }
 
   return (
     <Formik initialValues={ initialValues } onSubmit={ handleSubmit }>
       <Form>
         <input type="hidden" value={ status } name="status" />
-        <button className='button ghost-button'>{ text }</button>
+        <Button
+          mode='primary'
+          text={ text }
+          ghost
+          full
+          submit
+        />
       </Form>
     </Formik>
   )

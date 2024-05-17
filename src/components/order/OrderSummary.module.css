@@ -1,5 +1,6 @@
 .summary{
-  background-color: var(--surface);
+  background-color: rgb(var(--surface));
+  border-left: 1px solid var(--border);
   height: 100vh;
   position: fixed;
   right: 0;
@@ -8,8 +9,9 @@
 }
 
 .header{
-  background-color: var(--surface);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: rgb(var(--surface));
+  border-bottom: 1px solid var(--border);
+  height: 120px;
   position: absolute;
   padding: 32px 32px 16px 32px;
   top: 0;
@@ -58,7 +60,7 @@
 }
 
 .summary__footer{
-  background-color: var(--surface);
+  background-color: rgb(var(--surface));
   bottom: 0;
   left: 0;
   position: absolute;
@@ -66,8 +68,8 @@
 }
 
 .summary__footer__content{
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   padding: 16px 24px;
   display: flex;
   font-size: 1.125em;
@@ -84,14 +86,6 @@
   display: flex;
   gap: 8px;
   margin-bottom: 16px;
-}
-
-.summary__input{
-  background-color: rgba(255,255,255, 0.1);
-  border-radius: 8px;
-  flex: 0 0 100px;
-  padding: 0.5em 1em;
-  width: 100px;
 }
 
 .summary__send__delivery{

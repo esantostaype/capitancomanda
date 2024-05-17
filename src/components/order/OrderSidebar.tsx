@@ -1,31 +1,31 @@
 import Image from 'next/image';
-import { OrderItem } from "@/components";
-import { prisma } from "@/lib/prisma";
+import { OrderSidebarItem } from "@/components";
 
 import styles from './OrderSidebar.module.css';
-
-async function getCategories() {
-  return await prisma.category.findMany()
-}
+import { fetchData } from '@/utils';
+import { Category } from '@/interfaces';
+import Link from 'next/link';
 
 export const OrderSidebar = async() => {
 
-  const categories = await getCategories();
+  const categories = await fetchData({ url: `/categories`, method: 'GET' })
 
   return (
     <>
-      <aside className={ styles.content }>
-        <div className={ styles.logo }>
+    <aside className={ styles.content }>
+      <div className={ styles.logo }>
+        <Link href="/order">
           <Image src="/images/logo.svg" width="64" height="64" alt="Capitán Comanda" />
-        </div>
-        <nav className={ styles.nav }>
-          <ul className={ styles.nav__list }>
-            { categories.map( category => (
-                <OrderItem key={ category.id } category={ category }/>
-            ))}
-          </ul>
-        </nav>
-      </aside>
+        </Link>
+      </div>
+      <nav className={ styles.nav }>
+        <ul className={ styles.nav__list }>
+          { categories.map( ( category: Category ) => (
+            <OrderSidebarItem key={ category.id } category={ category }/>
+          ))}
+        </ul>
+      </nav>
+    </aside>
     </>
-  );
+  )
 }

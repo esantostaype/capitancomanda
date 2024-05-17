@@ -1,0 +1,99 @@
+.button {
+  background-color: grey;
+  align-items: center;
+  color: #000;
+  cursor: pointer;
+  display: flex;
+  border-radius: 8px;
+  font-weight: 600;
+  justify-content: center;
+  letter-spacing: 0.05em;
+  line-height: 1em;
+  gap: 8px;
+  padding: 1em 2em;
+  text-transform: uppercase;
+}
+
+.large {
+  font-size: 1.125em;
+}
+
+.small {
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 0.8em 1.2em;
+  width: auto;
+}
+
+.small i {
+  font-size: 14px;
+}
+
+.primary {
+  background-color: rgb(var(--primary));
+}
+
+.primary.ghost {
+  background-color: rgba(var(--primary), 0.1);
+  color: rgb(var(--primary));
+}
+
+.success{
+  background-color: rgba(var(--primary), 0.1);
+  color: rgb(var(--primary));
+}
+
+.success.ghost {
+  background-color: rgba(var(--success), 0.1);
+  color: rgb(var(--success));
+}
+
+.info{
+  background-color: rgba(var(--primary), 0.1);
+  color: rgb(var(--primary));
+}
+
+.info.ghost {
+  background-color: rgba(var(--info), 0.1);
+  color: rgb(var(--info));
+}
+
+.warning{
+  background-color: rgba(var(--primary), 0.1);
+  color: rgb(var(--primary));
+}
+
+.warning.ghost {
+  background-color: rgba(var(--warning), 0.1);
+  color: rgb(var(--warning));
+}
+
+.error{
+  background-color: rgba(var(--error), 0.1);
+  color: rgb(var(--error));
+}
+
+.error.ghost {
+  background-color: rgba(var(--error), 0.1);
+  color: rgb(var(--error));
+}
+
+.full {
+  width: 100%;
+}
+
+.iconOnly{
+  height: 40px;
+  padding: 0;
+  width: 40px;
+}
+
+.iconOnly.small{
+  height: 32px;
+  width: 32px;
+}
+
+.iconOnly.large{
+  height: 48px;
+  width: 48px;
+}

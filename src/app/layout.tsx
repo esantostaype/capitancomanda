@@ -1,5 +1,13 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+
+const inter = Inter({
+  weight: ['400', '500', '600', '700', '800', '900'],
+  style: ['normal'],
+  subsets: ['latin'],
+  display: 'swap'
+})
 
 export const metadata: Metadata = {
   title: 'Comanda Capitán',
@@ -8,12 +16,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({  children }: Readonly<{ children: React.ReactNode; }>) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="es">
+      <body className={ inter.className }>
         <main className="app">
           { children }
         </main>
       </body>
+      {/* <svg className="pattern">
+        <pattern id="pattern" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="translate(-0.5,-0.5)">
+          <circle cx="0.5" cy="0.5" r="0.5" fill="#fff"></circle>
+        </pattern>
+        <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern)"></rect>
+      </svg> */}
     </html>
   );
 }

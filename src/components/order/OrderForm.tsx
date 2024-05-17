@@ -1,14 +1,15 @@
 'use client'
-import { useEffect, useMemo, useState } from 'react';
-import { useStore } from '@/store';
+import { useEffect, useMemo, useState } from 'react'
+import { useOrderStore } from '@/store/order-store'
 
-import styles from './OrderForm.module.css';
+import styles from './OrderForm.module.css'
 
-import { Formik, Form, Field, FormikHelpers } from 'formik';
-import { OrderItem } from '@/types';
-import { OrderSchema } from '@/schema';
-import { toast } from 'react-toastify';
-import { fetchData } from '@/utils';
+import { Formik, Form, Field, FormikHelpers } from 'formik'
+import { OrderItem } from '@/interfaces'
+import { toast } from 'react-toastify'
+import { fetchData } from '@/utils'
+import { revalidatePath } from 'next/cache'
+import { Button, Spinner, Switch } from '@/components'
 
 interface FormValues {
   total: number
@@ -19,22 +20,18 @@ interface FormValues {
 
 export const OrderForm = () => {
   
-  const order = useStore(( state ) => state.order )
-  const setOrder = useStore((state) => state.setOrder)
-  const clearOrder = useStore(( state ) => state.clearOrder )
+  const order = useOrderStore(( state ) => state.order )
+  const setOrder = useOrderStore((state) => state.setOrder)
+  const clearOrder = useOrderStore(( state ) => state.clearOrder )
   const total = useMemo(() => order.reduce(( total, item ) => total + ( item.quantity * item.price ), 0), [ order ])
   const [ delivery, setDelivery ] = useState<boolean>( false )
-
-  const handleDeliveryChange = ( e: React.ChangeEvent<HTMLInputElement> ) => {
-    setDelivery( e.target.checked )
-  }
 
   const initialValues: FormValues = {
     table: '',
     total,
     delivery,
     order
-  };
+  }
 
   const handleSubmit = async ( values: FormValues, actions: FormikHelpers<FormValues> ) => {
     
@@ -43,15 +40,13 @@ export const OrderForm = () => {
       total,
       delivery,
       order
-    };
+    }
 
-    await fetchData({ url: '/orders', method: 'POST', body: orderData })
+    const result = await fetchData({ url: '/orders', method: 'POST', body: orderData })
 
-    const result = OrderSchema.safeParse( orderData )
-
-    if( !result.success ) {
-      result.error.issues.forEach(( issue ) => {
-        toast.error( issue.message )
+    if( !result.order.success ) {
+      result.order.errors.forEach(( issue: any ) => {
+        toast.error( issue )
       })
       return
     }
@@ -59,6 +54,7 @@ export const OrderForm = () => {
     setDelivery( false )
     toast.success('¡Comanda enviada!')
     clearOrder()
+    revalidatePath( '/kitchen' )
   }
 
   useEffect(() => {
@@ -77,25 +73,28 @@ export const OrderForm = () => {
 
   return (
     <Formik initialValues={ initialValues } onSubmit={ handleSubmit }>
+      {({ isSubmitting }) => (   
+      <><div className={ `${ styles.isSubmitting } ${ isSubmitting && styles.active }`  }><Spinner/></div>
       <Form className={ styles.summary__send }>
         <div className={styles.summary__send__fields}>
-          <div className={styles.summary__send__delivery}>
-            <input
-              type="checkbox"
-              id="delivery"
-              name="delivery"
-              checked={ delivery }
-              onChange={ handleDeliveryChange }
-            />
-            <label htmlFor="delivery"></label>
-            <span>Para Llevar</span>
-          </div>
+          <Switch
+            checked={ delivery }
+            onChange={ setDelivery }
+            label="Para Llevar"
+            size="normal"
+          />
           <Field type="text" name="table" placeholder="Mesa N°" className={ styles.summary__input } />
         </div>
-        <button type="submit" className="button main-button">
-          Enviar Comanda
-        </button>
+        <Button
+          text='Enviar Comanda'
+          mode='primary'
+          size='large'
+          submit
+          full
+        />
       </Form>
+      </>
+      )}
     </Formik>
   )
 }

@@ -1,31 +1,41 @@
 'use client'
-import { useMemo } from 'react';
-import { OrderItem } from '@/types'
-import styles from './Counter.module.css';
-import { useStore } from '@/store';
+import { useMemo } from 'react'
+import styles from './Counter.module.css'
+import { useOrderStore } from '@/store/order-store'
+import { Button } from '@/components'
 
 interface Props {
-	item: OrderItem
-	currentValue: number;
+	item: any
+	currentValue: number
 }
 
 const MAX_ITEMS = 10
 const MIN_ITEMS = 1
 
 export const Counter = ({ item, currentValue }: Props) => {
-	const increaseQuantity = useStore(( state ) => state.increaseQuantity )
-	const decreaseQuantity = useStore(( state ) => state.decreaseQuantity )
+	const increaseQuantity = useOrderStore(( state ) => state.increaseQuantity )
+	const decreaseQuantity = useOrderStore(( state ) => state.decreaseQuantity )
 	const disableIncrease = useMemo(() => item.quantity === MAX_ITEMS, [ item ])
 	const disableDecrease = useMemo(() => item.quantity === MIN_ITEMS, [ item ])
 	return (
 		<div className={ styles.content }>
-			<button disabled={ disableDecrease } className={ styles.button } onClick={() => decreaseQuantity( item.id, item.spicyLevelNumber )}>
-				<i className="fi fi-rr-minus-small"></i>
-			</button>
-			<span className={ styles.counter }>{ currentValue }</span>
-			<button disabled={ disableIncrease } className={ styles.button } onClick={() => increaseQuantity( item.id, item.spicyLevelNumber )}>
-				<i className="fi fi-rr-plus-small"></i>
-			</button>
+			<Button
+				disabled={ disableDecrease }
+				mode='primary'
+				iconName='minus-small'
+				size='small'
+				ghost 
+				onClick={() => decreaseQuantity( item.id, item.spicyLevelNumber )}
+			/>
+			<span className={ styles.counter }>{ currentValue }</span>			
+			<Button
+				disabled={ disableIncrease }
+				mode='primary'
+				iconName='plus-small'
+				size='small'
+				ghost 
+				onClick={() => increaseQuantity( item.id, item.spicyLevelNumber )}
+			/>
 		</div>
 	)
 }

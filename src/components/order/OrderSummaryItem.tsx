@@ -1,20 +1,21 @@
-import Image from 'next/image';
-import { OrderItem } from '@/types'
+import Image from 'next/image'
+import { OrderItem } from '@/interfaces'
 
-import styles from './OrderSummaryItem.module.css';
-import { formatCurrency } from '@/utils';
-import { Counter } from '../ui/Counter';
-import { useStore } from '@/store';
+import { formatCurrency } from '@/utils'
+import { Counter } from '../ui/Counter'
+import { useOrderStore } from '@/store/order-store'
 
+import { Button } from '@/components'
+import styles from './OrderSummaryItem.module.css'
 
 type Props = {
   item: OrderItem
 }
 
 export const OrderSummaryItem = ({ item }: Props ) => {
-	const removeItem = useStore(( state ) => state.removeItem )
+	const removeItem = useOrderStore(( state ) => state.removeItem )
   return (
-    <li className={ styles.item }>
+    <li className={ `${ styles.item }` }>
       <div className={ styles.product }>
         <div className={ styles.product__content }>
           <div className={ styles.product__image }>
@@ -32,9 +33,13 @@ export const OrderSummaryItem = ({ item }: Props ) => {
       </div>
       <div className={ styles.product__quantity }>
         <Counter item={ item } currentValue={ item.quantity } />
-        <button onClick={() => removeItem( item.id, item.spicyLevelNumber )} className={ styles.product__delete }>
-          <i className="fi fi-rr-trash"></i>
-        </button>
+        <Button
+          mode='error'
+          iconName='trash'
+          size='small'
+          ghost 
+          onClick={() => removeItem( item.id, item.spicyLevelNumber )}
+        />
       </div> 
     </li>
   )

@@ -1,9 +1,9 @@
 'use client'
 import useSWR from 'swr'
-import { Comanda } from '@/components'
+import { Comanda, ToastNotification } from '@/components'
 import ComandaSlider from '@/components/kitchen/ComandaSlider'
 import Image from 'next/image'
-import { OrderWithProducts } from '@/types'
+import { OrderWithProducts } from '@/interfaces'
 import { useEffect } from 'react'
 import { apiUrl, createNotificationSound } from '@/utils'
 
@@ -20,7 +20,7 @@ export default function KitchenPage() {
     receivedUrl,
     fetcherReceived,
     {
-      refreshInterval: 1000,
+      refreshInterval: 60000,
       revalidateOnFocus: false
     }
   )
@@ -31,7 +31,7 @@ export default function KitchenPage() {
     preparationUrl,
     fetcherPreparation,
     {
-      refreshInterval: 1000,
+      refreshInterval: 60000,
       revalidateOnFocus: false
     }
   )
@@ -81,6 +81,7 @@ export default function KitchenPage() {
           
         </section>
       </section>
+      <ToastNotification/>
     </section>
   )
 }

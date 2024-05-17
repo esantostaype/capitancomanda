@@ -1,0 +1,106 @@
+.switch{
+  align-items: center;
+  display: flex;
+  flex: 1;
+  gap: 8px;
+}
+
+.switch input[type=checkbox]{
+  display: none;
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+
+.switch__button {
+	cursor: pointer;
+	width: 48px;
+	height: 28px;
+	background: rgba(255,255,255, 0.2);
+	display: block;
+	border-radius: 100px;
+	position: relative;
+	transition: 0.3s;
+}
+
+.switch__button:after {
+	content: '';
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	width: 20px;
+	height: 20px;
+	background: #fff;
+	border-radius: 20px;
+	transition: 0.3s;
+}
+
+.switch input:checked + .switch__button {
+	background: rgb(var(--primary));
+}
+
+.switch input:checked + .switch__button:after {
+	left: calc(100% - 4px);
+	transform: translateX(-100%);
+}
+
+.switch__button:active:after {
+	width: 32px;
+}
+
+.switch__label{
+  cursor: pointer;
+}
+
+.small{
+  font-size: 12px;
+}
+
+.small .switch__button{
+	width: 34px;
+	height: 20px;
+}
+
+.small .switch__button:after {
+	top: 3px;
+	left: 3px;
+	width: 14px;
+	height: 14px;
+	border-radius: 14px;
+}
+
+.small input:checked + .switch__button:after {
+	left: calc(100% - 3px);
+	transform: translateX(-100%);
+}
+
+.small .switch__button:active:after {
+	width: 20px;
+}
+
+.large{
+  font-size: 16px;
+  gap: 12px;
+}
+
+.large .switch__button{
+	width: 64px;
+	height: 36px;
+}
+
+.large .switch__button:after {
+	top: 5px;
+	left: 5px;
+	width: 26px;
+	height: 26px;
+	border-radius: 26px;
+}
+
+.large input:checked + .switch__button:after {
+	left: calc(100% - 5px);
+	transform: translateX(-100%);
+}
+
+.large .switch__button:active:after {
+	width: 34px;
+}

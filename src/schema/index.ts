@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import * as Yup from 'yup';
 
 function isValidTable( value: string ): boolean {
   const num = parseInt( value )
@@ -19,4 +20,16 @@ export const OrderSchema = z.object({
     subtotal: z.number(),
     spicyLevelNumber: z.number().min( 0 )
   }) )
+})
+
+export const ProductSchema = Yup.object().shape({
+	name: Yup.string()
+		.min( 2, 'El nombre del producto debe tener al menos 2 caracteres' )
+		.max( 48, 'El nombre del producto no debe ser mayor a 48 caracteres' )
+		.required( 'El nombre del producto es requerido' ),
+  price: Yup.number()
+    .required( 'El precio es requerido' ),
+  categoryId: Yup.number()
+    .required( 'La categoría del producto es requerida' )
+	
 })

@@ -1,0 +1,46 @@
+.content{
+  background-color: rgb(var(--surface));
+  border-right: 1px solid var(--border);
+  min-height: 100vh;
+  position: fixed;
+  width: 240px;
+}
+
+.logo{
+  align-items: center;
+  display: flex;
+  font-size: 1.125em;
+  font-weight: 600;
+  gap: 8px;
+  padding: 24px;
+  width: 100%;
+}
+
+.nav__list{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 12px;
+}
+
+.nav__list a{
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  gap: 12px;
+  padding: 8px 12px;
+}
+
+.nav__list a i{
+  font-size: 18px;
+  margin-top: 4px;
+}
+
+.nav__list .active a{
+  background-color: rgba(var(--primary), 0.1);
+  color: rgb(var(--primary));
+}
+
+.nav__list li:hover a{
+  color: rgb(var(--primary));
+}

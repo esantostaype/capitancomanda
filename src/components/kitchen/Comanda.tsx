@@ -1,10 +1,9 @@
-import { readyOrder, inPreparationOrder } from '@/actions/change-status-order-action';
-import { OrderWithProducts } from '@/types';
-import { getSpicyLevelText } from '@/utils';
-import styles from './Comanda.module.css';
-import moment from "moment";
+import { OrderWithProducts } from '@/interfaces'
+import { getSpicyLevelText } from '@/utils'
+import styles from './Comanda.module.css'
+import moment from "moment"
 import 'moment/locale/es'
-import { ComandaButton } from './ComandaButton';
+import { ComandaButton } from './ComandaButton'
 moment.locale('es')
 
 type Props = {

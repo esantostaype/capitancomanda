@@ -1,0 +1,16 @@
+.content{
+  display: flex;
+  align-items: center;
+  height: 88px;
+  left: 240px;
+  justify-content: space-between;
+  padding: 16px 32px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.title{
+  font-size: 1.5em;
+  font-weight: 600;
+}

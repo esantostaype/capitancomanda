@@ -1,9 +1,11 @@
-import { OrderSidebar, OrderSummary, ReadyOrders, ToastNotification } from "@/components";
-import { OrderSummaryFormik } from "@/components/order/OrderSummaryFormik";
-import moment from "moment";
+import { OrderSidebar, OrderSummary, ToastNotification } from "@/components"
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
-  const currentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
+  const dayjs = require('dayjs')
+  const locale_es = require('dayjs/locale/es')
+  dayjs.locale(locale_es)
+
+  const currentDate = `${ dayjs().format(`D `)} de ${ dayjs().format(`MMMM `) } del ${ dayjs().format(` YYYY, h:mm a`) }`
   return (
     <>
     <section className="orders">
@@ -17,9 +19,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </div>
         { children }
       </section>
-      <OrderSummaryFormik/>
+      <OrderSummary/>
     </section>
-    {/* <ReadyOrders/> */}
     <ToastNotification/>
     </>
   );
