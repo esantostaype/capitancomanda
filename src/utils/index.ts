@@ -51,7 +51,7 @@ export const createNotificationSound = () => {
   }
 }
 
-export const apiUrl = "https://capitancomanda-backend.onrender.com/api"
+export const apiUrl = process.env.API_URL
 
 interface RequestOptions {
   url: string
