@@ -23,6 +23,10 @@
   display: none;
 }
 
+.Toastify__toast-theme--dark{
+  background-color: rgb(var(--surface))!important;
+}
+
 @media ( prefers-color-scheme: dark ) {
   :root {
     --foreground: 255, 255, 255;
