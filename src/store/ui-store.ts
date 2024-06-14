@@ -1,0 +1,63 @@
+import { create } from 'zustand'
+
+interface UiStore {
+  openModal: () => void
+  activeModal: boolean
+  activeClassModal: boolean
+  openModalPage: () => void
+  activeModalPage: boolean
+  activeClassModalPage: boolean
+  openPopover: () => void
+  activePopover: boolean
+  activeClassPopover: boolean
+  closeModal: ( withBackRoute?: boolean ) => void
+  closeModalPage: ( withBackRoute?: boolean ) => void
+  closePopover: () => void
+}
+
+const useUiStore = create<UiStore>(( set ) => ({
+  activeModal: false,
+  activeClassModal: false,
+  activeModalPage: false,
+  activeClassModalPage: false,
+  activePopover: false,
+  activeClassPopover: false,
+  openModal: () => {
+    set({ activeModal: true })
+    set({ activeClassModal: true })
+  },
+  openModalPage: () => {
+    set({ activeModalPage: true })
+    set({ activeClassModalPage: true })
+  },
+  openPopover: () => {
+    set({ activePopover: true })
+    set({ activeClassPopover: true })
+  },
+  closeModal: ( withBackRoute?: boolean ) => {
+    set({ activeClassModal: false }) 
+    setTimeout(() => {
+      set({ activeModal: false })
+      if ( withBackRoute ) {
+        window.history.back()
+      }
+    }, 300)
+  },
+  closeModalPage: ( withBackRoute?: boolean ) => {
+    set({ activeClassModalPage: false }) 
+    setTimeout(() => {
+      set({ activeModalPage: false })
+      if ( withBackRoute ) {
+        window.history.back()
+      }
+    }, 300)
+  },
+  closePopover: () => {
+    set({ activeClassPopover: false }) 
+    setTimeout(() => {
+      set({ activePopover: false })
+    }, 300)
+  }
+}))
+
+export { useUiStore }

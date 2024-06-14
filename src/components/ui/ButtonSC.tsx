@@ -17,26 +17,22 @@ interface Props {
 }
 
 const baseButtonStyles = css`
-  background-color: grey;
+  background-color: var(--border-light);
   align-items: center;
-  color: #000;
+  color: white;
   cursor: pointer;
   display: flex;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 4px;
   justify-content: center;
-  letter-spacing: 0.05em;
   line-height: 1em;
   gap: 8px;
   padding: 1em 2em;
-  text-transform: uppercase;
 
   &.large {
     font-size: 1.125em;
   }
 
   &.small {
-    border-radius: 6px;
     font-size: 12px;
     padding: 0.8em 1.2em;
     width: auto;

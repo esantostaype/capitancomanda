@@ -1,4 +1,4 @@
-import { AdminSidebar, ToastNotification } from "@/components";
+import { AdminSidebar } from "@/components";
 
 export default function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -9,7 +9,6 @@ export default function AdminLayout({ children }: Readonly<{ children: React.Rea
         { children }
       </section>
     </section>
-    <ToastNotification/>
     </>
   );
 }

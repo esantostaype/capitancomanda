@@ -1,14 +1,15 @@
-import Image from 'next/image';
-import { OrderSidebarItem } from "@/components";
+import Image from 'next/image'
+import { OrderSidebarItem } from "@/components"
 
-import styles from './OrderSidebar.module.css';
-import { fetchData } from '@/utils';
-import { Category } from '@/interfaces';
-import Link from 'next/link';
+import styles from './OrderSidebar.module.css'
+import { fetchData } from '@/utils'
+import { Category } from '@/interfaces'
+import Link from 'next/link'
+import { setSession } from '@/utils/session'
 
 export const OrderSidebar = async() => {
-
-  const categories = await fetchData({ url: `/categories`, method: 'GET' })
+const { token } = await setSession()
+  const categories = await fetchData({ url: `/categories`, method: 'GET', token: token })
 
   return (
     <>

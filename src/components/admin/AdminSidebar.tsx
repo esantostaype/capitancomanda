@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import styles from './AdminSidebar.module.css'
 import { usePathname } from 'next/navigation'
+import { Logout } from '@/components'
 
 type Props = {
 }
@@ -72,6 +73,7 @@ export const AdminSidebar = ({  }: Props ) => {
             </li>
           ))}
         </ul>
+        <Logout/>
       </nav>
     </aside>
   )

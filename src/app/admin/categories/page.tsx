@@ -1,16 +1,21 @@
 import { fetchData } from '@/utils'
-import { CategoriesDataTable } from './CategoriesDataTable'
+import { Button, OpenModalButton } from '@/components'
+import { setSession } from '@/utils/session'
+import { Category } from '@/interfaces'
+import CategoriesData from './CategoriesData';
 
 export default async function CategoriesPage() {
-  const categories = await fetchData({ url: `/categories` })  
+  const { token } = await setSession()
+  const categories: Category[] = await fetchData({ url: `/categories`, token: token })
+  
   return (
     <>
     <header className="admin__header">
       <h1 className="admin__title">Categorías</h1>
-      <button className='button main-button small'>Crear Nuevo</button>
+      <OpenModalButton link="/admin/categories/create"/>
     </header>
     <section className="admin__content">
-      <CategoriesDataTable data={ categories }/>
+      <CategoriesData data={ categories } token={ token! } />
     </section>
     </>
   )

@@ -7,9 +7,11 @@ import styles from './OrderForm.module.css'
 import { Formik, Form, Field, FormikHelpers } from 'formik'
 import { OrderItem } from '@/interfaces'
 import { toast } from 'react-toastify'
-import { fetchData } from '@/utils'
 import { revalidatePath } from 'next/cache'
 import { Button, Spinner, Switch } from '@/components'
+import { addOrder } from '@/actions/send-order-action'
+import { io } from 'socket.io-client'
+import { apiUrl } from '@/utils'
 
 interface FormValues {
   total: number
@@ -42,7 +44,7 @@ export const OrderForm = () => {
       order
     }
 
-    const result = await fetchData({ url: '/orders', method: 'POST', body: orderData })
+    const result = await addOrder( orderData )
 
     if( !result.order.success ) {
       result.order.errors.forEach(( issue: any ) => {
@@ -51,10 +53,10 @@ export const OrderForm = () => {
       return
     }
 
-    setDelivery( false )
+    setDelivery(false)
     toast.success('¡Comanda enviada!')
     clearOrder()
-    revalidatePath( '/kitchen' )
+    revalidatePath('/kitchen')
   }
 
   useEffect(() => {

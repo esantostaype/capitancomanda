@@ -25,7 +25,7 @@ export const Counter = ({ item, currentValue }: Props) => {
 				iconName='minus-small'
 				size='small'
 				ghost 
-				onClick={() => decreaseQuantity( item.id, item.spicyLevelNumber )}
+				onClick={() => decreaseQuantity( item.id )}
 			/>
 			<span className={ styles.counter }>{ currentValue }</span>			
 			<Button
@@ -34,7 +34,7 @@ export const Counter = ({ item, currentValue }: Props) => {
 				iconName='plus-small'
 				size='small'
 				ghost 
-				onClick={() => increaseQuantity( item.id, item.spicyLevelNumber )}
+				onClick={() => increaseQuantity( item.id )}
 			/>
 		</div>
 	)

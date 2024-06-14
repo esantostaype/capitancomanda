@@ -15,8 +15,8 @@ export const OrderSidebarItem = ({ category } : Props ) => {
   const params = useParams()
 
   return (
-    <li className={ `${ category.slug === params.category ? `${ styles.active }` : `${ styles.nav__item }` }`}>
-      <Link href={ `/order/${ category.slug }` } className={ styles.nav__link }>
+    <li className={ `${ category.id === params.category ? `${ styles.active }` : `${ styles.nav__item }` }`}>
+      <Link href={ `/order/${ category.id }` } className={ styles.nav__link }>
         <i className={`fi fi-rr-${ category.icon }`}></i>
       </Link>
     </li>

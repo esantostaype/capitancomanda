@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import * as Yup from 'yup';
+import { Role } from '@/interfaces';
 
 function isValidTable( value: string ): boolean {
   const num = parseInt( value )
@@ -22,14 +23,70 @@ export const OrderSchema = z.object({
   }) )
 })
 
+export const UserSchema = Yup.object().shape({
+  email: Yup.string().email( 'Correo Electrónico no válido' ).required( 'El Correo Electrónico es requerido' ),
+	role: Yup.mixed<Role>().oneOf(Object.values(Role)).required()
+	
+})
+
 export const ProductSchema = Yup.object().shape({
 	name: Yup.string()
-		.min( 2, 'El nombre del producto debe tener al menos 2 caracteres' )
-		.max( 48, 'El nombre del producto no debe ser mayor a 48 caracteres' )
-		.required( 'El nombre del producto es requerido' ),
+		.min( 2, 'El Nombre del Producto debe tener al menos 2 caracteres' )
+		.max( 48, 'El Nombre del Producto no debe ser mayor a 48 caracteres' )
+		.required( 'El Nombre del Producto es requerido' ),
   price: Yup.number()
     .required( 'El precio es requerido' ),
-  categoryId: Yup.number()
-    .required( 'La categoría del producto es requerida' )
+  categoryId: Yup.string()
+    .required( 'La categoría del Producto es requerida' )
 	
+})
+
+export const CategorySchema = Yup.object().shape({
+	name: Yup.string()
+		.min( 2, 'El Nombre de la Categoría debe tener al menos 2 caracteres' )
+		.max( 48, 'El Nombre de la Categoría no debe ser mayor a 48 caracteres' )
+		.required( 'El Nombre de la Categoría es requerido' )
+	
+})
+
+export const EmailSchema = Yup.object().shape({
+  email: Yup.string().email( 'Correo Electrónico no válido' ).required( 'El Correo Electrónico es requerido' )
+})
+
+export const PasswordSchema = Yup.object().shape({
+  password: Yup.string().min( 6, 'La contraseña debe tener como mínimo 6 caracteres' ).required( 'La Contraseña es requerida' ),
+	confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password')], 'Las Contraseñas deben coincidir')
+    .required('La confirmación de Contraseña es requerida')	
+})
+
+export const SignUpCompleteSchema = Yup.object().shape({
+	restaurantName: Yup.string()
+		.min( 2, 'El Nombre de tu Restaurante debe tener al menos 2 caracteres' )
+		.max( 48, 'El Nombre de tu Restaurante no debe ser mayor a 48 caracteres' )
+		.required( 'El Nombre de tu Restaurante es requerido' ),
+  fullName: Yup.string()
+  .min( 2, 'Tu Nombre debe tener al menos 2 caracteres' )
+  .max( 48, 'Tu Nombre no debe ser mayor a 48 caracteres' )
+  .required( 'Tu Nombre es requerido' ),
+  password: Yup.string().min( 6, 'La contraseña debe tener como mínimo 6 caracteres' ).required( 'La Contraseña es requerida' ),
+	confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password')], 'Las Contraseñas deben coincidir')
+    .required('La confirmación de Contraseña es requerida')	
+})
+
+export const SignUpCompleteOAuthSchema = Yup.object().shape({
+	restaurantName: Yup.string()
+		.min( 2, 'El Nombre de tu Restaurante debe tener al menos 2 caracteres' )
+		.max( 48, 'El Nombre de tu Restaurante no debe ser mayor a 48 caracteres' )
+		.required( 'El Nombre de tu Restaurante es requerido' ),
+  password: Yup.string().min( 6, 'La contraseña debe tener como mínimo 6 caracteres' ).required( 'La Contraseña es requerida' ),
+	confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password')], 'Las Contraseñas deben coincidir')
+    .required('La confirmación de Contraseña es requerida')	
+})
+
+export const LoginSchema = Yup.object().shape({
+  email: Yup.string().email( 'Correo Electrónico no válido' ).required( 'El Correo Electrónico es requerido' ),
+  password: Yup.string().min( 6, 'La Contraseña debe tener como mínimo 6 caracteres' ).required( 'La Contraseña es requerida' )
 })

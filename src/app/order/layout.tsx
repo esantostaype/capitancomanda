@@ -21,7 +21,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </section>
       <OrderSummary/>
     </section>
-    <ToastNotification/>
     </>
   );
 }

@@ -23,10 +23,7 @@ export const OrderSummaryItem = ({ item }: Props ) => {
           </div>
           <div className={ styles.product__caption }>
             <div className={ styles.product__name }>{ item.name }</div>
-            <div className={ styles.product__price }>{ formatCurrency( item.price ) }</div> 
-            { item.spicyLevel && (
-              <div className={ styles.spicyLevel }>Nivel de Picante: <strong>{ item.spicyLevelNumber }</strong></div>
-            )}           
+            <div className={ styles.product__price }>{ formatCurrency( item.price ) }</div>         
           </div>
         </div>     
         <div className={ styles.subtotal }>{ formatCurrency( item.subtotal ) }</div>  
@@ -38,7 +35,7 @@ export const OrderSummaryItem = ({ item }: Props ) => {
           iconName='trash'
           size='small'
           ghost 
-          onClick={() => removeItem( item.id, item.spicyLevelNumber )}
+          onClick={() => removeItem( item.id )}
         />
       </div> 
     </li>

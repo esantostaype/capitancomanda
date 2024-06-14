@@ -1,17 +1,14 @@
 'use client'
-import { Button, ButtonSC } from "@/components"
-import { useAdminStore } from "@/store/admin-store"
+import { ButtonSC } from "@/components"
+import { useUiStore } from "@/store/ui-store"
 
 type Props = {
   link: string
 }
 
 export const OpenModalButton = ({ link }: Props ) => {
-  const { setOpenModal } = useAdminStore()
-  const handleClick = () => {
-    setOpenModal( true )
-  }
+  const { openModal } = useUiStore()
   return (
-    <ButtonSC href={ link } onClick={ () => handleClick() } text='Crear Nuevo' mode='primary' size='small' />
+    <ButtonSC href={ link } onClick={ () => openModal() } text='Crear Nuevo' mode='primary' size='small' />
   )
 }

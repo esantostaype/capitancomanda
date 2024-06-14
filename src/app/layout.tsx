@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { Providers } from './providers';
+import { ToastNotification } from '@/components';
 
 const inter = Inter({
-  weight: ['400', '500', '600', '700', '800', '900'],
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
   style: ['normal'],
   subsets: ['latin'],
   display: 'swap'
@@ -17,9 +19,12 @@ export const metadata: Metadata = {
 export default function RootLayout({  children }: Readonly<{ children: React.ReactNode; }>) {
   return (
     <html lang="es">
-      <body className={ inter.className }>
+      <body className={ inter.className } suppressHydrationWarning={ true }>
         <main className="app">
+          <Providers>
           { children }
+          </Providers>
+          <ToastNotification/>
         </main>
       </body>
       {/* <svg className="pattern">

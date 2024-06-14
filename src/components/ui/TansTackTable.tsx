@@ -1,4 +1,5 @@
 'use client'
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useReactTable,
   getCoreRowModel,
   flexRender,
@@ -12,17 +13,32 @@ import { useState } from "react";
 
 type Props = {
   data: any
-  columns: ColumnDef<any>[]
+  columns: ColumnDef< any >[]
 }
 
 export const TansTackTable = ({ data, columns }: Props) => {
 
+  const addRowNumberColumn = <T,>(columns: ColumnDef<T>[]): ColumnDef<T>[] => {
+    const rowNumberColumn: ColumnDef<T> = {
+      header: '#',
+      id: 'rowNumber',
+      cell: ({ row }) => row.index + 1,
+      accessorFn: (_, index) => index + 1,
+      enableSorting: true,
+      sortingFn: (rowA, rowB) => rowA.index - rowB.index
+    }
+    
+    return [ rowNumberColumn, ...columns ]
+  }
+
   const [ sorting, setSorting ] = useState<SortingState>([])
   const [ filtering, setFiltering ] = useState("")
 
+  const columnsWithRowNumber = addRowNumberColumn( columns )
+
   const table = useReactTable({
     data,
-    columns,
+    columns: columnsWithRowNumber,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -41,6 +57,8 @@ export const TansTackTable = ({ data, columns }: Props) => {
   })
 
   const pages = Array.from({ length: table.getPageCount() }, ( _, i ) => i + 1 )
+
+  const [ listRef ] = useAutoAnimate()
 
   return (
     <div className="table__wrapper">
@@ -88,13 +106,17 @@ export const TansTackTable = ({ data, columns }: Props) => {
                             header.column.columnDef.header,
                             header.getContext()
                           )}   
-                          { header.column.getIsSorted() ?
-                            header.column.getIsSorted() === 'asc'
-                            ? <i className="fi fi-rr-arrow-small-up"></i>
-                            : header.column.getIsSorted() === 'desc'
-                            && <i className="fi fi-rr-arrow-small-down"></i>
-                            : <i className="fi fi-tr-sort-alt sort-all"></i>
-                          }
+                          { header.column.getCanSort() && (
+                            header.column.getIsSorted() ? (
+                              header.column.getIsSorted() === 'asc' ? (
+                                <i className="fi fi-rr-arrow-small-up"></i>
+                              ) : (
+                                <i className="fi fi-rr-arrow-small-down"></i>
+                              )
+                            ) : (
+                              <i className="fi fi-tr-sort-alt sort-all"></i>
+                            )
+                          )}
                         </div>
                       </th>
                     )
@@ -118,39 +140,41 @@ export const TansTackTable = ({ data, columns }: Props) => {
           }
         </tbody>
       </table>
-      <div className="table__footer">
-        <nav className="pagination">
-          <ul className="pagination__list">
-            <li className="pagination__arrow">
-              <button onClick={ () => table.setPageIndex( 0 ) } disabled={ !table.getCanPreviousPage() }>
-                <i className="fi fi-rr-angle-double-left"></i>
-              </button>
-            </li>
-            <li className="pagination__arrow">
-              <button onClick={ () => table.previousPage() } disabled={ !table.getCanPreviousPage() }>
-                <i className="fi fi-rr-angle-left"></i>
-              </button>
-            </li>
-            {
-              pages.map( page => (
-                <li key={ page } className={ page - 1 === table.getState().pagination.pageIndex ? 'active' : '' }>
-                  <button onClick={ () => table.setPageIndex( page - 1 ) }>{ page }</button>
-                </li>
-              ))
-            }
-            <li className="pagination__arrow">
-              <button onClick={ () => table.nextPage() } disabled={ !table.getCanNextPage() }>
-                <i className="fi fi-rr-angle-right"></i>
-              </button>
-            </li>
-            <li className="pagination__arrow">
-              <button onClick={ () => table.setPageIndex( table.getPageCount() - 1 ) } disabled={ !table.getCanNextPage() }>
-                <i className="fi fi-rr-angle-double-right"></i>
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      { pages.length !== 1 &&
+        <div className="table__footer">
+          <nav className="pagination">
+            <ul className="pagination__list">
+              <li className={ !table.getCanPreviousPage() ? "disabled pagination__arrow" : "pagination__arrow"}>
+                <button onClick={ () => table.setPageIndex( 0 ) }>
+                  <i className="fi fi-rr-angle-double-left"></i>
+                </button>
+              </li>
+              <li className={ !table.getCanPreviousPage() ? "disabled pagination__arrow" : "pagination__arrow"}>
+                <button onClick={ () => table.previousPage() }>
+                  <i className="fi fi-rr-angle-left"></i>
+                </button>
+              </li>
+              {
+                pages.map( page => (
+                  <li key={ page } className={ page - 1 === table.getState().pagination.pageIndex ? 'active' : '' }>
+                    <button onClick={ () => table.setPageIndex( page - 1 ) }>{ page }</button>
+                  </li>
+                ))
+              }
+              <li className={ !table.getCanNextPage() ? "disabled pagination__arrow" : "pagination__arrow"}>
+                <button onClick={ () => table.nextPage() }>
+                  <i className="fi fi-rr-angle-right"></i>
+                </button>
+              </li>
+              <li className={ !table.getCanNextPage() ? "disabled pagination__arrow" : "pagination__arrow"}>
+                <button onClick={ () => table.setPageIndex( table.getPageCount() - 1 ) }>
+                  <i className="fi fi-rr-angle-double-right"></i>
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      }
     </div>
   )
 }

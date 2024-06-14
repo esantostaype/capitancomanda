@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 interface Props {
   text?: string
-  mode?: 'primary' | 'success' | 'info' | 'warning' | 'error'
+  mode?: 'primary' | 'success' | 'info' | 'warning' | 'error' | 'withoutBg'
   iconName?: string
   size?: 'small' | 'normal' | 'large'
   full?: boolean
@@ -14,9 +14,10 @@ interface Props {
   submit?: boolean
   href?: string | '#'
   div?: boolean
+  active?: boolean
 }
 
-export const Button = ({ text, mode, size, iconName, full, ghost, onClick, disabled, submit, href, div }: Props) => {
+export const Button = ({ text, mode, size, iconName, full, ghost, onClick, disabled, submit, href, div, active }: Props) => {
 
   let buttonClass = styles.button
 
@@ -36,6 +37,9 @@ export const Button = ({ text, mode, size, iconName, full, ghost, onClick, disab
     case 'error':
       buttonClass = `${ styles.button } ${ styles.error }`
       break
+    case 'withoutBg':
+      buttonClass = `${ styles.button } ${ styles.withoutBg }`
+      break
     default:
       buttonClass = `${ styles.button }`
       break
@@ -46,6 +50,7 @@ export const Button = ({ text, mode, size, iconName, full, ghost, onClick, disab
   { iconName && !text && ( buttonClass += ` ${ styles.iconOnly }`) }
   { full && ( buttonClass += ` ${ styles.full }`) }
   { ghost && ( buttonClass += ` ${ styles.ghost }`) }
+  { active && ( buttonClass += ` ${ styles.active }`) }
 
   const buttonType = submit ? 'submit' : 'button'
 

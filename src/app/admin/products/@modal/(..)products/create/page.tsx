@@ -1,11 +1,15 @@
-import { Modal } from '@/components'
-import { ProductsForm } from '../../../ProductsForm';
+import { ModalPage } from '@/components'
+import { ProductsForm } from '../../../ProductsForm'
+import { fetchData } from '@/utils'
+import { setSession } from '@/utils/session'
 
 export default async function ModalCreateProductPage() {
+const { token } = await setSession()
+  const categories = await fetchData({ url: `/categories`, token: token })
   
   return (
-    <Modal title="Crear Producto" backText='Regresar a la lista de Productos'>
-      <ProductsForm />
-    </Modal>
+    <ModalPage title="Crear Producto" backText='Regresar a la lista de Productos' withBackRoute>
+      <ProductsForm categories={ categories } token={ token } />
+    </ModalPage>
   )
 }

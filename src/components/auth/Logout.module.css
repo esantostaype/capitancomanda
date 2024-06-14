@@ -1,0 +1,11 @@
+.logout{
+  align-items: center;
+  color: rgb(var(--error));
+  display: flex;
+  gap: 8px;
+  padding: 24px;
+}
+
+.logout i{
+  transform: rotate(180deg);
+}

@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation"
 
+export const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+
 export function formatCurrency( amount: number ) {
   const numberFormat = new Intl.NumberFormat('en-US', {
     style: 'decimal',
@@ -51,37 +53,40 @@ export const createNotificationSound = () => {
   }
 }
 
-export const apiUrl = "https://capitancomanda-backend.onrender.com/api"
 
 interface RequestOptions {
   url: string
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
   body?: any
+  token?: string
 }
 
 export async function fetchData( options: RequestOptions ) {
-  const { url, method, body } = options
-  let headersApi: HeadersInit = {}
+
+  const { url, method, body, token } = options
+  
+  let headersApi: HeadersInit = {
+    'Authorization': `Bearer ${ token }`
+  }
 
   if ( method === 'POST' || method === 'PUT' ) {
-    headersApi = { 'Content-Type': 'application/json' }
+    headersApi = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${ token }`
+    }
   }
 
   try {
-    const response = await fetch( `${ apiUrl }${ url }`, {
+    const response = await fetch(`${apiUrl}${url}`, {
       method,
       headers: headersApi,
       body: body ? JSON.stringify( body ) : undefined
     })
-
-    if (!response.ok) {
-      throw new Error(`Error ${response.status}: ${response.statusText}`)
-    }
-
-    return await response.json()
+    const result = await response.json()
+    console.log( result )
+    return result
   } catch (error) {
-    console.error('Error al realizar la solicitud:', error)
-    throw error
+    return { ok: false, errors: 'Error de red o de servidor', data: null }
   }
 }
 
@@ -126,3 +131,5 @@ export const formatOrderId = ( number: number, length: number ) => {
 }
 
 export const SPICYLEVEL = [ 0,1,2,3 ]
+
+

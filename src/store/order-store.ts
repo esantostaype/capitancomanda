@@ -4,9 +4,9 @@ import { OrderItem, Product } from '../interfaces'
 interface Store {
   order: OrderItem[]
   addToOrder: ( product: Product ) => void
-  increaseQuantity: ( id: Product['id'], spicyLevelNumber: number ) => void
-  decreaseQuantity: ( id: Product['id'], spicyLevelNumber: number ) => void
-  removeItem: ( id: Product['id'], spicyLevelNumber: number ) => void
+  increaseQuantity: ( id: Product['id'] ) => void
+  decreaseQuantity: ( id: Product['id'] ) => void
+  removeItem: ( id: Product['id'] ) => void
   clearOrder: () => void
   setOrder: ( newOrder: OrderItem[] ) => void
   delivery: boolean
@@ -25,13 +25,13 @@ export const useOrderStore = create<Store>(( set, get ) => {
     delivery: false,
     addToOrder: ( product ) => {
       const existingItem = get().order.find(
-        ( item ) => item.id === product.id && item.spicyLevelNumber === ( product.spicyLevelNumber ?? 0 )
+        ( item ) => item.id === product.id
       )
 
       if ( existingItem ) {
         set(( state ) => ({
           order: state.order.map(( item ) =>
-            item.id === product.id && item.spicyLevelNumber === ( product.spicyLevelNumber ?? 0 )
+            item.id === product.id
               ? {
                   ...item,
                   quantity: item.quantity + 1,
@@ -41,17 +41,13 @@ export const useOrderStore = create<Store>(( set, get ) => {
           )
         }))
       } else {
-        const spicyLevel = product.spicyLevel ?? false
-
         set(( state ) => ({
           order: [
             ...state.order,
             {
               ...product,
               quantity: 1,
-              subtotal: product.price * 1,
-              spicyLevel: spicyLevel,
-              spicyLevelNumber: spicyLevel ? ( product.spicyLevelNumber ?? 0) : 0
+              subtotal: product.price * 1
             }
           ]
         }))
@@ -60,10 +56,10 @@ export const useOrderStore = create<Store>(( set, get ) => {
       updateLocalStorage( get().order )
     },
 
-    increaseQuantity: ( id, spicyLevelNumber ) => {
+    increaseQuantity: ( id ) => {
       set(( state ) => ({
         order: state.order.map(( item ) =>
-          item.id === id && item.spicyLevelNumber === spicyLevelNumber
+          item.id === id
             ? {
                 ...item,
                 quantity: item.quantity + 1,
@@ -76,10 +72,10 @@ export const useOrderStore = create<Store>(( set, get ) => {
       updateLocalStorage( get().order )
     },
 
-    decreaseQuantity: (id, spicyLevelNumber ) => {
+    decreaseQuantity: (id ) => {
       set(( state ) => ({
         order: state.order.map(( item ) =>
-          item.id === id && item.spicyLevelNumber === spicyLevelNumber
+          item.id === id
             ? {
                 ...item,
                 quantity: item.quantity - 1,
@@ -92,9 +88,9 @@ export const useOrderStore = create<Store>(( set, get ) => {
       updateLocalStorage(get().order )
     },
 
-    removeItem: ( id, spicyLevelNumber ) => {
+    removeItem: ( id ) => {
       set(( state ) => ({
-        order: state.order.filter(( item ) => !(item.id === id && item.spicyLevelNumber === spicyLevelNumber ))
+        order: state.order.filter(( item ) => !(item.id === id ))
       }))
 
       updateLocalStorage( get().order )

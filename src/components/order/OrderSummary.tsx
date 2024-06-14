@@ -35,7 +35,7 @@ export const OrderSummary = () => {
     <div className={ styles.summary }>
       { order.length === 0
         ? (
-        <div className={ `${ styles.summary__empty } fadeIn` }>
+        <div className={ `${ styles.summary__empty }` }>
           <div className={ styles.summary__empty__content }>
             <i className="fi fi-rr-empty-set"></i>
             <h3 className={ styles.summary__empty__title }>La Comanda está Vacía</h3>

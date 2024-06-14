@@ -1,0 +1,29 @@
+.content{
+  margin: 2em 0;
+  text-align: center;
+}
+
+.buttons{
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.label{
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.label:before,
+.label:after{
+  background-color: var(--border);
+  content: '';
+  height: 1px;
+  flex: 1;
+}
+
+.buttons button{
+  flex: 1;
+}

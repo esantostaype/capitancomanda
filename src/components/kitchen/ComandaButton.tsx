@@ -23,7 +23,6 @@ export const ComandaButton = ({ text, orderId, status }: Props ) => {
 
   const handleSubmit = async ( values: FormValues ) => {
     await changeStatusOrder( orderId, values )
-    toast.success('Orden Actualizada!')
   }
 
   return (

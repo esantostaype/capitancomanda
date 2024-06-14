@@ -1,9 +1,18 @@
 .content{
   background-color: rgb(var(--surface));
   border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   position: fixed;
   width: 240px;
+}
+
+.nav{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
 }
 
 .logo{
@@ -25,7 +34,7 @@
 
 .nav__list a{
   align-items: center;
-  border-radius: 8px;
+  border-radius: 4px;
   display: flex;
   gap: 12px;
   padding: 8px 12px;
