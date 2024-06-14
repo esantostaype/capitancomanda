@@ -54,8 +54,6 @@ export const authOptions: NextAuthOptions = {
 
         const data = await response.json()
 
-        console.log("DATA USER EL POPI SAD: ", data)
-
         if ( data.user ){
           if ( data.user.isVerified === true ) {
             user.token = data.token
