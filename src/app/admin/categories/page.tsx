@@ -5,8 +5,8 @@ import { Category } from '@/interfaces'
 import CategoriesData from './CategoriesData';
 
 export default async function CategoriesPage() {
-  const { token } = await setSession()
-  const categories: Category[] = await fetchData({ url: `/categories`, token: token })
+  const { token, role } = await setSession()
+  const categories: Category[] = await fetchData({ url: `/categories`, token: token, role: role })
   
   return (
     <>

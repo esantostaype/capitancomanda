@@ -5,10 +5,13 @@ declare module "next-auth" {
   interface User {
     token: string
     role: string
+    id: string
+    branchId: string
   }
 
   interface Session {
     user: {
+      branchId: string
       id: string
       email: string
       name: string
@@ -20,10 +23,10 @@ declare module "next-auth" {
 
 declare module "next-auth/jwt" {
   interface JWT {
-    id: string | null | undefined
-    email: string | null | undefined
-    name: string | null | undefined
-    token: string | null | undefined
-    role: string | null | undefined
+    id: any
+    email: any
+    name: any
+    token: any
+    role: any
   }
 }

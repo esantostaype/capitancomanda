@@ -5,8 +5,8 @@ import { setSession } from '@/utils/session'
 
 export default async function OrderPage({ params } : { params: { category : string } }) {
   const { token } = await setSession()
-  const products = await fetchData({ url: `/products?category=${ params.category }`, token: token })
-  const category = await fetchData({ url: `/categories/${ params.category }`, token: token })   
+  const products = await fetchData({ url: `/products/category/${ params.category }`, token: token })
+  const category = await fetchData({ url: `/categories/${ params.category }`, token: token })
   
   return (
     <>

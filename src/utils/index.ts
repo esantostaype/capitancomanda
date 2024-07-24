@@ -1,3 +1,4 @@
+import { Role } from "@/interfaces"
 import { redirect } from "next/navigation"
 
 export const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL
@@ -59,6 +60,7 @@ interface RequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
   body?: any
   token?: string
+  role?: string
 }
 
 export async function fetchData( options: RequestOptions ) {

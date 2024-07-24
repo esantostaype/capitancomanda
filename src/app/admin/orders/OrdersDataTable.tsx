@@ -79,14 +79,14 @@ export const OrdersDataTable = ({ data }: Props ) => {
     }
   ]
 
-  if ( role === Role.OWNER ) {
-    columns.splice( 1, 0, {
+  if ( role === "OWNER" ) {
+    columns.splice( 3, 0, {
       header: 'Sucursal',
       accessorKey: 'branch.name',
       id: 'branch.name',
       cell: ({ row }) => (
         <div className="table__flex">
-          { row.original.branch.name }
+          { row.original.user.branch.name }
         </div>
       )
     })

@@ -9,7 +9,7 @@
 :root {
   --primary: 0,200,255;
   --foreground: 24, 22, 34;
-  --foreground-light: 96, 98, 105;
+  --foreground-light: 124, 128, 138;
   --surface: 255, 255, 255;
   --background: 244, 245, 247;
   --success: 76, 175, 80;
@@ -538,8 +538,11 @@ body {
 
 
 
-
 .admin__wrapper{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100vh;
   padding: 88px 32px 32px 272px;
 }
 
@@ -562,6 +565,12 @@ body {
 .admin__title{
   font-size: 1.5em;
   font-weight: 600;
+}
+
+.admin__content{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 
@@ -1126,6 +1135,23 @@ body {
   text-align: center;
 }
 
+.confirm__icon{
+  align-items: center;
+  background-color: rgb(var(--surface));
+  border-radius: 72px;
+  display: flex;
+  font-size: 2em;
+  height: 72px;
+  justify-content: center;
+  margin: 0 auto 24px;
+  width: 72px;
+}
+
+.confirm__icon.error{
+  background-color: rgba(var(--error), 0.1);
+  color: rgb(var(--error));
+}
+
 .confirm__title{
   font-size: 1.25em;
   font-weight: 600;
@@ -1142,6 +1168,10 @@ body {
 
 .confirm__buttons button{
   min-width: 120px;
+}
+
+.confirm p{
+  color: rgb(var(--foreground-light));
 }
 
 
@@ -1177,15 +1207,22 @@ body {
   text-align: center;
 }
 
+.auth__logo{
+  left: 32px;
+  position: absolute;
+  top: 32px;
+}
+
 .auth__image{
+  align-items: center;
+  display: flex;
   flex: 0 0 50%;
   height: 100vh;
+  justify-content: center;
 }
 
 .auth__content{
   align-items: center;
-  background-color: rgb(var(--background));
-  border-left: 1px solid var(--border);
   display: flex;
   flex: 1;
   min-height: 100vh;

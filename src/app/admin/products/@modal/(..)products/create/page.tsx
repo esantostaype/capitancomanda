@@ -1,10 +1,10 @@
 import { ModalPage } from '@/components'
-import { ProductsForm } from '../../../ProductsForm'
+import { ProductsForm } from '@/app/admin/products/ProductsForm'
 import { fetchData } from '@/utils'
 import { setSession } from '@/utils/session'
 
 export default async function ModalCreateProductPage() {
-const { token } = await setSession()
+  const { token, role } = await setSession()
   const categories = await fetchData({ url: `/categories`, token: token })
   
   return (

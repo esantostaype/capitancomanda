@@ -2,31 +2,35 @@
 import { Formik, Form, FormikHelpers } from 'formik'
 import { Button, Spinner, TextField } from '@/components'
 import { toast } from 'react-toastify'
-import { Select, User, Role, roleTranslations } from '@/interfaces'
+import { Select, User, Role, roleTranslations, Branch } from '@/interfaces'
 import { addUser, editUser } from '@/actions/user-actions'
 import { useUiStore } from '@/store/ui-store'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { UserSchema } from '@/schema'
+import { useSession } from 'next-auth/react'
 
 interface FormValues {
   email: string,
   fullName: string,
   role: Role | '',
+  branchId: string
   password: string,
   confirmPassword: string
 }
 
 type Props = {
   user?: User
+  branches: Branch[] 
   token?: string
 }
 
-export const UsersForm = ({ user, token }: Props) => {
-
-  console.log( "Usuario GHAAAA: ", user )
+export const UsersForm = ({ user, token, branches }: Props) => {
 
   const { closeModalPage } = useUiStore()
+  const { data: session } = useSession()
+
+  const userRole = session?.user.role
 
   const roleOptions = [
     { value: '', label: 'Selecciona un Rol' },
@@ -34,26 +38,43 @@ export const UsersForm = ({ user, token }: Props) => {
       value: role,
       label: roleTranslations[ role as Role ]
     }))
-  ];
+  ]
+
+  const branchOptions = [
+    { value: '', label: 'Selecciona una Sucursal' },
+    ...branches.map(branch => ({
+        value: branch.id,
+        label: branch.name
+    }))
+  ]
 
   const initialValues: FormValues = {
     email: user && user.email ? user.email : '',
     fullName: user && user.fullName ? user.fullName : '',
     role: user ? user.role : '',
+    branchId: user ? user.branchId: '',
     password: '',
     confirmPassword: ''
   }
 
   const handleSubmit = async ( values: FormValues, actions: FormikHelpers<FormValues> ) => {
+    const newUserPayload = {
+      email: values.email,
+      fullName: values.fullName,
+      password: values.password,
+      branchId: values.branchId,
+      role: values.role
+    }
     const userPayload = {
       email: values.email,
-      password: values.password,
+      fullName: values.fullName,
+      branchId: values.branchId,
       role: values.role
     }
 
     { user
       ? await editUser( user.id, userPayload, token ? token : '' )
-      : await addUser( userPayload, token ? token : '' )
+      : await addUser( newUserPayload, token ? token : '' )
     }
     actions.setSubmitting( false )
     closeModalPage( true )
@@ -72,10 +93,21 @@ export const UsersForm = ({ user, token }: Props) => {
               <div className="row-form">
                 <div className="col-form-6">
                   <TextField
+                    label='Nombre Completo'
+                    type='fullName'
+                    name='fullName'
+                    placeholder='Ingresa el Nombre Completo del usuario'
+                    errors={ errors.fullName }
+                    touched={ touched.fullName }
+                    value={ values.fullName }
+                  />
+                </div>
+                <div className="col-form-6">
+                  <TextField
                     label='Email'
                     type='email'
                     name='email'
-                    placeholder='Ingresa el Email de usuario'
+                    placeholder='Ingresa el Email del usuario'
                     errors={ errors.email }
                     touched={ touched.email }
                     value={ values.email }
@@ -92,6 +124,20 @@ export const UsersForm = ({ user, token }: Props) => {
                     value={ values.role }
                   />
                 </div>
+                {
+                  userRole === Role.OWNER && (
+                    <div className="col-form-6">
+                      <TextField
+                        options={branchOptions}
+                        asSelect
+                        label="Sucursal"
+                        name="branchId"
+                        errors={errors.branchId}
+                        touched={touched.branchId}
+                      />
+                    </div>
+                  )
+                }
                 <div className="col-form-6">
                   <TextField
                     label='Contraseña'

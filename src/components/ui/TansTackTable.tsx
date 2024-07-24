@@ -1,5 +1,4 @@
 'use client'
-import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useReactTable,
   getCoreRowModel,
   flexRender,
@@ -12,8 +11,8 @@ import { useReactTable,
 import { useState } from "react";
 
 type Props = {
-  data: any
-  columns: ColumnDef< any >[]
+  data: any[]
+  columns: ColumnDef<any>[]
 }
 
 export const TansTackTable = ({ data, columns }: Props) => {
@@ -57,8 +56,6 @@ export const TansTackTable = ({ data, columns }: Props) => {
   })
 
   const pages = Array.from({ length: table.getPageCount() }, ( _, i ) => i + 1 )
-
-  const [ listRef ] = useAutoAnimate()
 
   return (
     <div className="table__wrapper">

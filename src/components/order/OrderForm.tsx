@@ -46,8 +46,8 @@ export const OrderForm = () => {
 
     const result = await addOrder( orderData )
 
-    if( !result.order.success ) {
-      result.order.errors.forEach(( issue: any ) => {
+    if( !result.success ) {
+      result.errors.forEach(( issue: any ) => {
         toast.error( issue )
       })
       return

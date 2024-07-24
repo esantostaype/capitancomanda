@@ -2,7 +2,7 @@
 import { useRef, useState, MouseEvent, useEffect } from 'react';
 import { Comanda } from './Comanda';
 import styles from './ComandaSlider.module.css';
-import { OrderWithProducts } from '@/interfaces';
+import { OrderStatus, OrderWithProducts } from '@/interfaces';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 type Props = {
@@ -64,7 +64,7 @@ export default function ComandaSlider({ orders }: Props) {
     >
       {
         orders.map((order) => (
-          <Comanda key={order.id} order={order} status='in-preparation' textButton='Preparar' className='received' />
+          <Comanda key={order.id} order={order} status={ OrderStatus.IN_PREPARATION } textButton='Preparar' className='received' />
         ))
       }
     </ul>

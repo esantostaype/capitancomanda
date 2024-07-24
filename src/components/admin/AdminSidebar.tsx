@@ -15,6 +15,11 @@ const navItems = [
     iconName: 'dashboard'
   },
   {
+    label: 'Sucursales',
+    path: '/admin/branches',
+    iconName: 'note-sticky'
+  },
+  {
     label: 'Usuarios',
     path: '/admin/users',
     iconName: 'user-pen'
@@ -59,7 +64,7 @@ export const AdminSidebar = ({  }: Props ) => {
   return (
     <aside className={ styles.content }>
       <div className={ styles.logo }>
-        <Image src="/images/logo.svg" width="40" height="40" alt="Capitán Comanda" />
+        <Image src="/images/logo.svg" width="48" height="48" alt="Capitán Comanda" />
         <h2>Capitán Picante</h2>
       </div>
       <nav className={ styles.nav }>

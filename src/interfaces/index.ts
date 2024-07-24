@@ -80,6 +80,7 @@ export interface User {
 }
 
 export interface Order {
+  user: any;
   id: number
   total: number
   table: string
@@ -109,13 +110,14 @@ export interface Product {
   ingredients: []
   categoryId: string
   category: Category
-  branchId: string
-  branch: Branch
+  userId: string
+  user: User
 }
 
 export interface Branch {
   id: string
   name: string
+  users: User[]
   address?: string
   phoneNumber?: string
   restaurantId: string

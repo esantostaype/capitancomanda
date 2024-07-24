@@ -2,10 +2,9 @@
 import { Formik, Form, FormikHelpers, FieldArray, Field } from 'formik'
 import { Button, Spinner, TextField, ImageUpload, Modal } from '@/components'
 import { toast } from 'react-toastify'
-import { Product } from '@/interfaces'
+import { Category, Product } from '@/interfaces'
 import { addProduct, editProduct } from '@/actions/product-actions'
 import { useUiStore } from '@/store/ui-store'
-import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { ProductSchema } from '@/schema'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
@@ -16,29 +15,24 @@ interface FormValues {
   description: string
   price: number | null
   image: string | null
-  categoryId: string | null
+  categoryId: string
   variants: Array<{
     name: string
     hasPrice: boolean
-    options: Array<{ name: string; price?: number | null }>
+    options: Array<{ name: string; price?: number }>
   }>
   ingredients: Array<{ name: string; quantity: number }>
-}
-
-type Category = {
-  id: string,
-  name: string
 }
 
 type Props = {
   product?: Product
   categories: Category[]
   token?: string
+  branchId?: string
 }
 
-export const ProductsForm = ({ product, categories, token }: Props) => {
+export const ProductsForm = ({ product, categories, token, branchId }: Props) => {
 
-  const router = useRouter()
   const [ newImage, setNewImage] = useState<string | null>(null)
   const [ deleteImage, setDeleteImage ] = useState<boolean>(false)
   const [ tabIndex, setTabIndex ] = useState(0)
@@ -151,6 +145,7 @@ export const ProductsForm = ({ product, categories, token }: Props) => {
                         setDeleteImage={ setDeleteImage }
                         image={ product?.image || '' }
                         altImage={ product?.name || '' }
+                        disabled={ product?.user.branchId !== branchId }
                       />
                     </div>
                     <div className="col-form-9">
@@ -163,6 +158,7 @@ export const ProductsForm = ({ product, categories, token }: Props) => {
                           errors={errors.name}
                           touched={touched.name}
                           value={values.name}
+                          disabled={ product?.user.branchId !== branchId }
                         />
                       </div>
                       <div className="form__item">
@@ -173,6 +169,7 @@ export const ProductsForm = ({ product, categories, token }: Props) => {
                           name="categoryId"
                           errors={errors.categoryId}
                           touched={touched.categoryId}
+                          disabled={ product?.user.branchId !== branchId }
                         />
                       </div>
                       <div className="form__item fi12">
@@ -184,6 +181,7 @@ export const ProductsForm = ({ product, categories, token }: Props) => {
                           errors={errors.description}
                           touched={touched.description}
                           value={values.description}
+                          disabled={ product?.user.branchId !== branchId }
                         />
                       </div>
                       <div className="form__item fi4">
@@ -195,6 +193,7 @@ export const ProductsForm = ({ product, categories, token }: Props) => {
                           errors={errors.price}
                           touched={touched.price}
                           value={values.price}
+                          disabled={ product?.user.branchId !== branchId }
                           price
                         />
                       </div>
@@ -206,13 +205,16 @@ export const ProductsForm = ({ product, categories, token }: Props) => {
                     {({ remove, push }) => (
                       <>
                         <div className='form__options__header'>
-                          <Button
-                            text="Agregar Variación"
-                            ghost
-                            size='small'
-                            iconName='plus-small'
-                            onClick={ ()=> openModal() }
-                          />
+                          {
+                            product?.user.branchId === branchId && 
+                            <Button
+                              text="Agregar Variación"
+                              ghost
+                              size='small'
+                              iconName='plus-small'
+                              onClick={ ()=> openModal() }
+                            />
+                          }
                           {
                             values.variants.length === 0 && (
                               <div className='form__options__null'>
@@ -229,12 +231,12 @@ export const ProductsForm = ({ product, categories, token }: Props) => {
                                 <h3 className="confirm__title">¿La Variación tendrá Precio?</h3>
                                 <p>Si una variación tiene un precio asignado, ese será el nuevo precio del producto.</p>
                                 <div className="confirm__buttons">
-                                <Button text='Sí' size='small' onClick={() => {
+                                <Button text='Sí' onClick={() => {
                                     push({ name: '', hasPrice: true, options: [{ name: '', price: null }] });
                                     setNewVariantIndex(values.variants.length);
                                     closeModal();
                                   }} />
-                                  <Button text='No' size='small' onClick={() => {
+                                  <Button text='No' onClick={() => {
                                     push({ name: '', hasPrice: false, options: [{ name: '' }] });
                                     setNewVariantIndex(values.variants.length);
                                     closeModal();
@@ -300,6 +302,7 @@ export const ProductsForm = ({ product, categories, token }: Props) => {
                                                     iconName='trash'
                                                     size='small'
                                                     ghost  onClick={() => removeOption(optIndex)}
+                                                    disabled={ product?.user.branchId !== branchId }
                                                   />
                                                 </div> ) : (
                                                 <div style={{ width: '40px' }}>
@@ -316,6 +319,7 @@ export const ProductsForm = ({ product, categories, token }: Props) => {
                                                   mode='withoutBg'
                                                   size='small'
                                                   iconName='plus-small' onClick={() => pushOption({ name: '', price: null })}
+                                                  disabled={ product?.user.branchId !== branchId }
                                                 />
                                               ) : (
                                                 <Button
@@ -323,6 +327,7 @@ export const ProductsForm = ({ product, categories, token }: Props) => {
                                                   mode='withoutBg'
                                                   size='small'
                                                   iconName='plus-small' onClick={() => pushOption({ name: '' })}
+                                                  disabled={ product?.user.branchId !== branchId }
                                                 />
                                               )
                                             }
@@ -346,16 +351,19 @@ export const ProductsForm = ({ product, categories, token }: Props) => {
                     {({ remove, push }) => (
                       <>
                       <div className='form__options__header'>
-                        <Button
-                          text="Agregar Ingrediente"
-                          ghost
-                          size='small'
-                          iconName='plus-small'
-                          onClick={() => {
-                            push({ name: '', quantity: null })
-                            setNewIngredientIndex(values.ingredients.length)
-                          }}
-                        />
+                        {
+                          product?.user.branchId === branchId && 
+                          <Button
+                            text="Agregar Ingrediente"
+                            ghost
+                            size='small'
+                            iconName='plus-small'
+                            onClick={() => {
+                              push({ name: '', quantity: null })
+                              setNewIngredientIndex(values.ingredients.length)
+                            }}
+                          />
+                        }
                         
                         {
                           values.ingredients.length === 0 && (
@@ -409,6 +417,7 @@ export const ProductsForm = ({ product, categories, token }: Props) => {
                                         ghost
                                         onClick={() => remove(index)}
                                         size='small'
+                                        disabled={ product?.user.branchId !== branchId }
                                       />
                                     </div>
                                   </td>
@@ -427,7 +436,10 @@ export const ProductsForm = ({ product, categories, token }: Props) => {
             </div>
             <div className='block__footer'>
               <Button text="Cancelar" size="large" onClick={ ()=> closeModalPage( true ) }/>
-              <Button mode="primary" text={ product ? 'Guardar Producto' : 'Crear Producto' } size="large" submit />
+              {
+                product?.user.branchId === branchId &&
+                <Button mode="primary" text={ product ? 'Guardar Producto' : 'Crear Producto' } size="large" submit />
+              }
             </div>
           </Form>
           </>

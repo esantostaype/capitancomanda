@@ -14,8 +14,6 @@
 
 .button:hover,
 .button.active{
-  background-color: rgb(var(--border));
-  color: rgb(var(--foreground));
 }
 
 .iconOnly:hover,
@@ -53,8 +51,7 @@
 }
 
 .success{
-  background-color: rgba(var(--primary), 0.1);
-  color: rgb(var(--primary));
+  background-color: rgba(var(--success), 0.1);
 }
 
 .success.ghost {
@@ -63,8 +60,7 @@
 }
 
 .info{
-  background-color: rgba(var(--primary), 0.1);
-  color: rgb(var(--primary));
+  background-color: rgb(var(--info));
 }
 
 .info.ghost {
@@ -73,8 +69,7 @@
 }
 
 .warning{
-  background-color: rgba(var(--primary), 0.1);
-  color: rgb(var(--primary));
+  background-color: rgb(var(--warning));
 }
 
 .warning.ghost {
@@ -83,8 +78,7 @@
 }
 
 .error{
-  background-color: rgba(var(--error), 0.1);
-  color: rgb(var(--error));
+  background-color: rgb(var(--error));
 }
 
 .error.ghost {

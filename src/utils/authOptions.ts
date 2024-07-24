@@ -55,9 +55,11 @@ export const authOptions: NextAuthOptions = {
         const data = await response.json()
 
         if ( data.user ){
-          if ( data.user.isVerified === true ) {
+          if ( data.user.status === 'ACTIVE' ) {
             user.token = data.token
             user.role = data.user.role
+            user.id = data.user.id
+            user.branchId = data.user.branchId
           }
         }
 
@@ -75,11 +77,14 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       session.user = token as any
       session.user.role = token.role as any
+      session.user.id = token.id as any
+      session.user.branchId = token.branchId as any
       return session
     },
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role
+        token.id = user.id
       }
       return { ...token, ...user }
     }

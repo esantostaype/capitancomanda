@@ -1,4 +1,4 @@
-import { OrderWithProducts } from '@/interfaces'
+import { OrderStatus, OrderWithProducts } from '@/interfaces'
 import { getSpicyLevelText } from '@/utils'
 import styles from './Comanda.module.css'
 import moment from "moment"
@@ -18,7 +18,7 @@ export const Comanda = ({ order, className, status, textButton }: Props) => {
   const timeAgo = moment( order.date ).fromNow();
   const isLate = moment().diff(moment( order.date ), 'minutes' ) > 30;
 
-  const combinedClassName = `${ styles.comanda} ${className || '' } ${ isLate && order.status != "ready" ? styles.isLate : '' }`;
+  const combinedClassName = `${ styles.comanda} ${className || '' } ${ isLate && order.status != OrderStatus.READY ? styles.isLate : '' }`;
 
   return (
     <li  className={ combinedClassName.trim() }>
@@ -44,7 +44,7 @@ export const Comanda = ({ order, className, status, textButton }: Props) => {
       </ul>
       <div className={ styles.footer }>
         <ComandaButton text={ textButton } status={ status } orderId={ order.id } />
-        { isLate && order.status !== "ready" && ( <div className={ styles.isLate }>Este pedido está tarde</div> ) }
+        { isLate && order.status !== OrderStatus.READY && ( <div className={ styles.isLate }>Este pedido está tarde</div> ) }
       </div>
     </li>
   )

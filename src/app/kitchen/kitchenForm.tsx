@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import { Comanda, ToastNotification } from '@/components'
 import ComandaSlider from '@/components/kitchen/ComandaSlider'
 import Image from 'next/image'
-import { OrderWithProducts } from '@/interfaces'
+import { OrderStatus, OrderWithProducts } from '@/interfaces'
 import { apiUrl } from '@/utils'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
@@ -13,8 +13,8 @@ type Props = {
 
 export default function KitchenForm({ token }: Props) {
   
-  const receivedUrl = `${ apiUrl }/orders/received`
-  const preparationUrl = `${ apiUrl }/orders/in-preparation`
+  const receivedUrl = `${ apiUrl }/orders/RECEIVED`
+  const preparationUrl = `${ apiUrl }/orders/IN_PREPARATION`
 
   const fetcherReceived = () => fetch( receivedUrl,
     {
@@ -68,7 +68,7 @@ export default function KitchenForm({ token }: Props) {
                 <ul className='kitchen__list' ref={ listRef }>
                 {
                   preparationData.map(( order ) => (
-                    <Comanda key={ order.id } order={ order } status='ready' textButton='Listo' className='inPreparation' />
+                    <Comanda key={ order.id } order={ order } status={ OrderStatus.READY } textButton='Listo' className='inPreparation' />
                   ))
                 }
                 </ul>

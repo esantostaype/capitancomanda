@@ -7,10 +7,11 @@ export default async function ModalUserIdPage({ params } : { params: { id : numb
 
   const { token } = await setSession()
   const user = await fetchData({ url: `/users/${ params.id }`, token: token })
+  const branches = await fetchData({ url: `/branches`, token: token })
   
   return (
-    <ModalPage title={ user.name } backText='Regresar a la lista de Productos' withBackRoute>
-      <UsersForm user={ user } token={ token }/>
+    <ModalPage title={ user.fullName } backText='Regresar a la lista de Productos' withBackRoute>
+      <UsersForm user={ user } token={ token } branches={ branches }/>
     </ModalPage>
   )
 }

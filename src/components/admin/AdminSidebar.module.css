@@ -18,7 +18,8 @@
 .logo{
   align-items: center;
   display: flex;
-  font-size: 1.125em;
+  font-size: 1.5em;
+  line-height: 1.1em;
   font-weight: 600;
   gap: 8px;
   padding: 24px;

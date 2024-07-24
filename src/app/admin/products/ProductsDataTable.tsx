@@ -1,22 +1,23 @@
 'use client'
 
 import Image from 'next/image'
+import { useSearchParams } from 'next/navigation'
 import { Product, Role } from '@/interfaces'
-import { formatCurrency } from '@/utils'
+import { fetchData, formatCurrency } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { TansTackTable, TansTackTableActions } from '@/components'
-import { useSession } from 'next-auth/react'
 import { deleteProduct } from '@/actions/product-actions'
+import { useEffect, useState } from 'react'
+import { TableSkeleton } from './ProductsTableSkeleton'
 
 type Props = {
-  data: any
   token?: string
+  role?: string
+  branchId?: string
+  products: Product[]
 }
 
-export const ProductsDataTable = ({ data, token }: Props ) => {
-  
-  const { data: session } = useSession()
-  const role = session?.user.role
+export const ProductsDataTable = ({ products, token, role, branchId }: Props ) => {
 
   const handleDeleteProduct = async ( id: string, token: string ) => {
     await deleteProduct( id, token )
@@ -55,35 +56,45 @@ export const ProductsDataTable = ({ data, token }: Props ) => {
       )
     },
     {
+      header: 'Creador',
+      accessorKey: 'user.fullName',
+      id: 'user.fullName',
+      cell: ({ row }) => (
+        <div className="table__flex">
+          { row.original.user.fullName }
+        </div>
+      )
+    },
+    {
       header: '',
       accessorKey: 'id',
       id: 'idActions',
       enableSorting: false,
-      cell: ( props: any ) => (
+      cell: ({ row }) => (
         <TansTackTableActions
-          link={`/admin/products/${ props.getValue() }`}
-          id={ props.getValue() }
+          link={`/admin/products/${ row.original.id }`}
+          id={ row.original.id }
           token={ token! }
           onDelete={ handleDeleteProduct }
+          branchId={ branchId }
+          dataId={ row.original.user.branchId }
         />
       )
     }
   ]
 
   if ( role === "OWNER" ) {
-    columns.splice( 1, 0, {
+    columns.splice( 3, 0, {
       header: 'Sucursal',
       accessorKey: 'branch.name',
       id: 'branch.name',
       cell: ({ row }) => (
         <div className="table__flex">
-          { row.original.branch.name }
+          { row.original.user.branch.name }
         </div>
       )
     })
   }
 
-  return (
-    <TansTackTable data={ data } columns={ columns } />
-  )
+  return <TansTackTable data={ products } columns={ columns } />
 }

@@ -11,6 +11,7 @@ interface ImageUploadProps {
   setDeleteImage: (deleteImage: boolean) => void
   image: string
   altImage: string
+  disabled?: boolean
 }
 
 export const ImageUpload: React.FC<ImageUploadProps> = ({
@@ -19,7 +20,8 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   setNewImage,
   setDeleteImage,
   image,
-  altImage
+  altImage,
+  disabled = false
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [ imgUploading, setImgUploading ] = useState<boolean>( false )
@@ -50,7 +52,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   }
 
   return (
-    <div className="upload-image">
+    <div className={`upload-image ${ disabled && "disabled" }`}>
       { deleteImage ? (
         <>
           <div className={`uploading ${imgUploading ? 'active' : ''}`}>
@@ -65,7 +67,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
           <div className={`uploading ${imgUploading ? 'active' : ''}`}>
             <Spinner />
           </div>
-          <Image src={ newImage } width={ 160 } height={ 160 } alt="Nueva Imagen" />
+          <Image src={ newImage } width={ 320 } height={ 320 } alt="Nueva Imagen" />
         </>
       ) : (
         <>
@@ -77,7 +79,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
               <div className={`uploading ${imgUploading ? 'active' : ''}`}>
                 <Spinner />
               </div>
-              <Image src={ image } width={ 160 } height={ 160 } alt={ altImage } />
+              <Image src={ image } width={ 320 } height={ 320 } alt={ altImage } />
             </>
           ) : (
             <>

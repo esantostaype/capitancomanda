@@ -16,11 +16,10 @@
 }
 
 .active .nav__link{
-  background-color: rgb(var(--primary));
-  color: rgb(var(--background));
   opacity: 1;
 }
 
-.active .nav__link:hover{
-  color: rgb(var(--background));
+.nav__link img{
+  border-radius: 56px;
+  overflow: hidden;
 }
