@@ -1,11 +1,11 @@
 import Image from 'next/image'
-import { OrderItem } from '@/interfaces'
+import { Color, IconButtonShape, OrderItem, Size, Variant } from '@/interfaces'
 
 import { formatCurrency } from '@/utils'
 import { Counter } from '../ui/Counter'
 import { useOrderStore } from '@/store/order-store'
 
-import { Button } from '@/components'
+import { Button, IconButton } from '@/components'
 import styles from './OrderSummaryItem.module.css'
 
 type Props = {
@@ -30,11 +30,10 @@ export const OrderSummaryItem = ({ item }: Props ) => {
       </div>
       <div className={ styles.product__quantity }>
         <Counter item={ item } currentValue={ item.quantity } />
-        <Button
-          mode='error'
+        <IconButton
+          color={ Color.ERROR }
           iconName='trash'
-          size='small'
-          ghost 
+          variant={ Variant.GHOST } 
           onClick={() => removeItem( item.id )}
         />
       </div> 

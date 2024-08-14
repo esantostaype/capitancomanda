@@ -11,6 +11,7 @@ declare module "next-auth" {
 
   interface Session {
     user: {
+      fullName: any
       branchId: string
       id: string
       email: string

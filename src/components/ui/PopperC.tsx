@@ -2,8 +2,9 @@
 import Popper, { PopperPlacementType } from '@mui/material/Popper'
 import Grow from '@mui/material/Grow'
 import { useState, useEffect, useCallback } from 'react'
-import { Button } from '@/components'
+import { Button, IconButton } from '@/components'
 import styles from './PopperC.module.css'
+import { Size } from '@/interfaces'
 
 interface PopperProps {
   children: React.ReactNode
@@ -12,9 +13,9 @@ interface PopperProps {
 }
 
 export const PopperC = ({ children, position, transformOrigin }: PopperProps) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
-  const [open, setOpen] = useState(false)
-  const [placement, setPlacement] = useState<PopperPlacementType>()
+  const [ anchorEl, setAnchorEl ] = useState<HTMLButtonElement | null>(null)
+  const [ open, setOpen ] = useState(false)
+  const [ placement, setPlacement ] = useState<PopperPlacementType>()
 
   const handleClick = ( newPlacement: PopperPlacementType ) => ( event: React.MouseEvent<HTMLButtonElement> ) => {
     setAnchorEl( event.currentTarget )
@@ -59,10 +60,9 @@ export const PopperC = ({ children, position, transformOrigin }: PopperProps) =>
 
   return (
     <>
-      <Button
+      <IconButton
         iconName="menu-dots-vertical"
-        size="small"
-        mode="withoutBg"
+        size={ Size.SMALL }
         onClick={ handleClick( position ? position : 'bottom-start') }
         active={ open }
       />
@@ -74,7 +74,7 @@ export const PopperC = ({ children, position, transformOrigin }: PopperProps) =>
       >
         {({ TransitionProps }) => (
           <Grow { ...TransitionProps } style={{ transformOrigin: transformOrigin ? transformOrigin : 'top left' }} timeout={ 300 }>
-            <div className={ styles.popper }>
+            <div className="rounded-md px-4 py-3 bg-gray50">
               { children }
             </div>
           </Grow>

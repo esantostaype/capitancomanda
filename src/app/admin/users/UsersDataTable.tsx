@@ -2,7 +2,7 @@
 
 import { Role, User, roleTranslations, userStatusTranslations } from "@/interfaces"
 import { ColumnDef } from "@tanstack/react-table"
-import { Button, TansTackTable, TansTackTableActions } from "@/components"
+import { TanstackTable, TableActions, AdminStatus } from "@/components"
 import { deleteUser } from "@/actions/user-actions"
 import { useSession } from "next-auth/react"
 
@@ -19,6 +19,8 @@ export const UsersDataTable = ({ data, token }: Props ) => {
   const handleDeleteProduct = async ( id: string, token: string ) => {
     await deleteUser( id, token )
   }
+
+  const isOwner = role === Role.OWNER
 
   const columns: ColumnDef<User>[] = [
     {
@@ -42,9 +44,7 @@ export const UsersDataTable = ({ data, token }: Props ) => {
       accessorKey: 'status',
       id: 'status',
       cell: ({ row }) => (
-        <span className={`table__status ${ row.original.status }`}>
-          { userStatusTranslations[row.original.status] }
-        </span>
+        <AdminStatus mode={ row.original.status } label={ userStatusTranslations[ row.original.status ] } />
       )
     },
     {
@@ -53,7 +53,7 @@ export const UsersDataTable = ({ data, token }: Props ) => {
       id: 'idActions',
       enableSorting: false,
       cell: ( props: any ) => (
-        <TansTackTableActions
+        <TableActions
           link={`/admin/users/${ props.getValue() }`}
           id={ props.getValue() }
           token={ token! }
@@ -63,20 +63,20 @@ export const UsersDataTable = ({ data, token }: Props ) => {
     }
   ]
 
-  if ( role === Role.OWNER ) {
+  if ( isOwner ) {
     columns.splice( 4, 0, {
       header: 'Sucursal',
       accessorKey: 'branch.name',
       id: 'branch.name',
       cell: ({ row }) => (
         <div className="table__flex">
-          { row.original.branch.name }
+          { row.original.branch ? row.original.branch.name : 'Sin Sucursal' }
         </div>
       )
     })
   }
 
   return (
-    <TansTackTable data={ data } columns={ columns } />
+    <TanstackTable data={ data } columns={ columns } />
   )
 }

@@ -6,6 +6,7 @@ import { formatCurrency } from '@/utils'
 import styles from './OrderSummary.module.css'
 import { Button } from '@/components'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { Color, Size, Variant } from '@/interfaces'
 
 export const OrderSummary = () => {
   
@@ -32,7 +33,7 @@ export const OrderSummary = () => {
   const [ listRef ] = useAutoAnimate()
 
   return (
-    <div className={ styles.summary }>
+    <div className="relative bg-surface border-l border-l-gray50 flex-[0_0_20rem]">
       { order.length === 0
         ? (
         <div className={ `${ styles.summary__empty }` }>
@@ -47,7 +48,7 @@ export const OrderSummary = () => {
         <div className={ styles.header }>
           <div className={ styles.header__top }>
             <h3 className={ styles.title }>Orden</h3>
-            <Button text='Cancelar' mode='error' iconName='ban' size='small' onClick={ () => clearOrder() } />
+            <Button text='Cancelar' color={ Color.ERROR } variant={ Variant.GHOST } iconName='ban' size={ Size.SMALL } onClick={ () => clearOrder() } />
           </div>
           <div className={ styles.header__content }>
             <div className={ styles.header__item }>Item</div>

@@ -1,6 +1,6 @@
 import { Modal } from '@/components'
 import { fetchData } from '@/utils'
-import { CategoriesForm } from '@/app/admin/categories/CategoriesForm'
+import { CategoryForm } from '@/app/admin/categories/CategoryForm'
 import { setSession } from '@/utils/session'
 
 export default async function ModalCategoryIdPage({ params } : { params: { id : number } }) {
@@ -9,7 +9,7 @@ export default async function ModalCategoryIdPage({ params } : { params: { id : 
   
   return (
     <Modal title={ category.name }  withBackRoute={ true }>
-      <CategoriesForm category={ category } token={ token } withBackRoute={ true }/>
+      <CategoryForm category={ category } token={ token } />
     </Modal>
   );
 }

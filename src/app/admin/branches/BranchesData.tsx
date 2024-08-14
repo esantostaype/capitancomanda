@@ -1,11 +1,8 @@
 'use client'
-import { Button, PopperC } from '@/components'
-import Image from 'next/image';
-import Link from 'next/link'
+import { AdminCard, AdminGrid } from '@/components'
 import { useUiStore } from '@/store/ui-store'
-import { Branch } from '@/interfaces';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { deleteBranch } from '@/actions/branch-actions';
+import { Branch } from '@/interfaces'
+import { deleteBranch } from '@/actions/branch-actions'
 
 type Props = {
   data: Branch[]
@@ -15,40 +12,41 @@ type Props = {
 export default function BranchesData({ data, token }: Props ) {
 
   const { openModal } = useUiStore()
-  const [ listRef ] = useAutoAnimate()
 
   const handleDeleteBranch = async ( id: string, token: string ) => {
     await deleteBranch( id, token )
   }
   
   return (
-    <div className="row" ref={ listRef }>
+    <AdminGrid>
       { data.map( branch => (
-        <div key={ branch.id } className="col-2">
-          <div className="card card-data">
-            <div className="card__actions">
-              <PopperC>
-                <ul className='card__actions__list'>
-                  <li onClick={ () => openModal() }><Link href={ `/admin/branches/${ branch.id }` }>Editar</Link></li>
-                  <li><Button text='Eliminar' mode='withoutBg' onClick={ () => handleDeleteBranch( branch.id, token ) } /></li>
-                </ul>
-              </PopperC>
-            </div>
-            {/* <div className="card__image">
-              {
-                branch.image ? (
-                  <Image src={ branch.image } alt={ branch.name } width={ 128 } height={ 128 } />
-                ) : (
-                  <i className="fi fi-tr-image-slash"></i>
-                )
-              }
-            </div> */}
-            <h2 className="card-data__title">{ branch.name }</h2>
-            <span className="card-data__count">
-              { branch.users.length } Usuario{ branch.users.length !== 1 && "s" }</span>
-          </div>
-        </div>
+        <AdminCard
+          key={ branch.id }
+          hasActions
+          hasImage
+          image={ branch.image }
+          alt={ branch.name }
+          linkEdit={ `/admin/branches/${ branch.id }` }
+          onClickEdit={ () => openModal() }
+          onClickDelete={ () => handleDeleteBranch( branch.id, token ) }
+          hasFooter
+          footer={            
+            <>
+            <div className="flex items-start leading-4 text-xs gap-2">
+                <i className="fi fi-tr-store-alt text-base -mt-[2px]"></i>
+                { branch.address || "Sin Dirección" }
+              </div>
+              <div className="flex items-start leading-4 text-xs gap-2">
+                <i className="fi fi-tr-circle-user text-base -mt-[2px]"></i>
+                { branch.phoneNumber || "Sin Teléfono" }
+              </div>
+            </>
+          }
+        >
+            <h2 className="text-lg font-semibold">{ branch.name }</h2>
+            <p className="text-gray500">{ branch.users.length } Usuario{ branch.users.length !== 1 && "s" }</p>
+        </AdminCard>
       )) }
-    </div> 
+    </AdminGrid> 
   )
 }

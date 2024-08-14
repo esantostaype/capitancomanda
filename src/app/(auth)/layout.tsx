@@ -5,11 +5,11 @@ export default function AuthLayout({ children }: Readonly<{ children: React.Reac
   return (
     <>
     <section className="auth">
-      <div className="auth__logo">
-        <Image src='/images/capitan-picante-dark.svg' width='228' height='40' alt="Restify" />
+      <div className="left-8 top-8 absolute">
+        <Image src='/images/logo-restify.svg' width='40' height='40' alt="Restify" />
       </div>
-      <section className="auth__content">
-        <div className="auth__main-content">
+      <section className="min-h-screen w-full flex items-center justify-center">
+        <div className="flex-1 p-6 max-w-md">
           { children }
         </div>
       </section>

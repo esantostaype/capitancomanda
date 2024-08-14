@@ -1,14 +1,16 @@
 'use client'
-import { ButtonSC } from "@/components"
+import { Button } from "@/components"
+import { Color, Size, Variant } from "@/interfaces"
 import { useUiStore } from "@/store/ui-store"
 
 type Props = {
   link: string
+  text?: string
 }
 
-export const OpenModalButton = ({ link }: Props ) => {
+export const OpenModalButton = ({ link, text }: Props ) => {
   const { openModal } = useUiStore()
   return (
-    <ButtonSC href={ link } onClick={ () => openModal() } text='Crear Nuevo' mode='primary' size='small' />
+    <Button href={ link } onClick={ () => openModal() } text={ text || "Crear Nuevo" } color={ Color.ACCENT } variant={Variant.CONTAINED } size={ Size.SMALL } />
   )
 }

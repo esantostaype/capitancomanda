@@ -1,27 +1,35 @@
 'use client'
 
-import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
 import { Product, Role } from '@/interfaces'
-import { fetchData, formatCurrency } from '@/utils'
+import { formatCurrency } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
-import { TansTackTable, TansTackTableActions } from '@/components'
+import { TanstackTable, TableActions, TableFlex, TableImage } from '@/components'
 import { deleteProduct } from '@/actions/product-actions'
 import { useEffect, useState } from 'react'
-import { TableSkeleton } from './ProductsTableSkeleton'
+import { ProductsTableSkeleton } from './ProductsTableSkeleton'
 
 type Props = {
   token?: string
   role?: string
   branchId?: string
-  products: Product[]
+  initialProducts: Product[]
 }
 
-export const ProductsDataTable = ({ products, token, role, branchId }: Props ) => {
+export const ProductsDataTable = ({ token, role, branchId, initialProducts }: Props ) => {
+  
+  const [ products, setProducts ] = useState<Product[]>( initialProducts )
+  const [ loading, setLoading ] = useState(true)
 
-  const handleDeleteProduct = async ( id: string, token: string ) => {
-    await deleteProduct( id, token )
+  useEffect(() => {
+    setProducts( initialProducts )
+    setLoading( false )
+  }, [ initialProducts ])
+
+  const handleDeleteProduct = async (id: string) => {
+    await deleteProduct( id, token! )
   }
+
+  const isOwner = role === Role.OWNER
 
   const columns: ColumnDef<Product>[] = [
     {
@@ -29,14 +37,10 @@ export const ProductsDataTable = ({ products, token, role, branchId }: Props ) =
       accessorKey: 'name',
       id: 'name',
       cell: ({ row }) => (
-        <div className="table__flex">
-          { row.original.image ? (
-            <Image src={ row.original.image } alt={ row.original.name } width={ 40 } height={ 40 } className="table__image" />
-          ) : (
-            <div className='table__image'><i className="fi fi-tr-image-slash"></i></div>
-          )}
+        <TableFlex>
+          <TableImage src={ row.original.image } alt={ row.original.name }/>
           <span>{ row.original.name }</span>
-        </div>
+        </TableFlex>
       )
     },
     {
@@ -60,9 +64,7 @@ export const ProductsDataTable = ({ products, token, role, branchId }: Props ) =
       accessorKey: 'user.fullName',
       id: 'user.fullName',
       cell: ({ row }) => (
-        <div className="table__flex">
-          { row.original.user.fullName }
-        </div>
+        row.original.user.fullName
       )
     },
     {
@@ -71,7 +73,7 @@ export const ProductsDataTable = ({ products, token, role, branchId }: Props ) =
       id: 'idActions',
       enableSorting: false,
       cell: ({ row }) => (
-        <TansTackTableActions
+        <TableActions
           link={`/admin/products/${ row.original.id }`}
           id={ row.original.id }
           token={ token! }
@@ -83,18 +85,24 @@ export const ProductsDataTable = ({ products, token, role, branchId }: Props ) =
     }
   ]
 
-  if ( role === "OWNER" ) {
+  if ( isOwner ) {
     columns.splice( 3, 0, {
       header: 'Sucursal',
       accessorKey: 'branch.name',
       id: 'branch.name',
       cell: ({ row }) => (
-        <div className="table__flex">
-          { row.original.user.branch.name }
-        </div>
+        row.original.user.branch.name
       )
     })
   }
 
-  return <TansTackTable data={ products } columns={ columns } />
+  return (
+    <>
+      { loading && role ? (
+        <ProductsTableSkeleton isOwner={ isOwner } />
+      ) : (
+        <TanstackTable data={ products } columns={ columns } placeholder='Buscar Producto' />
+      )}
+    </>
+  )
 }

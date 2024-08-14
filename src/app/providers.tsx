@@ -7,7 +7,7 @@ import { darkTheme } from '@/theme/darkTheme'
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-    <ProgressBar color="rgb(var(--primary))" options={{ showSpinner: false }}/>
+    <ProgressBar color="var(--accent)" options={{ showSpinner: false }}/>
     <SessionProvider>
       <ThemeProvider theme={ darkTheme }>
         { children }

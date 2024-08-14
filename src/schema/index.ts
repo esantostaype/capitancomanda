@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import * as Yup from 'yup';
-import { Role } from '@/interfaces';
+import { Role, User } from '@/interfaces';
 
 function isValidTable( value: string ): boolean {
   const num = parseInt( value )
@@ -23,10 +23,43 @@ export const OrderSchema = z.object({
   }) )
 })
 
-export const UserSchema = Yup.object().shape({
-  email: Yup.string().email( 'Correo Electrónico no válido' ).required( 'El Correo Electrónico es requerido' ),
-	role: Yup.mixed<Role>().oneOf(Object.values(Role)).required()
-	
+export const getValidationSchema = ( user?: User, isOwner?: boolean ) => {
+  const baseSchema = {
+    email: Yup.string()
+      .email('Correo Electrónico no válido')
+      .required('El Correo Electrónico es requerido'),
+    role: Yup.mixed<Role>()
+      .oneOf(Object.values(Role))
+      .required('El Rol es requerido')
+  }
+
+  if (!user) {
+    return Yup.object().shape({
+      ...baseSchema,
+      password: Yup.string()
+        .min(6, 'La contraseña debe tener como mínimo 6 caracteres')
+        .required('La Contraseña es requerida'),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password')], 'Las Contraseñas deben coincidir')
+        .required('La confirmación de Contraseña es requerida')
+    })
+  }
+
+  if ( isOwner ) {
+    return Yup.object().shape({
+      ...baseSchema,
+      branchId: Yup.string().required('La Sucursal es requerida')
+    })
+  }
+
+  return Yup.object().shape( baseSchema )
+}
+
+export const BranchSchema = Yup.object().shape({
+  name: Yup.string()
+		.min( 2, 'El Nombre de la Sucursal debe tener al menos 2 caracteres' )
+		.max( 48, 'El Nombre de la Sucursal no debe ser mayor a 48 caracteres' )
+		.required( 'El Nombre de la Sucursal es requerido' ),
 })
 
 export const ProductSchema = Yup.object().shape({

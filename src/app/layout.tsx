@@ -1,25 +1,18 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import '@fontsource-variable/inter'
 import { Providers } from './providers';
 import { ToastNotification } from '@/components';
 import './globals.css'
 
-const inter = Inter({
-  weight: ['300', '400', '500', '600', '700', '800', '900'],
-  style: ['normal'],
-  subsets: ['latin'],
-  display: 'swap'
-})
-
 export const metadata: Metadata = {
-  title: 'Restify',
-  description: 'Restify es una innovadora aplicación de gestión de restaurantes diseñada para simplificar y optimizar cada aspecto de la administración de tu negocio. Con una interfaz intuitiva y herramientas potentes, Restify te ayuda a gestionar reservas, inventarios, personal y mucho más desde un solo lugar. Ideal para restauranteros modernos, Restify transforma la gestión diaria en una experiencia fluida y eficiente, permitiéndote concentrarte en lo que realmente importa: ofrecer una experiencia gastronómica excepcional a tus clientes. Simplifica, mejora y disfruta de una gestión sin complicaciones con Restify.'
+  title: 'Capitán Picante',
+  description: 'Capitán Picante es una innovadora aplicación de gestión de restaurantes diseñada para simplificar y optimizar cada aspecto de la administración de tu negocio. Con una interfaz intuitiva y herramientas potentes, Capitán Picante te ayuda a gestionar reservas, inventarios, personal y mucho más desde un solo lugar. Ideal para restauranteros modernos, Capitán Picante transforma la gestión diaria en una experiencia fluida y eficiente, permitiéndote concentrarte en lo que realmente importa: ofrecer una experiencia gastronómica excepcional a tus clientes. Simplifica, mejora y disfruta de una gestión sin complicaciones con Capitán Picante.'
 };
 
 export default function RootLayout({  children }: Readonly<{ children: React.ReactNode; }>) {
   return (
-    <html lang="es">
-      <body className={ inter.className } suppressHydrationWarning={ true }>
+    <html lang="es" className="dark">
+      <body suppressHydrationWarning={ true } className="bg-background text-foreground">
         <main className="app">
           <Providers>
           { children }

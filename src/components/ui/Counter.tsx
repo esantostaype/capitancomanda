@@ -2,7 +2,8 @@
 import { useMemo } from 'react'
 import styles from './Counter.module.css'
 import { useOrderStore } from '@/store/order-store'
-import { Button } from '@/components'
+import { IconButton } from '@/components'
+import { Color, IconButtonShape, Size, Variant } from '@/interfaces'
 
 interface Props {
 	item: any
@@ -19,21 +20,19 @@ export const Counter = ({ item, currentValue }: Props) => {
 	const disableDecrease = useMemo(() => item.quantity === MIN_ITEMS, [ item ])
 	return (
 		<div className={ styles.content }>
-			<Button
+			<IconButton
 				disabled={ disableDecrease }
-				mode='primary'
+				color={ Color.ACCENT }
 				iconName='minus-small'
-				size='small'
-				ghost 
+				variant={ Variant.GHOST } 
 				onClick={() => decreaseQuantity( item.id )}
 			/>
 			<span className={ styles.counter }>{ currentValue }</span>			
-			<Button
+			<IconButton
 				disabled={ disableIncrease }
-				mode='primary'
+				color={ Color.ACCENT }
 				iconName='plus-small'
-				size='small'
-				ghost 
+				variant={ Variant.GHOST } 
 				onClick={() => increaseQuantity( item.id )}
 			/>
 		</div>

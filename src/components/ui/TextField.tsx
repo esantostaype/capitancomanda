@@ -1,14 +1,8 @@
 'use client'
-import { useState, type FC, type ChangeEvent, useEffect, RefObject, Ref } from 'react'
-import { ErrorMessage, Field } from 'formik'
-import styles from './TextField.module.css'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { Role } from '@/interfaces'
 
-interface Select {
-	value: string | number | Role
-	label: string
-}
+import { useState, type FC, type ChangeEvent, useEffect, Ref } from 'react'
+import { ErrorMessage, Field } from 'formik'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 export interface TextFieldProps {
 	label?: string
@@ -17,112 +11,102 @@ export interface TextFieldProps {
 	name: string
 	placeholder?: string
 	asSelect?: boolean
-	options?: any
+	options?: { label: string; value: string }[]
 	errors?: string | undefined
 	touched?: boolean | undefined
 	value?: any
 	defaultValue?: string
-	innerRef?: Ref<any>;
+	innerRef?: Ref<any>
 	disabled?: boolean
-	price?: boolean
-	onChange?: ( e: ChangeEvent<any> ) => void
+	onChange?: (e: ChangeEvent<any>) => void
 }
 
 export const TextField: FC<TextFieldProps> = ({
-	label,
 	type,
 	typeField,
+	label,
+	touched,
 	name,
 	placeholder,
 	asSelect,
-	options,
+	options = [],
 	errors,
-	touched,
 	value,
 	innerRef,
 	disabled,
-	price,
-	onChange
+	onChange,
 }) => {
-
 	const [ isActive, setIsActive ] = useState( false )
 	const [ isFilled, setIsFilled ] = useState( false )
 
 	useEffect(() => {
-			setIsFilled( !!value )
-	}, [ value ])
+		setIsFilled(!!value)
+	}, [value])
 
-	const handleFieldFocus = () => {
-			setIsActive(true)
+	const handleFieldFocus = () => setIsActive( true )
+	const handleFieldBlur = () => setIsActive( false )
+	const handleFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setIsFilled(!!e.target.value)
+		if ( onChange ) onChange(e)
 	}
 
-	const handleFieldBlur = () => {
-			setIsActive(false)
-	}
+	const [listRef] = useAutoAnimate()
 
-	const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-			setIsFilled(!!e.target.value)
-			if ( onChange ) {
-					onChange( e )
-			}
-	}
+	const hasError = errors && touched
+	const labelClasses = `
+		absolute pointer-events-none px-2 left-[10px] z-20 leading-4 transition-all bg-surface
+		${ isActive && !hasError ? 'text-accent text-xs top-[-6px]' : ''}
+		${ isFilled && !isActive || ( asSelect && !isActive && !hasError ) ? 'bg-surface text-xs top-[-6px]' : ''}
+		${ hasError && !isActive && !asSelect ? 'text-error top-4' : ''}
+		${ hasError && ( isActive || asSelect ) ? 'text-error text-xs top-[-6px]' : isFilled || asSelect ? 'group-hover:text-accent' : ""}
+		${ !isActive && !isFilled && !hasError && 'top-4 text-gray500'}
+	`
 
-	const [ listRef ] = useAutoAnimate()
+	const inputClasses = `
+		transition-all border-2 px-4 py-3 outline-none w-full
+		${ isActive && !hasError ? 'placeholder:text-gray500 border-accent' : !hasError ? 'border-gray100' : ''}
+		${ hasError && !isActive ? 'placeholder:text-surface border-error' : hasError && isActive ? 'placeholder:text-gray500 border-error' : isActive ? 'placeholder:text-gray500 group-hover:border-accent' : 'placeholder:text-surface group-hover:border-accent'}
+	`
 
 	return (
-		<div            
-			className={
-				`${ styles.control }
-				${ isActive ? styles.isActive : '' }
-				${ asSelect ? styles.isSelect : '' }
-				${ isFilled ? styles.isFilled : '' }
-				${ disabled && 'disabled' }
-				${ price && styles.price }
-				${ typeField === 'file' ? styles.isFilled : '' }
-				${ value ? styles.isFilled : '' }
-				${ errors && touched ? ( styles.isError ) : ( touched && !errors ? styles.setValid : styles.isValid ) }`
-			}
+		<div
+			className={`relative transition-all w-full ${ disabled ? 'disabled' : '' } group `}
 			onFocus={ handleFieldFocus }
 			onBlur={ handleFieldBlur }
 			onChange={ handleFieldChange }
 		>
-			<label htmlFor={ name } className={ styles.label }>{ label }</label>
+			<label htmlFor={ name } className={ labelClasses }>
+				{ label }
+			</label>
 			{ asSelect ? (
 				<Field
-						as="select"
-						name={ name }
-						className={ styles.field }
-						autoComplete="off"
-						isClearable={true}
-						disabled={ disabled }
+					as="select"
+					name={ name }
+					className={`${ inputClasses } px-3`}
+					autoComplete="off"
+					innerRef={ innerRef }
+					disabled={ disabled }
 				>
-						{ options &&
-								options.map(( option: any ) => (
-										<option key={ option.value } value={ option.value }>
-												{ option.label }
-										</option>
-								))}
+					{ options.map( option => (
+						<option key={option.value} value={option.value}>
+							{ option.label }
+						</option>
+					))}
 				</Field>
-			) : typeField === 'file' ? (
-				<input type="file" name={ name } className={ styles.field } />
 			) : (
 				<Field
-						as={ typeField }
-						type={ type }
-						name={ name }
-						placeholder={ placeholder }
-						className={ styles.field }
-						autoComplete="off"
-						innerRef={ innerRef }
-						disabled={ disabled }
+					as={ typeField }
+					type={ type }
+					name={ name }
+					placeholder={ placeholder }
+					className={ inputClasses }
+					autoComplete="off"
+					innerRef={ innerRef }
+					disabled={ disabled }
 				/>
 			)}
-			<div ref={ listRef }>
-				<ErrorMessage
-					name={ name }
-					component="span"
-					className={ `${ styles.errors }` }
-				/>
+			<div ref={listRef}>
+				<ErrorMessage name={ name } component="span" className="text-xs text-error mt-2 block text-left" />
 			</div>
 		</div>
 	)

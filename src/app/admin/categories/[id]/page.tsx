@@ -1,4 +1,3 @@
-import { AdminHeader } from '@/components'
 import { fetchData } from '@/utils'
 
 export default async function CategoryIdPage({ params } : { params: { id : number } }) {
@@ -7,7 +6,6 @@ export default async function CategoryIdPage({ params } : { params: { id : numbe
   
   return (
     <>
-    <AdminHeader title={ category.name } />
     <section className="admin__content">
       { category.description }
     </section>

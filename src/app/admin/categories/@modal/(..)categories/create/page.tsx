@@ -1,5 +1,5 @@
 import { Modal } from '@/components'
-import { CategoriesForm } from '@/app/admin/categories/CategoriesForm'
+import { CategoryForm } from '@/app/admin/categories/CategoryForm'
 import { setSession } from '@/utils/session'
 
 export default async function ModalCreateCategoryPage() {
@@ -7,7 +7,7 @@ export default async function ModalCreateCategoryPage() {
   
   return (
     <Modal title="Crear Categoría" withBackRoute={ true }>
-      <CategoriesForm token={ token } withBackRoute={ true } />
+      <CategoryForm token={ token } />
     </Modal>
   )
 }

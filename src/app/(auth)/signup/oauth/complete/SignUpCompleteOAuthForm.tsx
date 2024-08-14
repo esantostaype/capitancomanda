@@ -1,12 +1,13 @@
 'use client'
-import { Formik, Form, FormikHelpers } from 'formik'
-import { Button, TextField, Spinner } from '@/components'
+import { useEffect, useRef, useState } from 'react'
+import { signIn, useSession } from 'next-auth/react'
+import { Formik, FormikHelpers } from 'formik'
 import { toast } from 'react-toastify'
 import { completeRegistrationOAuth } from '@/actions/auth-actions'
 import { SignUpCompleteOAuthSchema } from '@/schema'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { signIn, useSession } from 'next-auth/react'
-import { useEffect, useRef, useState } from 'react'
+import { TextField, Spinner } from '@/components'
+import { AuthButton, AuthForm, AuthTitle } from '../../../components'
 
 interface FormValues {
   email: string
@@ -85,76 +86,59 @@ export const SignUpCompleteOAuthForm = () => {
       <Formik initialValues={initialValues} onSubmit={ handleSubmit } validationSchema={ SignUpCompleteOAuthSchema } enableReinitialize>
         {({ errors, touched, values, isSubmitting, setFieldValue }) => (
           <>
-            <div className={`isSubmitting ${isSubmitting && "active"}`}><Spinner /></div>
-            <h1 className='auth__title'>Completar tu Registro</h1>
-            <Form className="form">
-              <div className='form__column'>
-                <div className="form__item">
-                  <TextField
-                    label='Correo Electrónico'
-                    type='text'
-                    name='email'
-                    placeholder='Ingresa el Correo Electrónico'
-                    errors={ errors.email }
-                    touched={ touched.email }
-                    value={ session?.user?.email || email }
-                    disabled
-                  />
-                </div>
-                <div className="form__item">
-                  <TextField
-                    label='Nombre de tu Restaurante'
-                    type='text'
-                    name='restaurantName'
-                    placeholder='Ingresa el Nombre de tu Restaurante'
-                    errors={ errors.restaurantName }
-                    touched={ touched.restaurantName }
-                    value={ values.restaurantName }
-                    innerRef={ restaurantNameRef }
-                  />
-                </div>
-                <div className="form__item">
-                  <TextField
-                    label='Nombre Completo'
-                    type='text'
-                    name='fullName'
-                    placeholder='Ingresa tu Nombre Completo'
-                    errors={ errors.fullName }
-                    touched={ touched.fullName }
-                    value={ session?.user?.name }
-                    disabled
-                  />
-                </div>
-                <div className="form__item">
-                  <TextField
-                    label='Contraseña'
-                    type='password'
-                    name='password'
-                    placeholder='Ingresa tu Contraseña'
-                    errors={ errors.password }
-                    touched={ touched.password }
-                    value={ values.password }
-                  />
-                </div>
-                <div className="form__item">
-                  <TextField
-                    label='Confirmar Contraseña'
-                    type='password'
-                    name='confirmPassword'
-                    placeholder='Confirma tu Contraseña'
-                    errors={ errors.confirmPassword }
-                    touched={ touched.confirmPassword }
-                    value={ values.confirmPassword }
-                  />
-                </div>
-                <div className='form__item acceptance'>
-                  <p>Al registrarme, acepto las Condiciones del servicio de Capitán Comanda y su Política de privacidad.</p>
-                </div>
-                <div className='form__item'>
-                  <Button mode='primary' text="Crear Restaurante" size='large' full submit />
-                </div>
-              </div>
-            </Form>
+            <Spinner isActive={ isSubmitting } />
+            <AuthTitle title='Completa tu Registro' />
+            <AuthForm>
+              <TextField
+                label='Correo Electrónico'
+                type='text'
+                name='email'
+                placeholder='Ingresa el Correo Electrónico'
+                errors={ errors.email }
+                touched={ touched.email }
+                value={ session?.user?.email || email }
+                disabled
+              />
+              <TextField
+                label='Nombre de tu Restaurante'
+                type='text'
+                name='restaurantName'
+                placeholder='Ingresa el Nombre de tu Restaurante'
+                errors={ errors.restaurantName }
+                touched={ touched.restaurantName }
+                value={ values.restaurantName }
+                innerRef={ restaurantNameRef }
+              />
+              <TextField
+                label='Nombre Completo'
+                type='text'
+                name='fullName'
+                placeholder='Ingresa tu Nombre Completo'
+                errors={ errors.fullName }
+                touched={ touched.fullName }
+                value={ session?.user?.name }
+                disabled
+              />
+              <TextField
+                label='Contraseña'
+                type='password'
+                name='password'
+                placeholder='Ingresa tu Contraseña'
+                errors={ errors.password }
+                touched={ touched.password }
+                value={ values.password }
+              />
+              <TextField
+                label='Confirmar Contraseña'
+                type='password'
+                name='confirmPassword'
+                placeholder='Confirma tu Contraseña'
+                errors={ errors.confirmPassword }
+                touched={ touched.confirmPassword }
+                value={ values.confirmPassword }
+              />
+              <AuthButton label="Crear Restaurante" />
+            </AuthForm>
           </>
         )}
       </Formik>

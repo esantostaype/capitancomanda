@@ -1,26 +1,28 @@
 'use client'
+import { TableFlex } from '@/components'
 import { Skeleton } from '@mui/material'
 
 type Props = {
   isOwner?: boolean
 }
 
-export const TableSkeleton = ( { isOwner = false }: Props ) => {
+export const ProductsTableSkeleton = ( { isOwner = false }: Props ) => {
   const skeletonRows = Array.from({ length: 5 }, (_, i) => i);
 
   return (
-    <div className="table__wrapper">
-      <div className="table__header disabled">
-        <div className="search-box">
+    <div className="border border-gray50 rounded-lg overflow-x-auto max-w-full bg-surface">
+      <div className="flex justify-between px-6 py-4 bg-background border-b border-b-gray50 disabled">
+        <div className="flex items-center gap-2">
           <i className="fi fi-rr-search"></i>
           <input
             type="text"
             name="searchTerm"
             placeholder="Buscar Producto"
             autoComplete="off"
+            className="outline-none"
           />
         </div>
-        <div className="table__info">
+        <div className="flex items-center gap-6">
           Páginas: 1 de 1
           <select>
             <option>
@@ -29,46 +31,42 @@ export const TableSkeleton = ( { isOwner = false }: Props ) => {
           </select>
         </div>
       </div>
-      <table className="skeleton-table">
+      <table className="w-full">
         <thead>
           <tr>
-            <th>#</th>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Precio</th>
+            <th className="bg-background px-6 py-4 text-left border-b-2 border-b-gray50 first:w-12 uppercase">#</th>
+            <th className="bg-background px-6 py-4 text-left border-b-2 border-b-gray50 first:w-12 uppercase">Nombre</th>
+            <th className="bg-background px-6 py-4 text-left border-b-2 border-b-gray50 first:w-12 uppercase">Categoría</th>
+            <th className="bg-background px-6 py-4 text-left border-b-2 border-b-gray50 first:w-12 uppercase">Precio</th>
             { isOwner && (
-              <>
-              <th>Sucursal</th>
-              <th>Creador</th>
-              </>
+              <th className="bg-background px-6 py-4 text-left border-b-2 border-b-gray50 first:w-12 uppercase">Sucursal</th>
             )}   
-            <th></th>
+            <th className="bg-background px-6 py-4 text-left border-b-2 border-b-gray50 first:w-12 uppercase">Creador</th>
+            <th className="bg-background px-6 py-4 text-left border-b-2 border-b-gray50 first:w-12 uppercase"></th>
           </tr>
         </thead>
         <tbody>
-          {skeletonRows.map((row, index) => (
+          { skeletonRows.map(( index ) => (
             <tr key={index}>
-              <td><Skeleton animation="wave" variant="text" width={20} /></td>
-              <td>
-                <div className="table__flex">
+              <td className={"group-hover:bg-background first:w-12 px-6 py-4 bg-surface border-t border-t-gray50"}><Skeleton animation="wave" variant="text" width={20} /></td>
+              <td className={"group-hover:bg-background first:w-12 px-6 py-4 bg-surface border-t border-t-gray50"}>
+                <TableFlex>
                   <div style={{ width: '40px' }}>
                     <Skeleton variant="circular" width={40} height={40} />
                   </div>
                   <Skeleton animation="wave" variant="text" width={100} />
-                </div>
+                </TableFlex>
               </td>
-              <td><Skeleton animation="wave" variant="text" width={100} /></td>
-              <td><Skeleton animation="wave" variant="text" width={100} /></td>
+              <td className={"group-hover:bg-background first:w-12 px-6 py-4 bg-surface border-t border-t-gray50"}><Skeleton animation="wave" variant="text" width={100} /></td>
+              <td className={"group-hover:bg-background first:w-12 px-6 py-4 bg-surface border-t border-t-gray50"}><Skeleton animation="wave" variant="text" width={100} /></td>
               { isOwner && (
-                <>
-                <td><Skeleton animation="wave" variant="text" width={100} /></td>
-                <td><Skeleton animation="wave" variant="text" width={100} /></td>
-                </>
+                <td className={"group-hover:bg-background first:w-12 px-6 py-4 bg-surface border-t border-t-gray50"}><Skeleton animation="wave" variant="text" width={100} /></td>
               )}
-              <td>
-                <div className="table__flex table__actions disabled">
-                  <Skeleton animation="wave" variant="text" width={32} height={40} />
-                  <Skeleton animation="wave" variant="text" width={32} height={40} />
+              <td className={"group-hover:bg-background first:w-12 px-6 py-4 bg-surface border-t border-t-gray50"}><Skeleton animation="wave" variant="text" width={100} /></td>
+              <td className={"group-hover:bg-background first:w-12 px-6 py-4 bg-surface border-t border-t-gray50"}>
+                <div className="flex items-center gap-3 justify-end">
+                  <Skeleton animation="wave" variant="text" width={72} height={40} />
+                  <Skeleton animation="wave" variant="text" width={72} height={40} />
                 </div>
               </td>
             </tr>

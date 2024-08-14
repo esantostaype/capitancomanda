@@ -1,4 +1,4 @@
-import { OrderSidebar, OrderSummary, ToastNotification } from "@/components"
+import { OrderSidebar, OrderSummary, ToastNotification } from '@/components'
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
   const dayjs = require('dayjs')
@@ -8,15 +8,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   const currentDate = `${ dayjs().format(`D `)} de ${ dayjs().format(`MMMM `) } del ${ dayjs().format(` YYYY, h:mm a`) }`
   return (
     <>
-    <section className="orders">
+    <section className="flex">
       <OrderSidebar/>
-      <section className="orders__content">
-        <div className="orders__header">
-          <div className="orders__header__content">
-            <h1 className="orders__header__title">Capitán Comanda</h1>
-            <div className="orders__date">{ currentDate }</div>
-          </div>
-        </div>
+      <section className="flex-1 p-8">
+        {/* <div className="mb-8">
+          <h1 className="text-3xl font-semibold">Restify Comanda</h1>
+          <div className="text-gray500">{ currentDate }</div>
+        </div> */}
         { children }
       </section>
       <OrderSummary/>

@@ -2,9 +2,8 @@
 
 import { Order, Role, orderStatusTranslations } from "@/interfaces"
 import { ColumnDef } from "@tanstack/react-table"
-import Link from "next/link"
-import { Button, TansTackTable } from "@/components"
-import { formatCurrency, formatOrderId, getStatusText } from '../../../utils/index';
+import { AdminStatus, TanstackTable } from "@/components"
+import { formatCurrency } from '@/utils'
 import dayjs from "dayjs"
 import { useSession } from "next-auth/react"
 
@@ -16,6 +15,8 @@ export const OrdersDataTable = ({ data }: Props ) => {
 
   const { data: session } = useSession()
   const role = session?.user.role
+
+  const isOwner = role === Role.OWNER
 
   const columns: ColumnDef<Order>[] = [
     {
@@ -36,9 +37,7 @@ export const OrdersDataTable = ({ data }: Props ) => {
       accessorKey: 'status',
       id: 'status',
       cell: ({ row }) => (
-        <span className={`table__status ${ row.original.status }`}>
-          { orderStatusTranslations[row.original.status] }
-        </span>
+        <AdminStatus mode={ row.original.status } label={ orderStatusTranslations[ row.original.status ] } />
       )
     },
     {
@@ -64,35 +63,21 @@ export const OrdersDataTable = ({ data }: Props ) => {
       cell: ( props: any ) => (
         props.getValue() ? dayjs( props.getValue() ).format("h:mm A") : "-"
       )
-    },
-    {
-      header: '',
-      accessorKey: 'id',
-      id: 'idActions',
-      enableSorting: false,
-      cell: ( props ) => (
-        <div className="table__flex table__actions">
-          <Button href={`/admin/orders/${ props.getValue() }`} text='Editar' mode='info' size='small' ghost iconName='pencil' />
-          <Button text='Eliminar' mode='error' size='small' ghost iconName='trash' />
-        </div>
-      )
     }
   ]
 
-  if ( role === "OWNER" ) {
+  if ( isOwner ) {
     columns.splice( 3, 0, {
       header: 'Sucursal',
       accessorKey: 'branch.name',
       id: 'branch.name',
       cell: ({ row }) => (
-        <div className="table__flex">
-          { row.original.user.branch.name }
-        </div>
+        row.original.user.branch.name
       )
     })
   }
 
   return (
-    <TansTackTable data={ data } columns={ columns } />
+    <TanstackTable data={ data } columns={ columns } />
   )
 }

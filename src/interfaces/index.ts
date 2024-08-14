@@ -24,6 +24,29 @@ export enum OrderStatus {
   CANCELED = 'CANCELED'
 }
 
+export enum Color {
+  ACCENT = 'ACCENT',
+  SUCCESS = 'SUCCESS',
+  INFO = 'INFO',
+  WARNING = 'WARNING',
+  ERROR = 'ERROR'
+}
+
+export enum Variant {
+  CONTAINED = 'CONTAINED',
+  GHOST = 'GHOST'
+}
+
+export enum Size {
+  SMALL = 'SMALL',
+  LARGE = 'LARGE'
+}
+
+export enum IconButtonShape {
+  CIRCLE = 'CIRCLE',
+  SQUARE = 'SQUARE'
+}
+
 export const roleTranslations: { [ key in Role ]: string } = {
   [ Role.SUPERADMIN ]: 'Superadministrador',
   [ Role.OWNER ]: 'Propietario',
@@ -106,12 +129,26 @@ export interface Product {
   description: string
   price: number
   image: string | null
-  variants: []
-  ingredients: []
+  variants: {
+    id: string
+    name: string
+    options: {
+      id: string
+      name: string
+      price: number
+    }[]
+    hasPrice: boolean
+  }[]
+  ingredients: {
+    name: string
+    quantity: number
+  }[]
   categoryId: string
   category: Category
   userId: string
   user: User
+  selectedVariant: string
+  selectedOption: string
 }
 
 export interface Branch {
@@ -120,6 +157,7 @@ export interface Branch {
   users: User[]
   address?: string
   phoneNumber?: string
+  image?: string
   restaurantId: string
 }
 
@@ -127,9 +165,9 @@ export interface Category {
   id: string
   name: string
   image: string
-  branchId: string
-  branch: Branch
   products: Product[]
+  userId: string
+  user: User
 }
 
 export interface OrderItemFull {
@@ -160,4 +198,27 @@ export type SpicyLevelNumber = 0 | 1 | 2 | 3
 export type OrderItemWithSpicy = OrderItem & {
   spicyLevel?: boolean
   spicyLevelNumber?: SpicyLevelNumber
+}
+
+export interface ProductFormValues {
+  name: string
+  description: string
+  price: number | null
+  image: string | null
+  categoryId: string
+  variants: Array<{
+    id: string
+    name: string
+    hasPrice: boolean
+    options: Array<{ id: string; name: string; price?: number }>
+  }>
+  ingredients: Array<{ name: string; quantity: number }>
+}
+
+export type ProductsFormErrors = {
+  [ K in keyof ProductFormValues ]?: string;
+};
+
+export type ProductsFormTouched = {
+  [ K in keyof ProductFormValues ]?: boolean;
 }

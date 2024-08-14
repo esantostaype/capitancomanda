@@ -3,6 +3,7 @@
 import React, { useRef, useState } from 'react'
 import Image from 'next/image'
 import { Button, Spinner } from '@/components'
+import { Size, Variant } from '@/interfaces'
 
 interface ImageUploadProps {
   newImage: string | null
@@ -52,64 +53,46 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   }
 
   return (
-    <div className={`upload-image ${ disabled && "disabled" }`}>
+    <div className={`relative aspect-square rounded-lg overflow-hidden w-full group transition-all ${ disabled ? "disabled" : "" }`}>
+      <Spinner isActive={ imgUploading } />
       { deleteImage ? (
-        <>
-          <div className={`uploading ${imgUploading ? 'active' : ''}`}>
-            <Spinner />
-          </div>
-          <div className="upload-image__null">
-            <i className="fi fi-tr-image-slash"></i>
-          </div>
-        </>
+        <div className="aspect-square w-full flex items-center justify-center bg-gray50">
+          <i className="fi fi-tr-image-slash text-3xl"></i>
+        </div>
       ) : newImage ? (
-        <>
-          <div className={`uploading ${imgUploading ? 'active' : ''}`}>
-            <Spinner />
-          </div>
-          <Image src={ newImage } width={ 320 } height={ 320 } alt="Nueva Imagen" />
-        </>
+        <Image src={ newImage } width={ 320 } height={ 320 } alt="Nueva Imagen" className="object-cover aspect-square" />
       ) : (
         <>
-          <div className={`uploading ${imgUploading ? 'active' : ''}`}>
-            <Spinner />
-          </div>
           { image ? (
-            <>
-              <div className={`uploading ${imgUploading ? 'active' : ''}`}>
-                <Spinner />
-              </div>
-              <Image src={ image } width={ 320 } height={ 320 } alt={ altImage } />
-            </>
+            <Image src={ image } width={ 320 } height={ 320 } alt={ altImage } className="object-cover aspect-square" />
           ) : (
-            <>
-              <div className={`uploading ${imgUploading ? 'active' : ''}`}>
-                <Spinner />
-              </div>
-              <div className="upload-image__null">
-                <i className="fi fi-tr-image-slash"></i>
-              </div>
-            </>
+            <div className="aspect-square w-full flex items-center justify-center bg-gray50">
+              <i className="fi fi-tr-image-slash text-3xl"></i>
+            </div>
           )}
         </>
       )}
-      <input type="file" id="file" ref={fileInputRef} onChange={handleImageChange} style={{ display: 'none' }} />
-      <div className="upload-image__actions">
-        {newImage || ( image && !deleteImage ) ? (
-          <>
-            <Button text="Cambiar" size="small" onClick={() => fileInputRef.current?.click()} />
-            <Button
-              text="Eliminar"
-              size="small"
-              onClick={() => {
-                setNewImage(null)
-                setDeleteImage(true)
-              }}
-            />
-          </>
-        ) : (
-          <Button text="Agregar" size="small" onClick={() => fileInputRef.current?.click()} />
-        )}
+      <input type="file" id="file" ref={ fileInputRef } onChange={ handleImageChange } className="hidden" />
+      <div className="absolute top-0 left-0 h-full w-full z-10 transition-all p-6 opacity-0 group-hover:opacity-100">
+        <div className="absolute flex flex-col items-center justify-center gap-2 top-0 left-0 h-full w-full z-20">
+          { newImage || ( image && !deleteImage ) ? (
+            <>
+              <Button text="Cambiar" size={ Size.SMALL } variant={ Variant.CONTAINED } onClick={() => fileInputRef.current?.click()} />
+              <Button
+                text="Eliminar"
+                size={ Size.SMALL }
+                variant={ Variant.CONTAINED }
+                onClick={() => {
+                  setNewImage(null)
+                  setDeleteImage(true)
+                }}
+              />
+            </>
+          ) : (
+            <Button text="Agregar" size={ Size.SMALL } variant={ Variant.CONTAINED } onClick={() => fileInputRef.current?.click()} />
+          )}
+        </div>
+        <div className="absolute top-0 left-0 h-full w-full opacity-10 bg-accent z-10"></div>
       </div>
     </div>
   )

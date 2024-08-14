@@ -5,7 +5,7 @@ import { useOrderStore } from '@/store/order-store'
 import styles from './OrderForm.module.css'
 
 import { Formik, Form, Field, FormikHelpers } from 'formik'
-import { OrderItem } from '@/interfaces'
+import { Color, OrderItem, Size, Variant } from '@/interfaces'
 import { toast } from 'react-toastify'
 import { revalidatePath } from 'next/cache'
 import { Button, Spinner, Switch } from '@/components'
@@ -83,14 +83,14 @@ export const OrderForm = () => {
             checked={ delivery }
             onChange={ setDelivery }
             label="Para Llevar"
-            size="normal"
           />
-          <Field type="text" name="table" placeholder="Mesa N°" className={ styles.summary__input } />
+          <Field autoComplete="off" name="table" placeholder="Mesa N°" className={ styles.summary__input } />
         </div>
         <Button
           text='Enviar Comanda'
-          mode='primary'
-          size='large'
+          color={ Color.ACCENT }
+          size={ Size.LARGE }
+          variant={ Variant.CONTAINED }
           submit
           full
         />

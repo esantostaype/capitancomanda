@@ -1,11 +1,11 @@
 'use client'
 import { resetPassword } from '@/actions/auth-actions'
-import { Button, Spinner, TextField } from '@/components'
 import { EmailSchema } from '@/schema'
 import { Formik, Form, FormikHelpers } from 'formik'
-import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
+import { LinkComponent, Spinner, TextField } from '@/components'
+import { AuthButton, AuthForm, AuthTitle } from '../../components'
 
 interface FormValues {
   email: string
@@ -45,45 +45,37 @@ export const ResetPasswordForm = () => {
     <Formik initialValues={ initialValues } onSubmit={ handleSubmit } validationSchema={ EmailSchema }>
       {({ errors, touched, values, isSubmitting }) => (
         <>
-        <div className={ `isSubmitting ${ isSubmitting && "active" }`  }><Spinner/></div>
-        <h1 className='auth__title'>¿Olvidaste tu Contraseña?</h1>
+        <Spinner isActive={ isSubmitting } />
+        <AuthTitle title='¿Olvidaste tu Contraseña?' />
         { sendEmail
         ?
-          <div className='send-email'>
-            <div className='send-email__icon'>
+          <div className="flex flex-col items-center text-center">
+            <div className="text-3xl h-16 w-16 rounded-full flex items-center justify-center bg-accent mb-4">
               <i className="fi fi-rr-paper-plane"></i>
             </div>
             <p>Te hemos enviado un enlace de recuperación a</p>
-            <div className='send-email__main'>{ values.email }</div>
+            <div className="font-semibold text-base inline-block">{ values.email }</div>
           </div>
         : 
-          <Form className="form">
-            <div className='form__column'>
-              <div className='form__item'>
-                <p className='text-center'>Enviaremos un enlace de recuperación a</p>
-              </div>
-              <div className="form__item">
-                <TextField
-                  label='Correo Electrónico'
-                  name='email'
-                  placeholder='Ingresa tu Correo Electrónico'
-                  errors={ errors.email }
-                  touched={ touched.email }
-                  value={ values.email }
-                  innerRef={ emailRef }
-                />
-              </div>
-              <div className='form__item'>
-                <Button mode='primary' text="Enviar enlace de recuperación" size='large' full submit />
-              </div>
-            </div>
-          </Form>
+          <AuthForm>
+            <p className="text-center">Enviaremos un enlace de recuperación a</p>
+            <TextField
+              label='Correo Electrónico'
+              name='email'
+              placeholder='Ingresa tu Correo Electrónico'
+              errors={ errors.email }
+              touched={ touched.email }
+              value={ values.email }
+              innerRef={ emailRef }
+            />
+            <AuthButton label="Enviar enlace de recuperación" />
+          </AuthForm>
         }
         </>
       )}
     </Formik>
-    <div className='auth__footer'>
-      <p className='text-center'><Link href="/login" className='link'>Volver a Inicio de Sesión</Link></p>
+    <div className="text-center mt-8">
+      <p><LinkComponent text='Volver a Inicio de Sesión' href='/login'/></p>
     </div>
     </>
   )

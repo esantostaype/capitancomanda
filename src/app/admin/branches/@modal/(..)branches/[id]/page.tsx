@@ -1,6 +1,6 @@
 import { Modal } from '@/components'
 import { fetchData } from '@/utils'
-import { BranchesForm } from '@/app/admin/branches/BranchesForm'
+import { BranchForm } from '@/app/admin/branches/BranchForm'
 import { setSession } from '@/utils/session'
 
 export default async function ModalCategoryIdPage({ params } : { params: { id : number } }) {
@@ -9,7 +9,7 @@ export default async function ModalCategoryIdPage({ params } : { params: { id : 
   
   return (
     <Modal title={ branch.name }  withBackRoute={ true }>
-      <BranchesForm branch={ branch } token={ token } withBackRoute={ true }/>
+      <BranchForm branch={ branch } token={ token }/>
     </Modal>
   );
 }

@@ -10,8 +10,8 @@ export default async function OrderPage({ params } : { params: { category : stri
   
   return (
     <>
-    <h1 className='category__title'>{ category.name }</h1>
-    <ul className="product__list">
+    <h1 className="text-2xl font-bold mb-8">{ category.name }</h1>
+    <ul className="grid grid-cols-5 text-center gap-8">
       { products.map( ( product: Product ) => (
         <OrderProductItem key={ product.id } product={ product } />
       ))}

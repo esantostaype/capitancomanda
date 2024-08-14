@@ -1,15 +1,12 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Formik, Form, FormikHelpers } from 'formik'
-import { Button, Spinner, TextField, Checkbox } from '@/components'
+import { Formik, FormikHelpers } from 'formik'
 import { toast } from 'react-toastify'
-import { login } from '@/actions/auth-actions'
 import { LoginSchema } from '@/schema'
-import Link from 'next/link'
-import Cookies from 'js-cookie'
 import { useRef, useEffect } from 'react'
-import { OAuth } from '@/components'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
+import { Spinner, TextField, Checkbox, LinkComponent,  } from '@/components'
+import { AuthButton, AuthForm, AuthTitle, OAuth } from '../components'
 
 interface FormValues {
   email: string
@@ -18,7 +15,6 @@ interface FormValues {
 }
 
 export const LoginForm = () => {
-  const { data: session } = useSession()
   const passwordRef = useRef<HTMLInputElement>(null)
   const emailRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
@@ -68,64 +64,55 @@ export const LoginForm = () => {
 
   return (
     <>
-    <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={LoginSchema}>
+    <Formik initialValues={ initialValues } onSubmit={ handleSubmit } validationSchema={ LoginSchema }>
       {({ errors, touched, values, isSubmitting, handleChange }) => (
         <>
-          <div className={`isSubmitting ${isSubmitting && "active"}`}><Spinner /></div>
-          <h1 className='auth__title'>Inicia sesión</h1>
-          <Form className="form">
-            <div className='form__column'>
-              {
-                email &&
-                <div className='form__item text-center'>
-                  <p>Ya tienes una cuenta registrada</p>
-                </div>
-              }
-              
-              <div className="form__item">
-                <TextField
-                  label='Correo Electrónico'
-                  type='email'
-                  name='email'
-                  placeholder='Ingresa tu Correo Electrónico'
-                  errors={errors.email}
-                  touched={touched.email}
-                  value={values.email}
-                  innerRef={emailRef}
-                />
+          <Spinner isActive={ isSubmitting } />
+          <AuthTitle title='Inicia Sesión' />
+          <AuthForm>
+            {
+              email &&
+              <div className='text-center'>
+                <p>Ya tienes una cuenta registrada</p>
               </div>
-              <div className="form__item">
-                <TextField
-                  label='Contraseña'
-                  type='password'
-                  name='password'
-                  placeholder='Ingresa tu Contraseña'
-                  errors={errors.password}
-                  touched={touched.password}
-                  value={values.password}
-                  innerRef={passwordRef}
-                />
-              </div>
-              <div className="form__item auth__remember-reset">
-                <Checkbox
-                  label="Recuérdame"
-                  name="rememberMe"
-                  checked={ values.rememberMe }
-                  onChange={ handleChange }
-                />
-                  <Link href="/login/resetpassword" className='link'>¿Olvidaste tu contraseña?</Link>
-              </div>
-              <div className='form__item'>
-                <Button mode='primary' text="Iniciar Sesión" size='large' full submit />
-              </div>
+            }
+            <TextField
+              label='Correo Electrónico'
+              name='email'
+              type='email'
+              placeholder='Ingresa tu Correo Electrónico'
+              errors={ errors.email }
+              touched={ touched.email }
+              value={ values.email }
+              innerRef={ emailRef }
+            />
+            <TextField
+              label='Contraseña'
+              name='password'
+              type='password'
+              placeholder='Ingresa tu Contraseña'
+              errors={ errors.password }
+              touched={ touched.password }
+              value={ values.password }
+              innerRef={ passwordRef }
+            />
+            <div className="flex items-center justify-between gap-8">
+              <Checkbox
+                label="Recuérdame"
+                name="rememberMe"
+                checked={ values.rememberMe }
+                onChange={ handleChange }
+              />
+              <LinkComponent text='¿Olvidaste tu contraseña?' href='/login/resetpassword'/>
             </div>
-          </Form>
+            <AuthButton label="Iniciar Sesión" />
+          </AuthForm>
         </>
       )}
     </Formik>
     <OAuth/>
-    <div className='auth__footer'>
-      <p className='text-center'>¿Aún no tienes una cuenta? <Link href="/signup" className='link'>Regístrate</Link></p>
+    <div className='text-center'>
+      <p>¿Aún no tienes una cuenta? <LinkComponent text='Regístrate' href='/signup'/></p>
     </div>
     </>
   )

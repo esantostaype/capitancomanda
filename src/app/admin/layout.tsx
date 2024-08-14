@@ -1,11 +1,11 @@
-import { AdminSidebar } from "@/components";
+import { AdminSidebar } from '@/components'
 
 export default function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
-    <section className="admin">
+    <section className="flex">
       <AdminSidebar/>
-      <section className="admin__wrapper">
+      <section className="flex flex-1 flex-col h-screen">
         { children }
       </section>
     </section>

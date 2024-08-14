@@ -15,6 +15,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@flaticon/flaticon-uicons": "^3.2.1",
+    "@fontsource-variable/inter": "^5.0.20",
     "@formkit/auto-animate": "^0.8.2",
     "@hello-pangea/dnd": "^16.6.0",
     "@mui/material": "^5.15.19",
@@ -45,6 +46,7 @@
     "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.11",
     "swr": "^2.2.5",
+    "uuid": "^10.0.0",
     "yup": "^1.4.0",
     "zod": "^3.23.3",
     "zustand": "^4.5.2"
@@ -57,6 +59,7 @@
     "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^18",
     "@types/react-router-dom": "^5.3.3",
+    "@types/uuid": "^10.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.2",
     "postcss": "^8",
