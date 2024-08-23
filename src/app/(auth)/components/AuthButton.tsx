@@ -8,6 +8,6 @@ type AuthTitleProps = {
 export const AuthButton = ({ label }: AuthTitleProps) => {
 
   return (
-    <Button color={ Color.ACCENT } variant={ Variant.CONTAINED } text={ label } size={ Size.LARGE } full submit />
+    <Button color={ Color.ACCENT } variant={ Variant.CONTAINED } text={ label } size={ Size.LG } full submit />
   )
 }

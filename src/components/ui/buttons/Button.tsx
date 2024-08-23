@@ -13,9 +13,10 @@ interface Props {
   submit?: boolean
   href?: string
   div?: boolean
+  className?: string
 }
 
-export const Button = ({ text, variant, color, size, iconName, full, onClick, disabled, submit, href, div }: Props) => {
+export const Button = ({ text, variant, color, size, iconName, full, onClick, disabled, submit, href, div, className }: Props) => {
   
   let colorTextClass = ""  
   let colorBgClass = ""
@@ -47,12 +48,12 @@ export const Button = ({ text, variant, color, size, iconName, full, onClick, di
       break
   }
   
-  const sizeClass = size === Size.SMALL ? 'text-xs px-3 py-2' : size === Size.LARGE ? 'text-base font-semibold px-6 py-3' : 'px-3 py-2'
+  const sizeClass = size === Size.SM ? 'text-xs px-3 py-2' : size === Size.LG ? 'text-base font-semibold px-6 py-3' : 'px-3 py-2'
   const variantContainedClass = variant === Variant.CONTAINED ? `${ color ? colorBgClass : "bg-gray200 hover:bg-gray300" } text-white` : ""
   const variantGhostClass = variant === Variant.GHOST ? `${ color ? colorBgClass : "bg-gray600" }` : ""
   const transparentClass = !variant ? "hover:bg-gray50" : ""
   const buttonType = submit ? 'submit' : 'button'
-  const buttonClass = `${ full ? "w-full" : "" } ${ variantContainedClass } ${ colorTextClass } ${ sizeClass } ${ transparentClass } flex items-center justify-center gap-2 cursor-pointer transition-all relative overflow-hidden rounded-[4px] group/button`
+  const buttonClass = `${ full ? "w-full" : "" } ${ variantContainedClass } ${ colorTextClass } ${ sizeClass } ${ transparentClass } flex items-center justify-center gap-2 cursor-pointer transition-all relative overflow-hidden rounded group/button ${ className }`
   const contentButton = (
     <>
     {

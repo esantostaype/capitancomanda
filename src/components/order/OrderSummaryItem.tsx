@@ -1,41 +1,52 @@
 import Image from 'next/image'
-import { Color, IconButtonShape, OrderItem, Size, Variant } from '@/interfaces'
-
+import { OrderItem } from '@/interfaces'
 import { formatCurrency } from '@/utils'
-import { Counter } from '../ui/Counter'
-import { useOrderStore } from '@/store/order-store'
-
-import { Button, IconButton } from '@/components'
-import styles from './OrderSummaryItem.module.css'
+import { OrderSummaryCounter, IconButton } from '@/components'
 
 type Props = {
   item: OrderItem
 }
 
 export const OrderSummaryItem = ({ item }: Props ) => {
-	const removeItem = useOrderStore(( state ) => state.removeItem )
   return (
-    <li className={ `${ styles.item }` }>
-      <div className={ styles.product }>
-        <div className={ styles.product__content }>
-          <div className={ styles.product__image }>
-            <Image src={ item.image ? item.image : '/images/logo.svg' } alt={ item.name } width={ 48 } height={ 48 } />
+    <li className="border-b border-b-gray50 py-6 last:border-b-transparent">
+      <div className="flex items-start gap-2 justify-between">
+        <div className="flex items-start gap-2">
+          <div className="w-12 h-12 flex-[0_0_3rem] relative">
+            { item.image ? (
+              <Image src={ item.image } alt={ item.name } width={ 48 } height={ 48 } className="object-cover aspect-square rounded-full" />
+            ) : (
+              <div className="bg-gray100 flex items-center justify-center w-12 h-12 rounded-full">
+                <i className="fi fi-tr-image-slash text-gray600"></i>
+              </div>
+            )}
           </div>
-          <div className={ styles.product__caption }>
-            <div className={ styles.product__name }>{ item.name }</div>
-            <div className={ styles.product__price }>{ formatCurrency( item.price ) }</div>         
+          <div>
+            <div className="font-semibold leading-[1.25em] mb-1">{ item.name }</div>
+            <div className="text-gray500">{ formatCurrency( item.price ) }</div>
           </div>
-        </div>     
-        <div className={ styles.subtotal }>{ formatCurrency( item.subtotal ) }</div>  
+        </div>
+        <div className='font-semibold flex-[0_0_5rem] text-right'>{ formatCurrency( item.subtotal ) }</div>  
       </div>
-      <div className={ styles.product__quantity }>
-        <Counter item={ item } currentValue={ item.quantity } />
-        <IconButton
-          color={ Color.ERROR }
-          iconName='trash'
-          variant={ Variant.GHOST } 
-          onClick={() => removeItem( item.id )}
-        />
+      <div className="flex flex-col gap-4 pl-14 mt-2">
+        <div>
+          { item.selectedVariations && (
+            <div className="text-gray500 text-xs">
+              { Object.entries( item.selectedVariations ).map(([variation, option]) => (
+                <div key={variation}>{variation}: <span className="font-semibold">{option}</span></div>
+              ))}
+            </div>
+          )}
+          { item.selectedAdditionals && Object.entries( item.selectedAdditionals )
+            .filter(([_, quantity]) => quantity > 0)
+            .map(([additionalName, quantity]) => (
+              <div key={ additionalName } className="text-gray500 text-xs">
+                { quantity }x <span className="font-semibold">{ additionalName }</span>
+              </div>
+            ))
+          }
+        </div>
+        <OrderSummaryCounter item={ item } currentValue={ item.quantity } />
       </div> 
     </li>
   )

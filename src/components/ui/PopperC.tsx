@@ -2,8 +2,7 @@
 import Popper, { PopperPlacementType } from '@mui/material/Popper'
 import Grow from '@mui/material/Grow'
 import { useState, useEffect, useCallback } from 'react'
-import { Button, IconButton } from '@/components'
-import styles from './PopperC.module.css'
+import { IconButton } from '@/components'
 import { Size } from '@/interfaces'
 
 interface PopperProps {
@@ -62,7 +61,7 @@ export const PopperC = ({ children, position, transformOrigin }: PopperProps) =>
     <>
       <IconButton
         iconName="menu-dots-vertical"
-        size={ Size.SMALL }
+        size={ Size.SM }
         onClick={ handleClick( position ? position : 'bottom-start') }
         active={ open }
       />

@@ -24,6 +24,14 @@ export enum OrderStatus {
   CANCELED = 'CANCELED'
 }
 
+export enum MeasurementUnit {
+  GRAM = 'GRAM',
+  KILOGRAM = 'KILOGRAM',
+  LITER = 'LITER',
+  MILLILITER = 'MILLILITER',
+  PIECE = 'PIECE'
+}
+
 export enum Color {
   ACCENT = 'ACCENT',
   SUCCESS = 'SUCCESS',
@@ -38,13 +46,28 @@ export enum Variant {
 }
 
 export enum Size {
-  SMALL = 'SMALL',
-  LARGE = 'LARGE'
+  XS = 'XS',
+  SM = 'SM',
+  MD = 'MD',
+  LG = 'LG',
+  XL = 'XL',
+  _2XL = '2XL',
+  _3XL = '3XL',
+  _4XL = '4XL',
+  _5XL = '5XL',
+  _6XL = '6XL',
+  _7XL = '7XL'
 }
 
 export enum IconButtonShape {
   CIRCLE = 'CIRCLE',
   SQUARE = 'SQUARE'
+}
+
+export enum  OrderType {
+  DINE_IN = 'DINE_IN',
+  TAKE_AWAY = 'TAKE_AWAY',
+  DELIVERY = 'DELIVERY'
 }
 
 export const roleTranslations: { [ key in Role ]: string } = {
@@ -71,6 +94,14 @@ export const orderStatusTranslations: { [ key in OrderStatus ]: string } = {
   [ OrderStatus.READY ]: 'Lista para Servir',
   [ OrderStatus.DONE ]: 'Entregada',
   [ OrderStatus.CANCELED ]: 'Cancelada'
+}
+
+export const measurementUnitTranslations: { [ key in MeasurementUnit ]: string } = {
+  [ MeasurementUnit.GRAM ]: 'Gramo(s)',
+  [ MeasurementUnit.KILOGRAM ]: 'Kilogramo(s)',
+  [ MeasurementUnit.LITER ]: 'Litro(s)',
+  [ MeasurementUnit.MILLILITER ]: 'Mililitro(s)',
+  [ MeasurementUnit.PIECE ]: 'Pieza(s)',
 }
 
 export interface Select {
@@ -102,17 +133,33 @@ export interface User {
   updatedAt: Date
 }
 
+export interface Client {
+  id: string
+  dni: string
+  fullName?: string
+  email: string
+  phone: string
+  role: Role.CLIENT
+  userId: string
+  clientOrders?: Order[]
+}
+
 export interface Order {
-  user: any;
-  id: number
+  id: string
   total: number
   table: string
-  delivery: boolean
-  date: Date
+  amount?: number
+  orderType: OrderType
+  notes?: string
   status: OrderStatus
-  orderReadyAt: Date | null
-  branchId: string
-  branch: Branch
+  date: Date
+  orderReadyAt?: Date
+  orderProducts: OrderProducts[]
+  userId: string
+  user: User
+  clientId?: string
+  client?: Client
+  orderNumber: string
 }
 
 export interface OrderProducts {
@@ -120,7 +167,6 @@ export interface OrderProducts {
   orderId: number
   productId: number
   quantity: number
-  spicyLevelNumber: number | null
 }
 
 export interface Product {
@@ -129,26 +175,26 @@ export interface Product {
   description: string
   price: number
   image: string | null
-  variants: {
-    id: string
-    name: string
-    options: {
-      id: string
-      name: string
-      price: number
-    }[]
-    hasPrice: boolean
-  }[]
-  ingredients: {
-    name: string
-    quantity: number
-  }[]
+  variations: ProductVariation[]
+  additionals: ProductAdditional[]
+  ingredients: ProductIngredient[]
   categoryId: string
   category: Category
   userId: string
   user: User
-  selectedVariant: string
-  selectedOption: string
+}
+
+export interface Table {
+  id: string
+  number: string
+  capacity: string
+}
+
+export interface Floor {
+  id: string
+  name: string
+  number: number
+  tables: number
 }
 
 export interface Branch {
@@ -157,6 +203,7 @@ export interface Branch {
   users: User[]
   address?: string
   phoneNumber?: string
+  floors: Floor[]
   image?: string
   restaurantId: string
 }
@@ -170,21 +217,43 @@ export interface Category {
   user: User
 }
 
-export interface OrderItemFull {
+export type OrderItemFull = Omit<Product, ''> & {
   id: number
+  uniqueId: string
   name: string
   price: number
   image: string
-  spicyLevel: boolean
-  spicyLevelNumber?: number
   quantity: number
   subtotal: number
+  variationPrice?: number
+  selectedVariant?: string
+  selectedOption? : string
+  selectedVariations?: { [ key: string ]: string }
+  selectedAdditionals?: { [ key: string ]: number }
+  notes?: string
 }
 
-export type OrderItem = Omit<Product, 'categoryId'> & {
+export type OrderItem = Omit<Product, ''> & {
+  uniqueId: string
   quantity: number
   subtotal: number
-  spicyLevelNumber?: number
+  selectedVariations?: { [ key: string ]: string }
+  selectedAdditionals?: { [ key: string ]: number }
+  variationPrice?: number
+  notes?: string
+}
+
+export interface SelectedPriceVariant {
+  name: string
+  option: string
+}
+
+export interface SelectedVariants {
+  [ key: string ]: string
+}
+
+export interface SelectedAdditionals {
+  [ key: string ]: number
 }
 
 export type OrderWithProducts = Order & {
@@ -193,26 +262,39 @@ export type OrderWithProducts = Order & {
   })[]
 }
 
-export type SpicyLevelNumber = 0 | 1 | 2 | 3
-
-export type OrderItemWithSpicy = OrderItem & {
-  spicyLevel?: boolean
-  spicyLevelNumber?: SpicyLevelNumber
-}
-
 export interface ProductFormValues {
   name: string
   description: string
   price: number | null
   image: string | null
   categoryId: string
-  variants: Array<{
-    id: string
+  variations: ProductVariation[]
+  additionals: ProductAdditional[]
+  ingredients: ProductIngredient[]
+}
+
+export interface ProductVariation {
+  id: string
+  name: string
+  hasPrice: boolean
+  options: Array<{
+    id: string;
     name: string
-    hasPrice: boolean
-    options: Array<{ id: string; name: string; price?: number }>
+    price?: number
   }>
-  ingredients: Array<{ name: string; quantity: number }>
+}
+
+export interface ProductAdditional {
+  id: string
+  name: string
+  price: number
+}
+
+export interface ProductIngredient {
+  id: string
+  name: string
+  quantity: number
+  unit: string
 }
 
 export type ProductsFormErrors = {

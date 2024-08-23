@@ -1,64 +1,57 @@
 'use client'
 import Image from 'next/image'
-import { useOrderStore } from '@/store/order-store'
-import { Color, Variant, Product } from '@/interfaces'
-import { Button } from '@/components'
-import { toast } from 'react-toastify'
+import { OrderItemFull } from '@/interfaces'
 import { formatCurrency } from '@/utils'
+import Link from 'next/link'
+import { OrderProductDetail } from './OrderProductDetail'
 
 type Props = {
-  product: Product
+  product: OrderItemFull
 }
 
 export const OrderProductItem = ({ product } : Props ) => {
 
-  const addToOrder = useOrderStore(( state ) => state.addToOrder )
+  const minVariantPrice = product?.variations
+    .filter( variation => variation?.hasPrice )
+    .flatMap( variation => variation?.options.map( option => option?.price ))
+    .reduce(( min, price ) => price! < min! ? price : min, Infinity)
 
-  const handleAddToOrder = ( ) => {
-    addToOrder({
-      ...product,
-    })
-    toast.success(`¡${ product.name } Agregad@!`)
-  }
+  const displayedPrice = minVariantPrice !== Infinity 
+    ? minVariantPrice 
+    : product.price
 
+  const hasVariantPrices = minVariantPrice !== Infinity
+    
   return (
-    <li className="flex flex-col justify-between items-center">
-      <div className="relative z-20 bg-gray50 flex items-center justify-center rounded-full h-32 w-32 overflow-hidden -mb-16">
-      { product.image ? (
-        <Image src={ product.image } alt={ product.name } width={ 256 } height={ 256 } className="object-cover aspect-square" />
-      ) : (
-        <i className="fi fi-tr-image-slash text-3xl text-gray500"></i>
-      )}
-      </div>
-      <div className='relative z-10 bg-surface rounded-lg flex flex-col justify-between flex-1 p-4 pt-20 w-full'>
-        <div>
-          <div className="text-base font-semibold text-gray600">{ product.name }</div>
-          <div className="mt-1 mb-4">{ formatCurrency( product.price ) }</div>
+    <li className="relative flex flex-col justify-between cursor-pointer group active:scale-[0.98] bg-surface hover:bg-gray50 transition-all duration-300 rounded-lg ">
+      <Link href={`?p=${ product.id }`}>
+      <div className="p-6 flex gap-4">
+        <div className="relative z-20 bg-gray50 flex items-center justify-center rounded-lg h-16 w-16 overflow-hidden">
+        { product.image ? (
+          <Image src={ product.image } alt={ product.name } width={ 128 } height={ 128 } className="object-cover aspect-square" />
+        ) : (
+          <i className="fi fi-tr-image-slash text-3xl text-gray500"></i>
+        )}
         </div>
-        {/* {
-          product.variants &&
-          <ul>
-            { product.variants.map( ( variant, index ) => (
-              <li key={ index }>
-                { variant.name }
-                <ul>
-                { variant.options.map( ( option, index ) => (
-                  <li key={ index }>
-                    { option.name }: { option.price }
-                  </li>
-                ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-        } */}
-        <Button
-          text='Agregar'
-          color={ Color.ACCENT }
-          variant={ Variant.GHOST }
-          onClick={ handleAddToOrder }
-        />
+        <div className='relative z-10 flex flex-col justify-between flex-1 w-full'>
+          <div>
+            <div className="leading-tight">{ product.name }</div>
+            <div className="flex items-center gap-1 mt-2 text-gray600">
+              {
+                hasVariantPrices &&
+                <span className="leading-none">Desde:</span>
+              }
+              <span className="text-lg font-bold leading-none">
+                {formatCurrency( displayedPrice! )}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
+      <div className="flex gap-4 px-6 py-4 border-t border-t-gray50 flex-1">
+        <p className="text-gray500 leading-tight overflow-ellipsis line-clamp-2">{ product.description || "Sin Descripción" }</p>
+      </div>
+      </Link>
     </li>
   )
 }

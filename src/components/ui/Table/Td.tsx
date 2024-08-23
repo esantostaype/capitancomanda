@@ -7,7 +7,7 @@ interface Props {
 export const Td = ({ children }: Props ) => {
   
   return (
-    <td className="group-hover:bg-background first:w-12 px-6 py-4 bg-surface border-t border-t-gray50">
+    <td className="group-hover:bg-background first:w-12 py-2 px-4 bg-surface border-t border-t-gray50">
       { children }
     </td>
   )

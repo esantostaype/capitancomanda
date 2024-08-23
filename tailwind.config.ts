@@ -41,20 +41,20 @@ const config: Config = {
           '100%': { opacity: '0' },
         },
         enterModal: {
-          '0%': { opacity: '0', bottom: '-20px' },
+          '0%': { opacity: '0', bottom: '-100px' },
           '100%': { opacity: '1', bottom: '0' },
         },
         leaveModal: {
           '0%': { opacity: '1', bottom: '0' },
-          '100%': { opacity: '0', bottom: '20px' },
+          '100%': { opacity: '0', bottom: '100px' },
         },
         enterModalPage: {
-          '0%': { opacity: '0', right: '-100%' },
+          '0%': { opacity: '0', right: '-10%' },
           '100%': { opacity: '1', right: '0' },
         },
         leaveModalPage: {
           '0%': { opacity: '1', right: '0' },
-          '100%': { opacity: '0', right: '-100%' },
+          '100%': { opacity: '0', right: '-10%' },
         }
       },
       animation: {
@@ -62,8 +62,8 @@ const config: Config = {
         leaveBackgroundModal: 'leaveBackgroundModal 0.3s ease-in-out 1',
         enterModal: 'enterModal 0.3s cubic-bezier(0.77, 0, 0.175, 1) 1',
         leaveModal: 'leaveModal 0.3s cubic-bezier(0.77, 0, 0.175, 1) 1',
-        enterModalPage: 'enterModalPage 0.6s cubic-bezier(0.77, 0, 0.175, 1) 1',
-        leaveModalPage: 'leaveModalPage 0.6s cubic-bezier(0.77, 0, 0.175, 1) 1',
+        enterModalPage: 'enterModalPage 0.3s cubic-bezier(0.77, 0, 0.175, 1) 1',
+        leaveModalPage: 'leaveModalPage 0.3s cubic-bezier(0.77, 0, 0.175, 1) 1',
       }
     },
   },

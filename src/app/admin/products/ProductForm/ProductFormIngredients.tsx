@@ -3,23 +3,30 @@
 import { IconButton, Table, Td } from '@/components'
 import { useEffect, useRef, useState } from 'react'
 import { Field, FieldArray } from 'formik'
-import { Color, ProductFormValues, Size, Variant } from '@/interfaces'
-import { AddSection } from './AddSection'
+import { Color, MeasurementUnit, measurementUnitTranslations, ProductIngredient, Size, Variant } from '@/interfaces'
+import { AdminAddSection } from '@/components'
 import { v4 as uuidv4 } from 'uuid'
 
 interface Props {
-  isAuthor: boolean
-  values: ProductFormValues
+  ingredients: ProductIngredient[]
 }
 
-export const ProductFormIngredients = ({ isAuthor, values }: Props ) => {
+export const ProductFormIngredients = ({ ingredients }: Props ) => {
+
+  const unitOptions = [
+    { value: '', label: 'Selecciona una Unidad' },
+    ...Object.values(MeasurementUnit).filter(unit => typeof unit === 'string').map(unit => ({
+      value: unit,
+      label: measurementUnitTranslations[ unit as MeasurementUnit ]
+    }))
+  ]
   
   const [ newIngredientIndex, setNewIngredientIndex ] = useState<number | null>(null)
   const ingredientRefs = useRef<Array<HTMLInputElement | null>>([])
 
   useEffect(() => {
-    if ( values.ingredients.length > 0 ) {
-      const lastIndex = values.ingredients.length - 1
+    if ( ingredients.length > 0 ) {
+      const lastIndex = ingredients.length - 1
       ingredientRefs.current[ lastIndex ]?.scrollIntoView({ behavior: 'smooth' })
     }
   }, [])
@@ -44,10 +51,10 @@ export const ProductFormIngredients = ({ isAuthor, values }: Props ) => {
       {({ remove, push }) => (
         <>
         {
-          values.ingredients.length > 0 && (
+          ingredients.length > 0 && (
             <>
             <Table thead={ headers }>
-              { values.ingredients.map(( ingredient, index) => (
+              { ingredients.map(( ingredient, index) => (
                 <tr key={index} className="group">
                   <Td>
                     <Field
@@ -69,7 +76,17 @@ export const ProductFormIngredients = ({ isAuthor, values }: Props ) => {
                     />
                   </Td>
                   <Td>
-                    Gr.
+                    <Field
+                      as="select"
+                      name={`ingredients.${ index }.unit`}
+                      className="outline-none"
+                    >
+                      { unitOptions.map( option => (
+                        <option key={ option.value } value={ option.value }>
+                          { option.label }
+                        </option>
+                      ))}
+                    </Field>
                   </Td>
                   <Td>
                     <div className="table__flex table__actions">
@@ -78,8 +95,7 @@ export const ProductFormIngredients = ({ isAuthor, values }: Props ) => {
                         iconName='trash'
                         variant={ Variant.GHOST }
                         onClick={() => remove(index)}
-                        size={ Size.SMALL }
-                        disabled={ !isAuthor }
+                        size={ Size.SM }
                       />
                     </div>
                   </Td>
@@ -89,14 +105,13 @@ export const ProductFormIngredients = ({ isAuthor, values }: Props ) => {
             </>
           )
         }
-        <AddSection
+        <AdminAddSection
           buttonText='Agregar Ingrediente'
-          emptyText='Este producto no tiene ingredientes aun'
-          empty={ values.ingredients.length === 0 }
-          isAuthor={ isAuthor }
+          emptyText='Este producto aun no tiene ingredientes'
+          empty={ ingredients.length === 0 }
           onClick={() => {
             push({ id: uuidv4(), name: '', quantity: null })
-            setNewIngredientIndex( values.ingredients.length )
+            setNewIngredientIndex( ingredients.length )
           }}
         />
         </>

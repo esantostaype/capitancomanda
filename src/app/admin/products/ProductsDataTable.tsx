@@ -11,11 +11,10 @@ import { ProductsTableSkeleton } from './ProductsTableSkeleton'
 type Props = {
   token?: string
   role?: string
-  branchId?: string
   initialProducts: Product[]
 }
 
-export const ProductsDataTable = ({ token, role, branchId, initialProducts }: Props ) => {
+export const ProductsDataTable = ({ token, role, initialProducts }: Props ) => {
   
   const [ products, setProducts ] = useState<Product[]>( initialProducts )
   const [ loading, setLoading ] = useState(true)
@@ -74,11 +73,10 @@ export const ProductsDataTable = ({ token, role, branchId, initialProducts }: Pr
       enableSorting: false,
       cell: ({ row }) => (
         <TableActions
-          link={`/admin/products/${ row.original.id }`}
+          link={`/admin/products?id=${ row.original.id }`}
           id={ row.original.id }
           token={ token! }
           onDelete={ handleDeleteProduct }
-          branchId={ branchId }
           dataId={ row.original.user.branchId }
         />
       )

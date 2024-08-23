@@ -56,10 +56,9 @@ export const getValidationSchema = ( user?: User, isOwner?: boolean ) => {
 }
 
 export const BranchSchema = Yup.object().shape({
-  name: Yup.string()
-		.min( 2, 'El Nombre de la Sucursal debe tener al menos 2 caracteres' )
-		.max( 48, 'El Nombre de la Sucursal no debe ser mayor a 48 caracteres' )
-		.required( 'El Nombre de la Sucursal es requerido' ),
+  name: Yup.string().required('Nombre es requerido'),
+  phoneNumber: Yup.string(),
+  address: Yup.string()
 })
 
 export const ProductSchema = Yup.object().shape({

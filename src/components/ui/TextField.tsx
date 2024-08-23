@@ -56,16 +56,16 @@ export const TextField: FC<TextFieldProps> = ({
 	const labelClasses = `
 		absolute pointer-events-none px-2 left-[10px] z-20 leading-4 transition-all bg-surface
 		${ isActive && !hasError ? 'text-accent text-xs top-[-6px]' : ''}
-		${ isFilled && !isActive || ( asSelect && !isActive && !hasError ) ? 'bg-surface text-xs top-[-6px]' : ''}
+		${ isFilled && !isActive || ( asSelect && !isActive && !hasError ) ? 'text-gray600 bg-surface text-xs top-[-6px]' : ''}
 		${ hasError && !isActive && !asSelect ? 'text-error top-4' : ''}
 		${ hasError && ( isActive || asSelect ) ? 'text-error text-xs top-[-6px]' : isFilled || asSelect ? 'group-hover:text-accent' : ""}
-		${ !isActive && !isFilled && !hasError && 'top-4 text-gray500'}
+		${ !isActive && !isFilled && !hasError && 'top-4 text-gray600'}
 	`
 
 	const inputClasses = `
-		transition-all border-2 px-4 py-3 outline-none w-full
-		${ isActive && !hasError ? 'placeholder:text-gray500 border-accent' : !hasError ? 'border-gray100' : ''}
-		${ hasError && !isActive ? 'placeholder:text-surface border-error' : hasError && isActive ? 'placeholder:text-gray500 border-error' : isActive ? 'placeholder:text-gray500 group-hover:border-accent' : 'placeholder:text-surface group-hover:border-accent'}
+		transition-all border-2 px-4 py-3 outline-none w-full placeholder:text-gray400
+		${ isActive && !hasError ? 'placeholder:opacity-100 border-accent' : !hasError ? 'border-gray100' : ''}
+		${ hasError && !isActive && label ? 'placeholder:opacity-0 border-error' : hasError && isActive ? 'placeholder:opacity-100 border-error' : isActive ? 'placeholder:opacity-100 group-hover:border-accent' : !label ? 'placeholder:opacity-100 group-hover:border-accent' : 'placeholder:opacity-0 group-hover:border-accent'}
 	`
 
 	return (

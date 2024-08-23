@@ -1,12 +1,10 @@
 'use client'
 
 import { ImageUpload, TextField } from '@/components'
-import { Category, Product, ProductFormValues } from '@/interfaces'
+import { Category, ProductFormValues } from '@/interfaces'
 
 interface Props {
-  product?: Product
   categories: Category[]
-  disabled: boolean
   errors: any
   touched: any
   values: ProductFormValues
@@ -16,7 +14,7 @@ interface Props {
   setDeleteImage: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const ProductFormInformation = ({ product, disabled, categories, errors, touched, values, newImage, setNewImage, deleteImage, setDeleteImage }: Props ) => {
+export const ProductFormInformation = ({ categories, errors, touched, values, newImage, setNewImage, deleteImage, setDeleteImage }: Props ) => {
 
   const categoryOptions = [
     { value: '', label: 'Selecciona una Categoría' },
@@ -34,9 +32,8 @@ export const ProductFormInformation = ({ product, disabled, categories, errors, 
           deleteImage={ deleteImage }
           setNewImage={ setNewImage }
           setDeleteImage={ setDeleteImage }
-          image={ product?.image || '' }
-          altImage={ product?.name || '' }
-          disabled={ disabled }
+          image={ values?.image || '' }
+          altImage={ values?.name || '' }
         />
       </div>
       <div className="col-span-5">
@@ -50,7 +47,6 @@ export const ProductFormInformation = ({ product, disabled, categories, errors, 
               errors={ errors.name }
               touched={ touched.name }
               value={ values.name }
-              disabled={ disabled }
             />
           </div>
           <div className="col-span-4">
@@ -61,7 +57,6 @@ export const ProductFormInformation = ({ product, disabled, categories, errors, 
               name="categoryId"
               errors={ errors.categoryId }
               touched={ touched.categoryId }
-              disabled={ disabled }
             />
           </div>
           <div className="col-span-8">
@@ -73,7 +68,6 @@ export const ProductFormInformation = ({ product, disabled, categories, errors, 
               errors={ errors.description }
               touched={ touched.description }
               value={ values.description }
-              disabled={ disabled }
             />
           </div>
           <div className="col-span-3">
@@ -85,7 +79,6 @@ export const ProductFormInformation = ({ product, disabled, categories, errors, 
               errors={ errors.price }
               touched={ touched.price }
               value={ values.price }
-              disabled={ disabled }
             />
           </div>
         </div>

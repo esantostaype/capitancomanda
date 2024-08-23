@@ -1,40 +1,74 @@
 'use client'
-import { useMemo } from 'react'
-import styles from './Counter.module.css'
-import { useOrderStore } from '@/store/order-store'
+import { useState } from 'react'
 import { IconButton } from '@/components'
-import { Color, IconButtonShape, Size, Variant } from '@/interfaces'
+import { IconButtonShape, Size } from '@/interfaces'
+import { useUiStore } from '@/store/ui-store'
 
 interface Props {
-	item: any
-	currentValue: number
+	value: number
+  onQuantityChange: ( newQuantity: number ) => void
+  acceptZero?: boolean
 }
 
 const MAX_ITEMS = 10
-const MIN_ITEMS = 1
+const MIN_ITEMS = 0
 
-export const Counter = ({ item, currentValue }: Props) => {
-	const increaseQuantity = useOrderStore(( state ) => state.increaseQuantity )
-	const decreaseQuantity = useOrderStore(( state ) => state.decreaseQuantity )
-	const disableIncrease = useMemo(() => item.quantity === MAX_ITEMS, [ item ])
-	const disableDecrease = useMemo(() => item.quantity === MIN_ITEMS, [ item ])
-	return (
-		<div className={ styles.content }>
-			<IconButton
-				disabled={ disableDecrease }
-				color={ Color.ACCENT }
-				iconName='minus-small'
-				variant={ Variant.GHOST } 
-				onClick={() => decreaseQuantity( item.id )}
-			/>
-			<span className={ styles.counter }>{ currentValue }</span>			
-			<IconButton
-				disabled={ disableIncrease }
-				color={ Color.ACCENT }
-				iconName='plus-small'
-				variant={ Variant.GHOST } 
-				onClick={() => increaseQuantity( item.id )}
-			/>
-		</div>
-	)
+export const Counter = ({ value, onQuantityChange, acceptZero }: Props) => {
+
+  const [ quantity, setQuantity ] = useState( value )
+  const { closeModal } = useUiStore()
+  
+  const handleIncrease = () => {
+    if ( quantity < MAX_ITEMS ) {
+      const newQuantity = quantity + 1
+      setQuantity( newQuantity )
+      onQuantityChange( newQuantity )
+    }
+  }
+
+  const handleDecrease = () => {
+    if ( quantity > MIN_ITEMS ) {
+      const newQuantity = quantity - 1
+      setQuantity( newQuantity )
+      onQuantityChange( newQuantity )
+    }
+  }
+
+  const handleCloseModal = () => {
+    closeModal()
+    setTimeout(() => {
+      setQuantity(1)
+      window.history.back()
+    }, 300)
+  }
+
+  return (
+    <div className="flex items-center gap-2 bg-gray50 rounded">
+      {
+        quantity === 1 && !acceptZero ?
+        <IconButton
+          size={ Size.LG }
+          shape={ IconButtonShape.SQUARE }
+          iconName='trash'
+          onClick={ handleCloseModal }
+        />
+        :
+        <IconButton
+          disabled={ MIN_ITEMS === quantity }
+          size={ Size.LG }
+          shape={ IconButtonShape.SQUARE }
+          iconName='minus-small'
+          onClick={ handleDecrease }
+        />
+      }
+      <span className="min-w-6 text-center">{ quantity }</span>			
+      <IconButton
+        disabled={ MAX_ITEMS === quantity }
+        size={ Size.LG }
+        shape={ IconButtonShape.SQUARE }
+        iconName='plus-small'
+        onClick={ handleIncrease }
+      />
+    </div>
+  )
 }

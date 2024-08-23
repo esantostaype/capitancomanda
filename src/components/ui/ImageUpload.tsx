@@ -77,10 +77,10 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
         <div className="absolute flex flex-col items-center justify-center gap-2 top-0 left-0 h-full w-full z-20">
           { newImage || ( image && !deleteImage ) ? (
             <>
-              <Button text="Cambiar" size={ Size.SMALL } variant={ Variant.CONTAINED } onClick={() => fileInputRef.current?.click()} />
+              <Button text="Cambiar" size={ Size.SM } variant={ Variant.CONTAINED } onClick={() => fileInputRef.current?.click()} />
               <Button
                 text="Eliminar"
-                size={ Size.SMALL }
+                size={ Size.SM }
                 variant={ Variant.CONTAINED }
                 onClick={() => {
                   setNewImage(null)
@@ -89,7 +89,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
               />
             </>
           ) : (
-            <Button text="Agregar" size={ Size.SMALL } variant={ Variant.CONTAINED } onClick={() => fileInputRef.current?.click()} />
+            <Button text="Agregar" size={ Size.SM } variant={ Variant.CONTAINED } onClick={() => fileInputRef.current?.click()} />
           )}
         </div>
         <div className="absolute top-0 left-0 h-full w-full opacity-10 bg-accent z-10"></div>

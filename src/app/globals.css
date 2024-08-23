@@ -382,9 +382,13 @@ body {
 }*/
 
 .react-tabs__tab{
+  align-items: center;
   border-bottom: 1px solid transparent;
   cursor: pointer;
-  height: 2rem;
+  display: flex;
+  gap: 4px;
+  height: 2.5rem;
+  line-height: 2.5rem;
 }
 
 .react-tabs__tab:hover{

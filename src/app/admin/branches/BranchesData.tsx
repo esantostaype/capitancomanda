@@ -26,8 +26,7 @@ export default function BranchesData({ data, token }: Props ) {
           hasImage
           image={ branch.image }
           alt={ branch.name }
-          linkEdit={ `/admin/branches/${ branch.id }` }
-          onClickEdit={ () => openModal() }
+          linkEdit={ `?id=${ branch.id }` }
           onClickDelete={ () => handleDeleteBranch( branch.id, token ) }
           hasFooter
           footer={            

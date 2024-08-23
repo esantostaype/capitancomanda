@@ -11,6 +11,6 @@ type Props = {
 export const OpenModalPageButton = ({ link, text }: Props ) => {
   const { openModalPage } = useUiStore()
   return (
-    <Button href={ link } onClick={ () => openModalPage() } text={ text || "Crear Nuevo" } color={ Color.ACCENT } variant={ Variant.CONTAINED } size={ Size.SMALL } />
+    <Button href={ link } onClick={ () => openModalPage() } text={ text || "Crear Nuevo" } color={ Color.ACCENT } variant={ Variant.CONTAINED } size={ Size.SM } />
   )
 }

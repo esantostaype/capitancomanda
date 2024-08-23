@@ -1,20 +1,33 @@
 import { create } from 'zustand'
-import { OrderItem, Product } from '../interfaces'
+import { OrderItem, Product, SelectedVariants, SelectedAdditionals, OrderItemFull } from '@/interfaces'
 
 interface Store {
-  order: OrderItem[]
-  addToOrder: ( product: Product ) => void
-  increaseQuantity: ( id: Product['id'] ) => void
-  decreaseQuantity: ( id: Product['id'] ) => void
-  removeItem: ( id: Product['id'] ) => void
+  order: OrderItemFull[]
+  addToOrder: (
+    product: OrderItemFull,
+    quantity: number,
+    selectedVariants: SelectedVariants,
+    selectedAdditionals: SelectedAdditionals,
+    notes: string,
+    uniqueId: string
+  ) => void
+  increaseQuantity: (
+    id: Product['id'],
+    uniqueId: string
+  ) => void
+  decreaseQuantity: (
+    id: Product['id'],
+    uniqueId: string
+  ) => void
+  removeItem: ( uniqueId: string ) => void
   clearOrder: () => void
-  setOrder: ( newOrder: OrderItem[] ) => void
+  setOrder: ( newOrder: OrderItemFull[] ) => void
   delivery: boolean
 }
 
 export const useOrderStore = create<Store>(( set, get ) => {
 
-  const updateLocalStorage = ( order: OrderItem[] ) => {
+  const updateLocalStorage = ( order: OrderItemFull[] ) => {
     if ( typeof window !== 'undefined' && window.localStorage ) {
       localStorage.setItem('order', JSON.stringify( order ))
     }
@@ -23,74 +36,85 @@ export const useOrderStore = create<Store>(( set, get ) => {
   return {
     order: [],
     delivery: false,
-    addToOrder: ( product ) => {
+    addToOrder: ( product, quantity, selectedVariants, selectedAdditionals, notes, uniqueId ) => {
       const existingItem = get().order.find(
-        ( item ) => item.id === product.id
+        (item) => item.id === product.id && 
+          item.uniqueId === uniqueId
       )
 
-      if ( existingItem ) {
-        set(( state ) => ({
-          order: state.order.map(( item ) =>
-            item.id === product.id
+      const finalUniqueId = uniqueId || product.id
+    
+      if (existingItem) {
+        set((state) => ({
+          order: state.order.map((item) =>
+            (item.id === product.id && item.uniqueId === finalUniqueId)
               ? {
                   ...item,
-                  quantity: item.quantity + 1,
-                  subtotal: item.price * ( item.quantity + 1 )
+                  quantity: item.quantity + quantity,
+                  subtotal: item.price * (quantity + item.quantity),
+                  selectedVariants: item.selectedVariant,
+                  selectedAdditionals: item.selectedAdditionals,
+                  notes: item.notes
                 }
               : item
-          )
-        }))
+          ),
+        }));
       } else {
-        set(( state ) => ({
+        set((state) => ({
           order: [
             ...state.order,
             {
               ...product,
-              quantity: 1,
-              subtotal: product.price * 1
-            }
-          ]
-        }))
+              quantity,
+              subtotal: product.price * quantity,
+              selectedVariants,
+              selectedAdditionals,
+              uniqueId: finalUniqueId,
+              notes
+            },
+          ],
+        }));
       }
-
-      updateLocalStorage( get().order )
+    
+      updateLocalStorage(get().order);
     },
 
-    increaseQuantity: ( id ) => {
-      set(( state ) => ({
-        order: state.order.map(( item ) =>
-          item.id === id
+    increaseQuantity: ( id, uniqueId ) => {
+      set((state) => ({
+        order: state.order.map((item) =>
+          item.id === id && item.uniqueId === uniqueId
             ? {
                 ...item,
                 quantity: item.quantity + 1,
-                subtotal: item.price * ( item.quantity + 1 )
+                subtotal: item.price * (item.quantity + 1),
               }
             : item
         ),
-      }))
-
-      updateLocalStorage( get().order )
+      }));
+      updateLocalStorage(get().order);
     },
-
-    decreaseQuantity: (id ) => {
-      set(( state ) => ({
-        order: state.order.map(( item ) =>
-          item.id === id
-            ? {
-                ...item,
-                quantity: item.quantity - 1,
-                subtotal: item.price * ( item.quantity - 1 )
-              }
-            : item
-        ),
-      }))
-
-      updateLocalStorage(get().order )
+    
+    decreaseQuantity: ( id, uniqueId ) => {
+    
+      set((state) => ({
+        order: state.order
+          .map((item) =>
+            item.id === id && item.uniqueId === uniqueId
+              ? {
+                  ...item,
+                  quantity: item.quantity - 1,
+                  subtotal: item.price * (item.quantity - 1),
+                }
+              : item
+          )
+          .filter((item) => item.quantity > 0),
+      }));
+      updateLocalStorage(get().order);
     },
-
-    removeItem: ( id ) => {
+    
+    removeItem: ( uniqueId ) => {
       set(( state ) => ({
-        order: state.order.filter(( item ) => !(item.id === id ))
+        order: state.order.filter(( item ) => !( item.uniqueId === uniqueId ))
       }))
 
       updateLocalStorage( get().order )

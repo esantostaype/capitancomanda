@@ -40,7 +40,7 @@ export const AdminCard = ({ children, footer, hasImage, image, alt, hasFooter, h
           }
         </div>
       }
-      <div className="p-6">
+      <div className={`${ hasImage ? "py-4 px-6" : "p-6" }`}>
         { children }
       </div>
       {

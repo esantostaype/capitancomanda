@@ -192,8 +192,8 @@ export const UserForm = ({ user, token, branches, isJustPage }: Props) => {
             </div>
           </ModalBody>
           <ModalFooter isJustPage={ isJustPage }>
-            <Button text="Cancelar" variant={ Variant.CONTAINED } size={ Size.LARGE } onClick={ ()=> closeModalPage( true ) }/>
-            <Button color={ Color.ACCENT } variant={ Variant.CONTAINED } text={ user ? 'Actualizar Usuario' : 'Crear Usuario' } size={ Size.LARGE } submit />
+            <Button text="Cancelar" variant={ Variant.CONTAINED } size={ Size.LG } onClick={ ()=> closeModalPage( true ) }/>
+            <Button color={ Color.ACCENT } variant={ Variant.CONTAINED } text={ user ? 'Actualizar Usuario' : 'Crear Usuario' } size={ Size.LG } submit />
           </ModalFooter>
         </Form>
         </>

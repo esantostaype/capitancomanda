@@ -7,7 +7,7 @@ type ModalBackgroundProps = {
 export const ModalBody = ({ children, withTabs, isJustPage }: ModalBackgroundProps ) => {
 
   return (
-    <div className={`flex-1 ${ isJustPage ? "mb-8" : "p-8" } ${ withTabs && !isJustPage ? "-mt-8" : "" } `}>
+    <div className={`relative flex-1 ${ isJustPage ? "mb-10" : "p-10" } ${ withTabs && !isJustPage ? "-mt-10" : "" } `}>
       { children }
     </div>
   )

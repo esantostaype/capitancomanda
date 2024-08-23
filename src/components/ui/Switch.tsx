@@ -13,14 +13,14 @@ interface Props {
 
 const getSizeClasses = ( size?: Size ) => {
   switch (size) {
-    case Size.SMALL:
+    case Size.SM:
       return {
         container: 'text-xs gap-2',
         switchButton: 'w-10 h-5',
         switchButtonAfter: 'top-[3px] ml-[3px] w-[14px] h-[14px] rounded-full',
         switchButtonCheckedAfter: 'left-[calc(100%-34px)] transform translate-x-full'
       }
-    case Size.LARGE:
+    case Size.LG:
       return {
         container: 'text-base gap-2',
         switchButton: 'w-14 h-7',

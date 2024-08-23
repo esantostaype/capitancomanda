@@ -16,7 +16,7 @@ export const Table = ({ children, thead }: Props ) => {
         <thead>
           <tr>
             { thead.map(( th, index ) => (
-              <th key={ index } className="bg-background px-6 py-4 text-left border-b-2 border-b-gray50 first:w-12" style={{ width: th.width || 'auto' }}>
+              <th key={ index } className="bg-background p-4 text-left border-b-2 border-b-gray50 first:w-12" style={{ width: th.width || 'auto' }}>
                 { th.label }
               </th>
             ))}

@@ -1,4 +1,4 @@
-import { Role } from "@/interfaces"
+import { OrderItem, OrderItemFull, Role, SelectedVariants } from "@/interfaces"
 import { redirect } from "next/navigation"
 
 export const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL
@@ -139,4 +139,57 @@ export const formatOrderId = ( number: number, length: number ) => {
 
 export const SPICYLEVEL = [ 0,1,2,3 ]
 
+export const getVariantPrice = ( product: OrderItemFull, selectedVariantWithPrice: SelectedVariants ): number => {
+  const variation = product.variations.find(variation =>
+    Object.entries(selectedVariantWithPrice).every(([key, value]) =>
+      variation.name === key && variation.options.some( option => option.name === value )
+    )
+  )
 
+  if (variation && variation.hasPrice) {
+    const selectedOption = variation.options.find(option => option.name === selectedVariantWithPrice[ variation.name ])
+    return selectedOption ? selectedOption.price || 0 : product.price
+  }
+
+  return product.price
+}
+
+export const generateUniqueId = (
+  productId: string, 
+  allVariants: Record<string, string>, 
+  additionals: Record<string, number>,
+  notes: string
+): string => {
+  
+  const variationPart = Object.entries(allVariants)
+    .map(([key, value]) => `${value}`.toLowerCase().replace(/\s+/g, '-'))
+    .join('-');
+
+  const additionalsPart = Object.entries(additionals)
+    .map(([key, value]) => `${key}`.toLowerCase().replace(/\s+/g, '-') + (value > 1 ? `-${value}` : ''))
+    .join('-');
+
+  const notesPart = notes.toLowerCase().replace(/\s+/g, '-')
+    
+  const combinedId = [productId, variationPart, additionalsPart, notesPart]
+    .filter(part => part)
+    .join('-');
+
+  return combinedId
+}
+
+export const orderVariants = (
+  originalOrder: { name: string }[], 
+  variations: Record<string, string>
+): Record<string, string> => {
+  return Object.keys(variations)
+    .sort((a, b) => {
+      const indexA = originalOrder.findIndex(variation => variation.name === a)
+      const indexB = originalOrder.findIndex(variation => variation.name === b)
+      return indexA - indexB
+    })
+    .reduce((acc, key) => {
+      acc[key] = variations[key]
+      return acc
+    }, {} as Record<string, string>)
+}

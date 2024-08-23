@@ -1,28 +1,47 @@
 'use client'
 import { Formik, Form, FormikHelpers } from 'formik'
-import { Button, ImageUpload, ModalBody, ModalFooter, Spinner, TextField } from '@/components'
+import { Button, ImageUpload, Modal, ModalBody, ModalFooter, Spinner, TextField } from '@/components'
 import { toast } from 'react-toastify'
-import { Category, Color, Variant } from '@/interfaces'
+import { Category, Color, Size, Variant } from '@/interfaces'
 import { addCategory, editCategory } from '@/actions/category-actions'
 import { useUiStore } from '@/store/ui-store'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CategorySchema } from '@/schema'
+import { useSearchParams } from 'next/navigation'
+import { fetchData } from '@/utils'
 
 interface FormValues {
   name: string
 }
 
 type Props = {
-  category?: Category
   token?: string
 }
 
-export const CategoryForm = ({ category, token }: Props) => {
+export const CategoryForm = ({ token }: Props) => {
+
+  const searchParams = useSearchParams()
+  const categoryId = searchParams.get('id')
+  const createCategory = searchParams.get('create')
   
+  const [ category, setCategory ] = useState<Category | null>(null)
   const [ newImage, setNewImage] = useState<string | null>(null)
   const [ deleteImage, setDeleteImage ] = useState<boolean>(false)
+  const { activeModal, closeModal } = useUiStore()
 
-  const { closeModal } = useUiStore()
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if ( categoryId ) {
+        try {
+          const data: Category = await fetchData({ url: `/categories/${ categoryId }`, token })
+          setCategory( data )
+        } catch ( error ) {
+          toast.error('Error al obtener la categoría')
+        }
+      }
+    }
+    fetchProduct()
+  }, [ categoryId, token ])
 
   const initialValues: FormValues = {
     name: category ? category.name : ''
@@ -41,14 +60,24 @@ export const CategoryForm = ({ category, token }: Props) => {
     closeModal( true )
     toast.success( category ? 'Categoría Actualizada!' : 'Categoría Creada!')
   }
+
+  const isEditMode = ( categoryId === category?.id )
+  const isCreateMode = ( createCategory === '' )
+
+  useEffect(() => {
+    if ( !activeModal ) {
+      setCategory( null )
+      setNewImage( null )
+    }
+  }, [ activeModal ])
   
   return (
-    <>
+    <Modal size={ Size.XL } isOpen={ isEditMode || isCreateMode } title={ category?.name || "Crear Categoría" } withBackRoute>
     <Formik initialValues={ initialValues } onSubmit={ handleSubmit } validationSchema={ CategorySchema }>
       {({ errors, touched, values, isSubmitting }) => (
         <>
         <Spinner isActive={ isSubmitting } />
-        <Form>
+        <Form className="flex flex-col flex-1 overflow-y-auto">
           <ModalBody>
             <div className="flex flex-col gap-8">
               <div className="max-w-40">
@@ -80,6 +109,6 @@ export const CategoryForm = ({ category, token }: Props) => {
         </>
       )}
     </Formik>
-  </>
+  </Modal>
   )
 }

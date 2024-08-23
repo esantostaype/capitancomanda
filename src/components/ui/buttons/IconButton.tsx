@@ -48,7 +48,7 @@ export const IconButton = ({ variant, color, shape, size, iconName, full, onClic
       break
   }
   
-  const sizeClass = size === Size.SMALL ? 'text-xs h-8 w-8' : size === Size.LARGE ? 'text-lg h-12 w-12' : 'h-10 w-10'
+  const sizeClass = size === Size.SM ? 'text-xs h-8 w-8 flex-[0_0_2rem]' : size === Size.LG ? 'text-lg h-12 w-12 flex-[0_0_3rem]' : 'h-10 w-10 flex-[0_0_2.5rem]'
   const variantContainedClass = variant === Variant.CONTAINED ? `${ color ? colorBgClass : "bg-gray200 hover:bg-gray200" } text-white` : ""
   const variantGhostClass = variant === Variant.GHOST ? `${ color ? colorBgClass : "bg-gray600" }` : ""
   const transparentClass = !variant ? "hover:bg-gray50" : ""

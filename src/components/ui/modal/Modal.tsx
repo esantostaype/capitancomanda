@@ -2,46 +2,105 @@
 import { useUiStore } from '@/store/ui-store'
 import { useEffect } from 'react'
 import { IconButton, ModalBackground } from '@/components'
+import { Size, Variant } from '@/interfaces'
 
 interface Props {
   children: React.ReactNode
-  title?: string
-  size?: 'small' | 'normal' | 'large'
+  title?: React.ReactNode
+  size?: Size
   withBackRoute?: boolean
+  isOpen?: boolean
 }
 
 
-export const Modal = ({ children, title, withBackRoute }: Props ) => {
+export const Modal = ({ children, title, size, withBackRoute, isOpen }: Props ) => {
   
-  const { activeClassModal, closeModal } = useUiStore()
+  const { activeClassModal, activeModal, openModal, closeModal } = useUiStore()
   
   useEffect(() => {
     const handleKeyDown = ( event: KeyboardEvent ) => {
-      if ( event.key === 'Escape' ) {
-        closeModal( withBackRoute )
+      if ( event.key === 'Escape' && withBackRoute && activeModal ) {
+        closeModal( withBackRoute && activeModal )
+      } else if( event.key === 'Escape' ) {
+        closeModal()
       }
     }
-    window.addEventListener('keydown', handleKeyDown )
+
+    window.addEventListener('keydown', handleKeyDown)
     return () => {
-      window.removeEventListener('keydown', handleKeyDown )
+      window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [ closeModal, withBackRoute ])
+  }, [activeModal, closeModal, withBackRoute])
+
+  useEffect(() => {  
+    if ( isOpen ) {
+      openModal()
+    }
+  }, [ isOpen, openModal ])
+
+  
+  let sizeClass = ""
+
+  switch ( size ) {
+    case Size.XS:
+      sizeClass = "max-w-xs"
+      break
+    case Size.SM:
+      sizeClass = "max-w-sm"
+      break
+    case Size.MD:
+      sizeClass = "max-w-md"
+      break
+    case Size.LG:
+      sizeClass = "max-w-lg"
+      break
+    case Size.XL:
+      sizeClass = "max-w-xl"
+      break
+    case Size._2XL:
+      sizeClass = "max-w-2xl"
+      break
+    case Size._3XL:
+      sizeClass = "max-w-3xl"
+      break
+    case Size._4XL:
+      sizeClass = "max-w-4xl"
+      break
+    case Size._5XL:
+      sizeClass = "max-w-5xl"
+      break
+    case Size._6XL:
+      sizeClass = "max-w-6xl"
+      break
+    case Size._7XL:
+      sizeClass = "max-w-7xl"
+      break
+    default:
+      sizeClass = ""
+      break
+  }
   
   return (
-    <section className={`${ activeClassModal ? "pointer-events-auto" : "pointer-events-none" } flex items-center justify-center fixed h-screen w-full top-0 left-0 z-[9999] overflow-y-auto py-8`}>
-      <div className={`${ activeClassModal ? "animate-enterModal" : "animate-leaveModal bottom-[-20px] opacity-0" } bg-surface flex-1 max-w-lg flex flex-col rounded-xl relative z-[9999] bottom-0`}>
-        <div className="absolute top-4 right-4">
-          <IconButton onClick={ ()=> closeModal( withBackRoute ) } iconName='cross-small'/>
-        </div>
-        {
-          title &&
-          <div className="py-6 px-8 border-b border-b-gray50">
-            <h2 className="text-xl font-semibold">{ title }</h2>
+    <>
+    {
+      ( isOpen ) && (
+        <section className={`${ activeClassModal ? "pointer-events-auto" : "pointer-events-none" } flex items-center justify-center fixed h-screen w-full top-0 left-0 z-[9999] py-8`}>
+          <div className={`${ activeClassModal ? "animate-enterModal" : "animate-leaveModal bottom-[-20px] opacity-0" } bg-surface flex-1 ${ sizeClass } flex flex-col rounded-xl relative z-[9999] bottom-auto max-h-[90vh] overflow-hidden`}>
+            <div className="absolute top-4 right-4 z-30">
+              <IconButton onClick={ ()=> closeModal( withBackRoute ) } iconName='cross-small' variant={ Variant.GHOST } />
+            </div>
+            {
+              title &&
+              <div className="py-6 px-8 border-b border-b-gray50 sticky top-0">
+                <h2 className="text-xl font-semibold">{ title }</h2>
+              </div>
+            }
+            { children }
           </div>
-        }
-        { children }
-      </div>
-      <ModalBackground onClick={ ()=> closeModal( withBackRoute ) } active={ activeClassModal } />
-    </section>
+          <ModalBackground onClick={ ()=> closeModal( withBackRoute ) } active={ activeClassModal } />
+        </section>
+      )
+  }
+  </>
   )
 }

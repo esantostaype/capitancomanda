@@ -1,5 +1,5 @@
 'use client'
-import { Button, Modal } from '@/components'
+import { Button, Modal, ModalConfirm } from '@/components'
 import { Color, Size, Variant } from '@/interfaces'
 import { useUiStore } from '@/store/ui-store'
 
@@ -13,73 +13,46 @@ type Props = {
   disabled?: boolean
 }
 
-export const TableActions = ({ link, id, token, branchId, dataId, onDelete }: Props) => {
+export const TableActions = ({ link, id, token, dataId, onDelete }: Props) => {
 
-  const { openModalPage, closeModal, openModalById, activeModalId, activeModal } = useUiStore()
+  const { openModalPage, closeModalConfirm, openModalConfirm, activeModalConfirmId, activeModal } = useUiStore()
 
   const handleDelete = async ( id: string ) => {
     await onDelete( id, token )
-    closeModal()
+    closeModalConfirm
   }
-
-  const isAuthor = dataId === branchId
-
-  console.log( "dataId: ", dataId, "branchId: ", branchId )
 
   return (
     <>
       {
-        activeModal && activeModalId === id && (
-          <Modal>
-            <div className="confirm">
-              <div className='confirm__icon error'>
-                <i className="fi fi-rr-trash"></i>
-              </div>
-              <h3 className="confirm__title">¿Estás seguro de eliminar este producto?</h3>
-              <p>Al eliminar este producto, también se eliminará de todas las órdenes en las que esté incluido.</p>
-              <div className="confirm__buttons">
-                <Button text='Cancelar' variant={ Variant.CONTAINED } onClick={() => { closeModal() }} />
-                <Button text='Sí, eliminar producto' variant={ Variant.CONTAINED } color={ Color.ERROR } onClick={() => { handleDelete(id), closeModal() }} />
-              </div>
-            </div>
-          </Modal>
+        activeModalConfirmId === id && (
+          <ModalConfirm
+            title='¿Estás seguro de eliminar este producto?'
+            detail='Al eliminar este producto, también se eliminará de todas las órdenes en las que esté incluido.'
+            buttonConfirmText='Sí, eliminar producto'
+            onClickConfirm={() => { handleDelete( id ) }}
+            onClickCancel={() => { closeModalConfirm() }}
+          />
         )
       }
       <div className="flex items-center gap-3 justify-end">
-        {
-          isAuthor ? (
-            <Button
-              href={link}
-              onClick={() => openModalPage()}
-              text='Editar'
-              color={ Color.INFO }
-              size={ Size.SMALL }
-              variant={ Variant.GHOST }
-              iconName='pencil'
-            />
-          ) : (
-            <Button
-              href={link}
-              onClick={() => openModalPage()}
-              text='Ver'
-              color={ Color.INFO }
-              size={ Size.SMALL }
-              variant={ Variant.GHOST }
-              iconName='eye'
-            />
-          )
-        }
-        {
-          isAuthor &&
-          <Button
-            text='Eliminar'
-            color={ Color.ERROR }
-            size={ Size.SMALL }
-            variant={ Variant.GHOST }
-            iconName='trash'
-            onClick={() => openModalById(id)}
-          />
-        }
+        <Button
+          href={link}
+          onClick={() => openModalPage()}
+          text='Editar'
+          color={ Color.INFO }
+          size={ Size.SM }
+          variant={ Variant.GHOST }
+          iconName='pencil'
+        />
+        <Button
+          text='Eliminar'
+          color={ Color.ERROR }
+          size={ Size.SM }
+          variant={ Variant.GHOST }
+          iconName='trash'
+          onClick={() => openModalConfirm(id)}
+        />
       </div>
     </>
   )
