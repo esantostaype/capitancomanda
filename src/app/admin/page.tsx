@@ -1,11 +1,10 @@
-'use client'
+import { Metadata } from 'next'
 
-import { useSession } from 'next-auth/react'
+export const metadata: Metadata = {
+  title: 'Dashboard - Restify'
+}
 
 export default function AdminPage() {
-  const { data: session } = useSession()
-  console.log( "Session Login GAAA: ", session )
-
   return (
     <>
     <header className="admin__header">

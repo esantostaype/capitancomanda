@@ -27,7 +27,7 @@ interface UiStore {
   
 }
 
-const useUiStore = create<UiStore>((set) => ({
+export const useUiStore = create<UiStore>((set) => ({
   activeModal: false,
   activeClassModal: false,
   activeModalId: null,
@@ -85,5 +85,3 @@ const useUiStore = create<UiStore>((set) => ({
     }, 300)
   }
 }))
-
-export { useUiStore }

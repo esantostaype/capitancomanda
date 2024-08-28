@@ -23,7 +23,7 @@ export const OrderSchema = z.object({
   }) )
 })
 
-export const getValidationSchema = ( user?: User, isOwner?: boolean ) => {
+export const getValidationSchema = ( user?: User | null, isOwner?: boolean ) => {
   const baseSchema = {
     email: Yup.string()
       .email('Correo Electrónico no válido')

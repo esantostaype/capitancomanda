@@ -1,4 +1,4 @@
-import { OrderItem, OrderItemFull, Role, SelectedVariants } from "@/interfaces"
+import { OrderItemFull, Role, SelectedVariants } from "@/interfaces"
 import { redirect } from "next/navigation"
 
 export const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL
@@ -16,39 +16,6 @@ export function formatCurrency( amount: number ) {
   })
   const formattedNumber = numberFormat.format( amount )
   return `S/ ${ formattedNumber }`
-}
-
-export function formatCategoryName( slug: string ) {
-  const words = slug.split('-').map( word => word.charAt(0).toUpperCase() + word.slice(1) )
-  return words.join(' ')
-}
-
-export const getSpicyLevelText = ( spicyLevelNumber: number ): string => {
-  switch ( spicyLevelNumber ) {
-    case 0:
-      return 'Sin Picante'
-    case 1:
-      return 'Picante Bajo'
-    case 2:
-      return 'Picante Normal'
-    case 3:
-      return 'Picante Alto'
-    default:
-      return ''
-  }
-}
-
-export const getStatusText = ( spicyLevelNumber: string ): string => {
-  switch ( spicyLevelNumber ) {
-    case 'received':
-      return 'Recibido'
-    case 'in-preparation':
-      return 'En Preparación'
-    case 'ready':
-      return 'Listo para Servir'
-    default:
-      return ''
-  }
 }
 
 export const createNotificationSound = () => {
@@ -192,4 +159,66 @@ export const orderVariants = (
       acc[key] = variations[key]
       return acc
     }, {} as Record<string, string>)
+}
+
+
+
+
+const getSuspender = (promise: Promise<any>) => {
+  let status = "pending";
+  let response: any;
+
+  const suspender = promise.then(
+    (res) => {
+      status = "success";
+      response = res;
+    },
+    (err) => {
+      status = "error";
+      response = err;
+    }
+  );
+
+  const read = () => {
+    switch (status) {
+      case "pending":
+        throw suspender;
+      case "error":
+        throw response;
+      default:
+        return response;
+    }
+  };
+
+  return { read };
+};
+
+export function fetchDataPro(options: RequestOptions) {
+  const { url, method = 'GET', body, token } = options;
+
+  let headersApi: HeadersInit = {
+    'Authorization': `Bearer ${token || ''}`
+  };
+
+  if (method === 'POST' || method === 'PUT') {
+    headersApi['Content-Type'] = 'application/json';
+  }
+
+  const promise = fetch(`${apiUrl}${url}`, {
+    method,
+    headers: headersApi,
+    body: body ? JSON.stringify(body) : undefined,
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || 'Error en la solicitud');
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      return { ok: false, errors: error.message || 'Error de red o de servidor', data: null };
+    });
+
+  return getSuspender(promise);
 }

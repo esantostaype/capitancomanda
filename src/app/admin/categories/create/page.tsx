@@ -1,10 +1,12 @@
+import { Metadata } from 'next'
 
-export default async function CreateCategoryPage() {
-  
+export const metadata: Metadata = {
+  title: 'Crear Categoría - Restify'
+}
+
+export default async function CreateCategoryPage() {  
   return (
     <>
-    <section className="admin__content">
-    </section>
     </>
   )
-}
+}  

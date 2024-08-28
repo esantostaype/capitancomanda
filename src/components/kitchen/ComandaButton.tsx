@@ -29,13 +29,13 @@ export const ComandaButton = ({ text, orderId, status }: Props ) => {
     <Formik initialValues={ initialValues } onSubmit={ handleSubmit }>
       <Form>
         <input type="hidden" value={ status } name="status" />
-        <Button
+        {/* <Button
           mode='primary'
           text={ text }
           ghost
           full
           submit
-        />
+        /> */}
       </Form>
     </Formik>
   )

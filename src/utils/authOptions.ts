@@ -2,6 +2,7 @@ import { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { apiUrl } from '.'
 
 export const authOptions: NextAuthOptions = {
   providers: [ 
@@ -12,7 +13,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password", placeholder: "*****" }
       },
       async authorize( credentials, req ) {
-        const response = await fetch("http://localhost:3001/api/auth/login", {
+        const response = await fetch(`${ apiUrl }/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -3,6 +3,7 @@ import { useUiStore } from '@/store/ui-store'
 import { IconButton, ModalBackground } from '@/components'
 import { Color, Size, Variant } from '@/interfaces'
 import { useEffect } from 'react'
+import { Skeleton } from '@mui/material'
 
 interface Props {
   children: React.ReactNode
@@ -12,9 +13,10 @@ interface Props {
   withBackRoute?: boolean
   withTabs?: boolean
   isOpen?: boolean
+  isEditMode?: boolean
 }
 
-export const ModalPage = ({ children, title, backText, withBackRoute, withTabs, isOpen }: Props ) => {
+export const ModalPage = ({ children, title, backText, withBackRoute, withTabs, isOpen, isEditMode }: Props ) => {
   
   const { activeClassModalPage, openModalPage, closeModalPage } = useUiStore()
 
@@ -47,8 +49,12 @@ export const ModalPage = ({ children, title, backText, withBackRoute, withTabs, 
             <div className={`flex items-center gap-4 p-8 border-b border-gray50 ${ withTabs ? "pb-16" : "" } `}>
               <IconButton iconName='arrow-left' color={ Color.ACCENT } size={ Size.LG } variant={ Variant.GHOST } onClick={ ()=> closeModalPage( withBackRoute ) }/>
               <div>
-                <span className="text-gray600">{ backText }</span>
-                <h1 className="text-3xl font-semibold">{ title }</h1>
+                <span className="text-gray600">{ backText }</span>                
+                {
+                  !title && isEditMode
+                  ? <div className="mt-1"><Skeleton animation="wave" variant="rounded" width={ 320 } height={ 32 } className="bg-gray50" /></div>
+                  : <h1 className="text-3xl font-semibold">{ title }</h1>
+                }
               </div>
             </div>
             { children }

@@ -16,5 +16,5 @@ export default async function OrderPage() {
       </ul>
       <OrderProductDetail token={ token! } />
     </>
-  );
+  )
 }

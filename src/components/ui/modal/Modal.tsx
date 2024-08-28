@@ -3,6 +3,7 @@ import { useUiStore } from '@/store/ui-store'
 import { useEffect } from 'react'
 import { IconButton, ModalBackground } from '@/components'
 import { Size, Variant } from '@/interfaces'
+import { Skeleton } from '@mui/material'
 
 interface Props {
   children: React.ReactNode
@@ -10,10 +11,11 @@ interface Props {
   size?: Size
   withBackRoute?: boolean
   isOpen?: boolean
+  isEditMode?: boolean
 }
 
 
-export const Modal = ({ children, title, size, withBackRoute, isOpen }: Props ) => {
+export const Modal = ({ children, title, size, withBackRoute, isOpen, isEditMode }: Props ) => {
   
   const { activeClassModal, activeModal, openModal, closeModal } = useUiStore()
   
@@ -89,12 +91,13 @@ export const Modal = ({ children, title, size, withBackRoute, isOpen }: Props ) 
             <div className="absolute top-4 right-4 z-30">
               <IconButton onClick={ ()=> closeModal( withBackRoute ) } iconName='cross-small' variant={ Variant.GHOST } />
             </div>
-            {
-              title &&
-              <div className="py-6 px-8 border-b border-b-gray50 sticky top-0">
-                <h2 className="text-xl font-semibold">{ title }</h2>
-              </div>
-            }
+            <div className="py-6 px-8 border-b border-b-gray50 sticky top-0">                
+              {
+                !title && isEditMode
+                ? <Skeleton animation="wave" variant="rounded" width={ 200 } height={ 26 } className="bg-gray50" />
+                : <h1 className="text-xl font-semibold">{ title }</h1>
+              }
+            </div>
             { children }
           </div>
           <ModalBackground onClick={ ()=> closeModal( withBackRoute ) } active={ activeClassModal } />

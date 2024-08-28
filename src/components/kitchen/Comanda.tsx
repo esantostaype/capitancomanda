@@ -1,5 +1,4 @@
 import { OrderStatus, OrderWithProducts } from '@/interfaces'
-import { getSpicyLevelText } from '@/utils'
 import styles from './Comanda.module.css'
 import moment from "moment"
 import 'moment/locale/es'
@@ -22,7 +21,7 @@ export const Comanda = ({ order, className, status, textButton }: Props) => {
 
   return (
     <li  className={ combinedClassName.trim() }>
-      <div className={ styles.header }>
+      {/* <div className={ styles.header }>
         <h4 className={ styles.tableNumber }>Mesa # { order.table }</h4>
         <span className={ styles.hour }>{ timeAgo }</span>
         {
@@ -45,7 +44,7 @@ export const Comanda = ({ order, className, status, textButton }: Props) => {
       <div className={ styles.footer }>
         <ComandaButton text={ textButton } status={ status } orderId={ order.id } />
         { isLate && order.status !== OrderStatus.READY && ( <div className={ styles.isLate }>Este pedido está tarde</div> ) }
-      </div>
+      </div> */}
     </li>
   )
 }

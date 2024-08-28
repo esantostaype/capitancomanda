@@ -13,7 +13,7 @@ export const AdminTemplate = ({ title, button, children }: AdminTemplateProps ) 
         { button }
       </div>
     </header>
-    <section className="p-8 pt-0 overflow-y-auto">
+    <section className="p-8 pt-0 overflow-y-auto flex-1 flex flex-col">
       { children }
     </section>
     </>

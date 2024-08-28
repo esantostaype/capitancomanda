@@ -8,33 +8,32 @@ type Props = {
   id: string
   token: string
   branchId?: string
-  dataId?: string
   onDelete: ( id: string, token: string ) => Promise<void>
   disabled?: boolean
+  confirmTitle?: string
+  confirmDetail?: string
+  confirmButtonText?: string
 }
 
-export const TableActions = ({ link, id, token, dataId, onDelete }: Props) => {
+export const TableActions = ({ link, id, token, onDelete, confirmTitle, confirmDetail, confirmButtonText }: Props) => {
 
-  const { openModalPage, closeModalConfirm, openModalConfirm, activeModalConfirmId, activeModal } = useUiStore()
+  const { openModalPage, closeModalConfirm, openModalConfirm, activeModalConfirmId } = useUiStore()
 
   const handleDelete = async ( id: string ) => {
     await onDelete( id, token )
-    closeModalConfirm
+    closeModalConfirm()
   }
 
   return (
     <>
-      {
-        activeModalConfirmId === id && (
-          <ModalConfirm
-            title='¿Estás seguro de eliminar este producto?'
-            detail='Al eliminar este producto, también se eliminará de todas las órdenes en las que esté incluido.'
-            buttonConfirmText='Sí, eliminar producto'
-            onClickConfirm={() => { handleDelete( id ) }}
-            onClickCancel={() => { closeModalConfirm() }}
-          />
-        )
-      }
+      <ModalConfirm
+        title={ confirmTitle || "Está seguro de eliminar este elemento?" }
+        detail={ confirmDetail || "Al eliminar este elemento, se eliminará toda su información asociada" }
+        buttonConfirmText={ confirmButtonText || "Sí, eliminar" }
+        onClickConfirm={() => { handleDelete( id ) }}
+        onClickCancel={() => { closeModalConfirm() }}
+        isOpen={ activeModalConfirmId === id }
+      />
       <div className="flex items-center gap-3 justify-end">
         <Button
           href={link}
