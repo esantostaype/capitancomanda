@@ -1,5 +1,5 @@
 'use client'
-import { AdminCard, AdminGrid, EmptyData, ModalConfirm } from '@/components'
+import { AdminCard, AdminGrid, EmptyData, LoadingData, ModalConfirm } from '@/components'
 import { useUiStore } from '@/store/ui-store'
 import { Branch, Role } from '@/interfaces'
 import { deleteBranch } from '@/actions/branch-actions'
@@ -40,7 +40,7 @@ export const BranchesData = ({ token, role }: Props ) => {
   return (
     <>
       { loading
-      ? ( <BranchesDataSkeleton isOwner={ isOwner } /> )
+      ? ( <LoadingData text="Susursales"/> )
       : ( branches.length === 0
         ? ( <EmptyData text='Susursales' /> )
         : (
@@ -69,7 +69,7 @@ export const BranchesData = ({ token, role }: Props ) => {
                   </>
                 }
               >
-                <h2 className="text-lg font-semibold">{ branch.name }</h2>
+                <h2 className="text-lg font-semibold leading-6 mb-1">{ branch.name }</h2>
                 <p className="text-gray500">{ branch.users.length } Usuario{ branch.users.length !== 1 && "s" }</p>
               </AdminCard>
               <ModalConfirm

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { OrderItem } from '@/interfaces'
 import { formatCurrency } from '@/utils'
-import { OrderSummaryCounter, IconButton } from '@/components'
+import { OrderSummaryCounter } from '../components'
 
 type Props = {
   item: OrderItem

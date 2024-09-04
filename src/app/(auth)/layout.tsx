@@ -1,5 +1,4 @@
-import { ToastNotification } from "@/components";
-import Image from "next/image";
+import Image from "next/image"
 
 export default function AuthLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -15,5 +14,5 @@ export default function AuthLayout({ children }: Readonly<{ children: React.Reac
       </section>
     </section>
     </>
-  );
+  )
 }

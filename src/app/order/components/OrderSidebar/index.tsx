@@ -6,7 +6,7 @@ import { setSession } from '@/utils/session'
 import { OrderSidebarItem } from './OrderSidebarItem'
 
 export const OrderSidebar = async() => {
-const { token } = await setSession()
+  const { token } = await setSession()
   const categories = await fetchData({ url: `/categories`, method: 'GET', token: token })
 
   return (

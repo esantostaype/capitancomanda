@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { PopperC } from '../ui/PopperC'
+import { PopperC } from '@/components'
 import Image from 'next/image'
 import { Skeleton } from '@mui/material'
 
@@ -14,15 +14,16 @@ type AdminTemplateProps = {
   hasActions?: boolean
   linkEdit?: string
   isSkeleton?: boolean
+  className?: string
   onClickEdit?: React.MouseEventHandler<HTMLButtonElement | HTMLDivElement | HTMLAnchorElement>
   onClickDelete?: React.MouseEventHandler<HTMLButtonElement | HTMLDivElement | HTMLAnchorElement>
 }
 
-export const AdminCard = ({ children, footer, hasImage, image, alt, hasFooter, isSkeleton, linkEdit, onClickEdit, onClickDelete }: AdminTemplateProps ) => {
+export const AdminCard = ({ children, footer, hasImage, image, alt, hasFooter, isSkeleton, linkEdit, className, onClickEdit, onClickDelete }: AdminTemplateProps ) => {
 
   return (
     <>
-    <div className="relative bg-surface rounded-lg overflow-hidden">
+    <div className={`${ className || "" } relative bg-surface rounded-lg overflow-hidden transition-all`}>
       {
         linkEdit &&
         <div className="absolute top-2 right-2">

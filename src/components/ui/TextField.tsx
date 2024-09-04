@@ -103,6 +103,7 @@ export const TextField: FC<TextFieldProps> = ({
 					autoComplete="off"
 					innerRef={ innerRef }
 					disabled={ disabled }
+					value={ value }
 				/>
 			)}
 			<div ref={listRef}>

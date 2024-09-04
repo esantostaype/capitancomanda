@@ -1,11 +1,11 @@
 'use client'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Logout } from '@/components'
 import { useSession } from 'next-auth/react'
 import { Role } from '@/interfaces'
 import { AdminSidebarTitle } from './AdminSidebarTitle'
 import { AdminSidebarItem } from './AdminSidebarItem'
+import { Logout } from '../Logout'
 
 export const AdminSidebar = () => {
 

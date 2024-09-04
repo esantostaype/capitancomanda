@@ -1,12 +1,14 @@
 'use client'
 import { useEffect, useMemo, useState } from 'react'
 import { useOrderStore } from '@/store/order-store'
-import { IconButton, OrderForm, OrderSummaryItem } from '@/components'
-import { formatCurrency } from '@/utils'
+import { IconButton } from '@/components'
+import { OrderSummaryItem } from '../components'
+import { fetchData, formatCurrency } from '@/utils'
 import { Button } from '@/components'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Color, IconButtonShape, Size, Variant } from '@/interfaces'
 import { useUiStore } from '@/store/ui-store'
+import { useGlobalStore } from '@/store/global-store'
 
 export const OrderSummary = () => {
   
@@ -15,9 +17,24 @@ export const OrderSummary = () => {
   const clearOrder = useOrderStore(( state ) => state.clearOrder )
   const total = useMemo(() => order.reduce(( total, item ) => total + ( item.quantity * item.price ), 0), [ order ])
   const { openModalPage } = useUiStore()
+  const { findLastOrder } = useOrderStore()
+  const [ orderNumber, setOrderNumber ] = useState("")
+  const { updateTrigger } = useGlobalStore()
 
   const subtotal = total / 1.18
   const igv = total - subtotal
+
+  useEffect(() => {
+    const fetchOrderNumber = async () => {
+      try {
+        const orderNumber = await findLastOrder()
+        setOrderNumber( orderNumber )
+      } catch (error) {
+      }
+    }
+  
+    fetchOrderNumber()
+  }, [ findLastOrder, updateTrigger ])
 
   useEffect(() => {
     const storedOrder = localStorage.getItem('order')
@@ -30,7 +47,7 @@ export const OrderSummary = () => {
   const [ listRef ] = useAutoAnimate()
 
   return (
-    <div className="flex flex-col relative bg-surface border-l border-l-gray50 flex-[0_0_20rem] h-screen overflow-y-auto">
+    <div className="flex flex-col bg-surface border-l border-l-gray50 flex-[0_0_20rem] h-screen overflow-y-auto sticky top-0">
       { order.length === 0
         ? (
         <div className="w-full flex-1 flex items-center justify-center text-base text-gray500">
@@ -44,7 +61,7 @@ export const OrderSummary = () => {
         <>
         <div className="bg-surface border-b border-b-gray50 p-6 pb-2 sticky top-0 z-20">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold">Orden</h3>
+            <h3 className="text-lg font-semibold">Orden #{ orderNumber }</h3>
           </div>
           <div className="flex justify-between items-center font-bold">
             <div>Item</div>

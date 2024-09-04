@@ -12,6 +12,7 @@ import { fetchData } from '@/utils'
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs'
 import { BranchFormFloors } from './BranchFormFloors'
 import { BranchFormSkeleton } from '../BranchFormSkeleton'
+import { useGlobalStore } from '@/store/global-store'
 
 interface FormValues {
   name: string
@@ -33,6 +34,7 @@ export const BranchForm = ({ token }: Props) => {
   const [ newImage, setNewImage] = useState<string | null>(null)
   const [ deleteImage, setDeleteImage ] = useState<boolean>(false)
   const { activeModalPage, closeModalPage } = useUiStore()
+  const { toggleUpdateTrigger } = useGlobalStore()
   const [ tabIndex, setTabIndex ] = useState(0)
 
   const isEditMode = pathName.startsWith('/admin/branches/edit')
@@ -70,6 +72,7 @@ export const BranchForm = ({ token }: Props) => {
       : await addBranch( branchValues, token ? token : '' )
     }
     actions.setSubmitting( false )
+    toggleUpdateTrigger()
     closeModalPage(true)
     toast.success( branch ? 'Sucursal Actualizada!' : 'Sucursal Creada!')
   }

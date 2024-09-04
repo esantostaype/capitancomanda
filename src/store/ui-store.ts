@@ -2,12 +2,13 @@ import { create } from 'zustand'
 
 interface UiStore {
   openModal: () => void
-  openModalById: (id: string) => void
   activeModal: boolean
-  activeModalById: boolean
   activeClassModal: boolean
-  activeModalId: string | null
   closeModal: (withBackRoute?: boolean) => void
+
+  openModalById: (id: string) => void
+  activeModalById: boolean
+  activeModalId: string | null
   
   openModalConfirm: ( id: string ) => void
   activeModalConfirm: boolean

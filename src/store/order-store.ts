@@ -1,15 +1,12 @@
 import { create } from 'zustand'
-import { OrderItem, Product, SelectedVariants, SelectedAdditionals, OrderItemFull } from '@/interfaces'
+import { Product, SelectedVariants, SelectedAdditionals, OrderItemFull } from '@/interfaces'
+import { findLastOrder as fetchLastOrder } from '@/actions/order-actions'
 
 interface Store {
   order: OrderItemFull[]
   addToOrder: (
     product: OrderItemFull,
     quantity: number,
-    selectedVariants: SelectedVariants,
-    selectedAdditionals: SelectedAdditionals,
-    notes: string,
-    uniqueId: string
   ) => void
   increaseQuantity: (
     id: Product['id'],
@@ -22,6 +19,7 @@ interface Store {
   removeItem: ( uniqueId: string ) => void
   clearOrder: () => void
   setOrder: ( newOrder: OrderItemFull[] ) => void
+  findLastOrder: () => Promise<string>
   delivery: boolean
 }
 
@@ -36,13 +34,13 @@ export const useOrderStore = create<Store>(( set, get ) => {
   return {
     order: [],
     delivery: false,
-    addToOrder: ( product, quantity, selectedVariants, selectedAdditionals, notes, uniqueId ) => {
+    addToOrder: ( product, quantity) => {
       const existingItem = get().order.find(
         (item) => item.id === product.id && 
-          item.uniqueId === uniqueId
+          item.uniqueId === product.uniqueId
       )
 
-      const finalUniqueId = uniqueId || product.id
+      const finalUniqueId = product.uniqueId || product.id
     
       if (existingItem) {
         set((state) => ({
@@ -52,7 +50,7 @@ export const useOrderStore = create<Store>(( set, get ) => {
                   ...item,
                   quantity: item.quantity + quantity,
                   subtotal: item.price * (quantity + item.quantity),
-                  selectedVariants: item.selectedVariant,
+                  selectedVariations: item.selectedVariations,
                   selectedAdditionals: item.selectedAdditionals,
                   notes: item.notes
                 }
@@ -67,10 +65,10 @@ export const useOrderStore = create<Store>(( set, get ) => {
               ...product,
               quantity,
               subtotal: product.price * quantity,
-              selectedVariants,
-              selectedAdditionals,
+              selectedVariations: product.selectedVariations,
+              selectedAdditionals: product.selectedAdditionals,
               uniqueId: finalUniqueId,
-              notes
+              notes: product.notes
             },
           ],
         }));
@@ -130,6 +128,19 @@ export const useOrderStore = create<Store>(( set, get ) => {
     
     setOrder: ( newOrder ) => {
       set({ order: newOrder })
+    },
+
+    findLastOrder: async () => {
+      try {
+        const result = await fetchLastOrder()
+        const newOrderNumber = result.orderNumber 
+          ? (parseInt(result.orderNumber) + 1).toString().padStart(5, '0') 
+          : '00001'
+        return newOrderNumber
+      } catch (error) {
+        console.error('Error al obtener la última órden:', error)
+        throw error
+      }
     }
   }
 })

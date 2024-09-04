@@ -3,7 +3,7 @@
 import { Product, Role } from '@/interfaces'
 import { fetchData, formatCurrency } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
-import { EmptyData, TanstackTable, TableActions, TableFlex, TableImage } from '@/components'
+import { EmptyData, TanstackTable, TableActions, TableFlex, TableImage, LoadingData } from '@/components'
 import { deleteProduct } from '@/actions/product-actions'
 import { useEffect, useState } from 'react'
 import { ProductsTableSkeleton } from './'
@@ -15,6 +15,8 @@ type Props = {
 }
 
 export const ProductsDataTable = ({ token, role }: Props ) => {
+
+  const isOwner = role === Role.OWNER
   
   const [ products, setProducts ] = useState<Product[] | []>([])
   const [ loading, setLoading ] = useState(true)
@@ -33,8 +35,6 @@ export const ProductsDataTable = ({ token, role }: Props ) => {
     await deleteProduct( id, token! )
     toggleUpdateTrigger()
   }
-
-  const isOwner = role === Role.OWNER
 
   const columns: ColumnDef<Product>[] = [
     {
@@ -102,7 +102,7 @@ export const ProductsDataTable = ({ token, role }: Props ) => {
   return (
     <>
       { loading
-      ? ( <ProductsTableSkeleton isOwner={ isOwner } /> )
+      ? ( <LoadingData text="Productos"/> )
       : ( products.length === 0
         ? ( <EmptyData text='Productos' /> )
         : ( <TanstackTable data={ products } columns={ columns } placeholder="Buscar Producto" /> )

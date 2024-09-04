@@ -104,6 +104,12 @@ export const measurementUnitTranslations: { [ key in MeasurementUnit ]: string }
   [ MeasurementUnit.PIECE ]: 'Pieza(s)',
 }
 
+export const orderTypeTranslations: { [ key in OrderType ]: string } = {
+  [ OrderType.DINE_IN ]: 'Comer en Salón',
+  [ OrderType.TAKE_AWAY ]: 'Para Llevar',
+  [ OrderType.DELIVERY ]: 'Delivery'
+}
+
 export interface Select {
   value: Role;
   label: string;
@@ -117,6 +123,12 @@ export interface UserLogin {
 export interface UserRegister {
   email: string
   password: string
+}
+
+export interface Restaurant {
+  id: string
+  name: string
+  logo?: string
 }
 
 export interface User {
@@ -147,6 +159,7 @@ export interface Client {
 export interface Order {
   id: string
   total: number
+  floor: string
   table: string
   amount?: number
   orderType: OrderType
@@ -171,6 +184,7 @@ export interface OrderProducts {
 
 export interface Product {
   id: string
+  orderNumber: string
   name: string
   description: string
   price: number
@@ -210,6 +224,7 @@ export interface Branch {
 
 export interface Category {
   id: string
+  orderNumber: string
   name: string
   image: string
   products: Product[]
@@ -226,8 +241,9 @@ export type OrderItemFull = Omit<Product, ''> & {
   quantity: number
   subtotal: number
   variationPrice?: number
-  selectedVariant?: string
+  selectedVariation?: string
   selectedOption? : string
+  client?: Client
   selectedVariations?: { [ key: string ]: string }
   selectedAdditionals?: { [ key: string ]: number }
   notes?: string

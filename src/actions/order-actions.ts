@@ -11,3 +11,10 @@ export async function addOrder( values: any ) {
   revalidatePath('/kitchen')
   return result
 }
+
+export async function findLastOrder() {
+  const { token } = await setSession()
+  const result = await fetchData({ url: '/orders/last-order', method: 'GET', token: token })
+  console.log("Order Number CTM: ", result)
+  return result 
+}

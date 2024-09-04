@@ -12,6 +12,8 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/sortable": "^8.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@flaticon/flaticon-uicons": "^3.2.1",
@@ -45,10 +47,12 @@
     "react-popper": "^2.3.0",
     "react-router-dom": "^6.23.1",
     "react-tabs": "^6.0.2",
+    "react-to-print": "^2.15.1",
     "react-toastify": "^10.0.5",
     "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.11",
     "swr": "^2.2.5",
+    "tailwindcss-animated": "^1.1.2",
     "uuid": "^10.0.0",
     "yup": "^1.4.0",
     "zod": "^3.23.3",

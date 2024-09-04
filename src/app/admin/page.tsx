@@ -1,10 +1,18 @@
+import { getRestaurant } from '@/actions/restaurant-actions';
+import { setSession } from '@/utils/session';
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Dashboard - Restify'
 }
 
-export default function AdminPage() {
+export default async function AdminPage() {
+
+  const { branchId } = await setSession()
+  const restaurant = await getRestaurant("c4066536-bf0d-44a1-9491-daec245f0337")
+
+  console.log("RESTAURANT: ", restaurant)
+
   return (
     <>
     <header className="admin__header">

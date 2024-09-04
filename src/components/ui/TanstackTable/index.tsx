@@ -20,7 +20,13 @@ type Props = {
 
 export const TanstackTable = ({ data, columns, placeholder }: Props) => {
 
-  const addRowNumberColumn = <T,>(columns: ColumnDef<T>[]): ColumnDef<T>[] => {
+  const addRowNumberColumn = <T,>( columns: ColumnDef<T>[] ): ColumnDef<T>[] => {
+    const hasOrderNumberColumn = columns.some(column => column.header === '#')
+
+    if (hasOrderNumberColumn) {
+      return columns
+    }
+
     const rowNumberColumn: ColumnDef<T> = {
       header: '#',
       id: 'rowNumber',
@@ -61,7 +67,7 @@ export const TanstackTable = ({ data, columns, placeholder }: Props) => {
   const pages = Array.from({ length: table.getPageCount() }, ( _, i ) => i + 1 )
 
   return (
-    <div className="border border-gray50 rounded-lg overflow-x-auto max-w-full bg-surface">
+    <div className="border border-gray50 rounded-lg overflow-x-auto max-w-full bg-surface animate-fade animate-duration-500">
       <TableHeader table={ table } filtering={ filtering } setFiltering={ setFiltering } placeholder={ placeholder } />
       <table className="w-full">
         <thead>

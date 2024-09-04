@@ -123,20 +123,20 @@ export const getVariantPrice = ( product: OrderItemFull, selectedVariantWithPric
 
 export const generateUniqueId = (
   productId: string, 
-  allVariants: Record<string, string>, 
-  additionals: Record<string, number>,
-  notes: string
+  allVariants?: Record<string, string>, 
+  additionals?: Record<string, number>,
+  notes?: string
 ): string => {
   
-  const variationPart = Object.entries(allVariants)
+  const variationPart = Object.entries( allVariants || '')
     .map(([key, value]) => `${value}`.toLowerCase().replace(/\s+/g, '-'))
     .join('-');
 
-  const additionalsPart = Object.entries(additionals)
+  const additionalsPart = Object.entries( additionals || '' )
     .map(([key, value]) => `${key}`.toLowerCase().replace(/\s+/g, '-') + (value > 1 ? `-${value}` : ''))
     .join('-');
 
-  const notesPart = notes.toLowerCase().replace(/\s+/g, '-')
+  const notesPart = notes ? notes.toLowerCase().replace(/\s+/g, '-') : ''
     
   const combinedId = [productId, variationPart, additionalsPart, notesPart]
     .filter(part => part)

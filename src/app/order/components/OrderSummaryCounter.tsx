@@ -1,8 +1,7 @@
 'use client'
-import { useMemo } from 'react'
 import { useOrderStore } from '@/store/order-store'
 import { IconButton } from '@/components'
-import { Color, IconButtonShape, OrderItem, Size, Variant } from '@/interfaces'
+import { IconButtonShape, OrderItem, Size, Variant } from '@/interfaces'
 
 interface Props {
 	item: OrderItem

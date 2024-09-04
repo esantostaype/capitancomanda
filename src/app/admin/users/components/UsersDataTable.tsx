@@ -2,7 +2,7 @@
 
 import { Role, User, roleTranslations, userStatusTranslations } from "@/interfaces"
 import { ColumnDef } from "@tanstack/react-table"
-import { TanstackTable, TableActions, AdminStatus, EmptyData } from "@/components"
+import { TanstackTable, TableActions, AdminStatus, EmptyData, LoadingData } from "@/components"
 import { deleteUser } from "@/actions/user-actions"
 import { useEffect, useState } from "react"
 import { useGlobalStore } from "@/store/global-store"
@@ -94,7 +94,7 @@ export const UsersDataTable = ({ token, role }: Props ) => {
   return (
     <>
       { loading
-      ? ( <UsersTableSkeleton isOwner={ isOwner } /> )
+      ? ( <LoadingData text="Usuarios"/> )
       : ( users.length === 0
         ? ( <EmptyData text='Usuarios' /> )
         : ( <TanstackTable data={ users } columns={ columns } placeholder="Buscar Usuario" /> )

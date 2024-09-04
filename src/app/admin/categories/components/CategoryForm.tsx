@@ -62,9 +62,9 @@ export const CategoryForm = ({ token }: Props) => {
       : await addCategory( categoryValues, token ? token : '' )
     }
     actions.setSubmitting( false )
+    toggleUpdateTrigger()
     closeModal( true )
     toast.success( category ? 'Categoría Actualizada!' : 'Categoría Creada!')
-    toggleUpdateTrigger()
   }
 
 
