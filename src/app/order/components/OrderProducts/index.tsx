@@ -1,6 +1,6 @@
 'use client'
 import { fetchData } from '@/utils'
-import { Product } from '@/interfaces'
+import { OrderItemFull, Product } from '@/interfaces'
 import { setSession } from '@/utils/session'
 import { useEffect, useState } from 'react'
 import { OrderProductItem } from './OrderProductItem'
@@ -9,7 +9,7 @@ import { useParams } from 'next/navigation'
 
 export const OrderProducts = () => {
 
-  const [ products, setProducts ] = useState<Product[] | []>([])
+  const [ products, setProducts ] = useState<OrderItemFull[] | []>([])
   const [ loading, setLoading ] = useState(true)
   const [ token, setToken ] = useState('')
 
@@ -43,7 +43,7 @@ export const OrderProducts = () => {
           <div className="animate-fade animate-duration-500">          
           <h1 className="text-xl font-bold mb-4">Todo</h1>
           <ul className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
-            { products.map( ( product: Product ) => (
+            { products.map( ( product ) => (
               <OrderProductItem key={ product.id } product={ product } token={ token } />
             ))}
           </ul>
