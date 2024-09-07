@@ -23,7 +23,7 @@ export const fetchData = async <T>( options: RequestOptions ): Promise<T> => {
   }
 
   try {
-    const response = await fetch(`https://restify-backend-production.up.railway.app/api${ url }`, {
+    const response = await fetch(`${ apiUrl }${ url }`, {
       method,
       headers: headersApi,
       body: body ? JSON.stringify(body) : undefined

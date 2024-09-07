@@ -42,7 +42,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account, profile }) {
       try {
-        const response = await fetch("https://restify-backend-production.up.railway.app/api/auth/oauth-register", {
+        const response = await fetch(`${ apiUrl }/auth/oauth-register`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
