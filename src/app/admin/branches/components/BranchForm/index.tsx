@@ -16,8 +16,8 @@ import { useGlobalStore } from '@/store/global-store'
 
 interface FormValues {
   name: string
-  phoneNumber: string | undefined
-  address: string | undefined
+  phoneNumber?: string
+  address?: string
   floors: Floor[]
 }
 
@@ -44,7 +44,7 @@ export const BranchForm = ({ token }: Props) => {
     const fetchBranch = async () => {
       if ( id ) {
         try {
-          const fetchedBranch = await fetchData({ url: `/branches/${ id }`, token })
+          const fetchedBranch = await fetchData<Branch>({ url: `/branches/${ id }`, token })
           setBranch( fetchedBranch )
         } catch (error) {
           toast.error('Error al obtener la sucursal')

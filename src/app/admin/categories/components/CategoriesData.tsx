@@ -49,7 +49,7 @@ export const CategoriesData = ({ token, role }: Props) => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const data: Category[] = await fetchData({ url: `/categories`, token })
+      const data = await fetchData<Category[]>({ url: `/categories`, token })
       setCategories( data )
       setLoading( false )
     }

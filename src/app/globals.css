@@ -29,11 +29,30 @@
   --gray-800: #434248;
   --gray-900: #35343a;
   --gray-950: #25242a;
+  --jetbrains-mono: 'JetBrains Mono Variable', monospace;
 }
 
 ::-webkit-scrollbar {
   display: none;
 }
+
+/* ::-webkit-scrollbar {
+  width: 10px;
+}
+ 
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: var(--gray-100);
+  border-radius: 100px;
+  transition: all 0.3s ease-in-out;
+}
+ 
+::-webkit-scrollbar-thumb:hover{
+  background: var(--gray-300);
+} */
 
 .Toastify__toast-theme--dark{
   background-color: rgb(var(--surface))!important;
@@ -561,6 +580,6 @@ body {
 
 @media print {
   @page {
-    size: 80mm;
+    size: 80mm 180mm;
   }
 }

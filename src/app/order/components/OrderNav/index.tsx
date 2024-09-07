@@ -1,32 +1,22 @@
 'use client'
-import { fetchData } from '@/utils'
 import { Category } from '@/interfaces'
-import { setSession } from '@/utils/session'
-import { useEffect, useState } from 'react'
 import { OrderNavItem } from './OrderNavItem'
 import { OrderAllProductsItem } from './OrderAllProductsItem'
 import { Skeleton } from '@mui/material'
-import DragAndDropSlider from '@/components/ui/DragAndDropSlider'
+import { useCategories } from '@/hooks'
 
-export const OrderNav = () => {
+type Props = {
+  token?: string
+}
 
-  const [ categories, setCategories ] = useState<Category[] | []>([])
-  const [ loading, setLoading ] = useState( true )
+export const OrderNav = ({ token }: Props ) => {
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const { token } = await setSession()
-      const data = await fetchData({ url: `/categories`, token })
-      setCategories( data )
-      setLoading( false )
-    }
-    fetchProducts()
-  }, [])
-
+  const { isLoading, data: categories } = useCategories({ token })
+  
   return (   
       <nav className="mb-4">
         {
-          loading
+          isLoading
           ? (
             <ul className="flex items-center gap-3">
               <OrderAllProductsItem/>
@@ -39,7 +29,7 @@ export const OrderNav = () => {
           : (
             <ul className="flex flex-wrap items-center gap-3">
               <OrderAllProductsItem/>
-              { categories.map( ( category: Category ) => (
+              { categories?.map( ( category: Category ) => (
                 <OrderNavItem key={ category.id } category={ category } />
               ))}
             </ul>

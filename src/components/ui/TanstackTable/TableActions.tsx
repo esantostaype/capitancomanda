@@ -34,7 +34,7 @@ export const TableActions = ({ link, id, token, onDelete, confirmTitle, confirmD
         onClickCancel={() => { closeModalConfirm() }}
         isOpen={ activeModalConfirmId === id }
       />
-      <div className="flex items-center gap-3 justify-end">
+      <div className="flex items-center gap-3 justify-end relative z-10">
         <Button
           href={link}
           onClick={() => openModalPage()}

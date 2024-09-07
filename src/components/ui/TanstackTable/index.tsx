@@ -67,10 +67,10 @@ export const TanstackTable = ({ data, columns, placeholder }: Props) => {
   const pages = Array.from({ length: table.getPageCount() }, ( _, i ) => i + 1 )
 
   return (
-    <div className="border border-gray50 rounded-lg overflow-x-auto max-w-full bg-surface animate-fade animate-duration-500">
+    <div className="border border-gray50 rounded-lg overflow-x-auto max-w-full bg-surface has-scroll">
       <TableHeader table={ table } filtering={ filtering } setFiltering={ setFiltering } placeholder={ placeholder } />
       <table className="w-full">
-        <thead>
+        <thead className="sticky top-[3.375rem] z-20">
           { table.getHeaderGroups().map( headerGroup => (
             <tr key={ headerGroup.id }>
               { headerGroup.headers.map
@@ -114,7 +114,7 @@ export const TanstackTable = ({ data, columns, placeholder }: Props) => {
         </tbody>
       </table>
       { pages.length > 1 &&
-        <div className="bg-background py-4 px-6 border-t border-gray50">
+        <div className="bg-background py-4 px-6 border-t-2 border-t-gray50 sticky z-20 bottom-0">
           <TablePagination table={ table } pages={ pages } />
         </div>
       }

@@ -1,42 +1,44 @@
 'use client'
 import Image from 'next/image'
 import { OrderItemFull } from '@/interfaces'
-import { formatCurrency } from '@/utils'
+import { fetchData, formatCurrency, getMinVariantPrice } from '@/utils'
 import Link from 'next/link'
-import { OrderProductDetail } from '../OrderProductDetail'
 import { useUiStore } from '@/store/ui-store'
+import { useQueryClient } from '@tanstack/react-query'
 
 type Props = {
-  product: OrderItemFull,
-  token: string
+  token?: string
+  product: OrderItemFull
 }
 
 export const OrderProductItem = ({ product, token } : Props ) => {
 
-  const minVariantPrice = product?.variations
-    .filter( variation => variation?.hasPrice )
-    .flatMap( variation => variation?.options.map( option => option?.price ))
-    .reduce(( min, price ) => price! < min! ? price : min, Infinity)
+  const displayedPrice = getMinVariantPrice( product )
+  const hasVariationPrices = displayedPrice !== product.price
+  
+  const { openModal } = useUiStore()
 
-  const displayedPrice = minVariantPrice !== Infinity 
-    ? minVariantPrice 
-    : product.price
+  const queryClient = useQueryClient()
+  
+  // const prefetchData = () => {
+  //   queryClient.prefetchQuery({
+  //     queryKey: [ 'orderProducts', product.id ],
+  //     queryFn: () => fetchData<OrderItemFull>({ url: `/products/${ product.id }`, token }),
+  //     staleTime: 1000 * 60
+  //   })
+  // }
 
-  const hasVariationPrices = minVariantPrice !== Infinity
-
-  const { openModalById } = useUiStore()
-
-  const hasVariations = Boolean( product.variations.length !== 0 )
-  const hasAdditionals = Boolean( product.additionals.length !== 0 )
+  // const presetData = () => {
+  //   queryClient.setQueryData([ 'orderProducts', product.id ], product, {})
+  // }
     
   return (
-    <>
     <li className="relative flex flex-col justify-between cursor-pointer group active:scale-[0.98] bg-surface hover:bg-gray50 transition-all duration-300 rounded-lg ">
-      <Link href={`?p=${ product.id }`} onClick={ () => openModalById( product.id ) }>
+      <Link href={`?p=${ product.id }`} onClick={ () => openModal() }>
         <div className="p-6 flex gap-4">
           <div className="relative z-20 bg-gray50 flex items-center justify-center rounded-lg h-16 w-16 overflow-hidden">
           { product.image ? (
-            <Image src={ product.image } alt={ product.name } width={ 512 } height={ 512 } className="object-cover aspect-square" />
+            <Image src={ product.image } alt={ product.name } width={ 128 } height={ 128 } className="object-cover aspect-square" />
           ) : (
             <i className="fi fi-tr-image-slash text-3xl text-gray500"></i>
           )}
@@ -61,11 +63,5 @@ export const OrderProductItem = ({ product, token } : Props ) => {
         </div>
       </Link>
     </li>
-    <OrderProductDetail
-      product={ product }
-      token={ token }
-      hasVariations={ hasVariations }
-      hasAdditionals={ hasAdditionals } />
-    </>
   )
 }

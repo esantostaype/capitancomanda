@@ -9,7 +9,7 @@ type Props = {
 
 export const OrderSummaryItem = ({ item }: Props ) => {
   return (
-    <li className="border-b border-b-gray50 py-6 last:border-b-transparent">
+    <li>
       <div className="flex items-start gap-2 justify-between">
         <div className="flex items-start gap-2">
           <div className="w-12 h-12 flex-[0_0_3rem] relative">

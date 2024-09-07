@@ -3,6 +3,7 @@
 import { fetchData } from '@/utils'
 import { revalidatePath } from 'next/cache'
 import { setSession } from '@/utils/session'
+import { Order } from '@/interfaces'
 
 export async function addOrder( values: any ) {
   const { token } = await setSession()
@@ -14,7 +15,6 @@ export async function addOrder( values: any ) {
 
 export async function findLastOrder() {
   const { token } = await setSession()
-  const result = await fetchData({ url: '/orders/last-order', method: 'GET', token: token })
-  console.log("Order Number CTM: ", result)
+  const result = await fetchData<Order>({ url: '/orders/last-order', method: 'GET', token: token })
   return result 
 }

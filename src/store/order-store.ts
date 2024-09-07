@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Product, SelectedVariants, SelectedAdditionals, OrderItemFull } from '@/interfaces'
+import { Product, OrderItemFull } from '@/interfaces'
 import { findLastOrder as fetchLastOrder } from '@/actions/order-actions'
 
 interface Store {

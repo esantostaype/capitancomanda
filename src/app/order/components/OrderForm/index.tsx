@@ -17,7 +17,7 @@ import { OrderPrint } from './OrderPrint'
 import ReactToPrint from 'react-to-print'
 
 type Props = {
-  token: string
+  token?: string
 }
 
 interface FormValues {
@@ -47,6 +47,7 @@ export const OrderForm = ({ token }: Props) => {
   const [ selectedFloor, setSelectedFloor ] = useState<string | null>( null )
   const [ selectedTable, setSelectedTable ] = useState<string | null>( null )
   const [ selectedOrderType, setSelectedOrderType ] = useState<OrderType>( OrderType.DINE_IN )
+  const [ notes, setNotes ] = useState<string>('')
   const [ branch, setBranch ] = useState<Branch>()
 
   const componentRef = useRef<HTMLDivElement>(null)
@@ -66,6 +67,7 @@ export const OrderForm = ({ token }: Props) => {
       setSelectedOrderType( OrderType.DINE_IN )
       setClientSelected( null )
       setIsClientSelected( false )
+      setNotes('')
     }
   }, [ activeModalPage ])
 
@@ -73,7 +75,7 @@ export const OrderForm = ({ token }: Props) => {
     const fetchBranch = async () => {
       const { branchId, token } = await setSession()
       if ( branchId ) {
-        const data = await fetchData({ url: `/branches/${branchId}`, token })
+        const data = await fetchData<Branch>({ url: `/branches/${branchId}`, token })
         setBranch(data)
         if (data?.floors.length > 0) {
           setSelectedFloor(data.floors[0].name)
@@ -109,8 +111,8 @@ export const OrderForm = ({ token }: Props) => {
     
     const orderData = {
       order,
-      floor: selectedFloor || '',
-      table: selectedTable || '',
+      floor: selectedFloor,
+      table: selectedTable,
       total,
       orderType: selectedOrderType,
       notes: values.notes,
@@ -236,8 +238,11 @@ export const OrderForm = ({ token }: Props) => {
               </div>
 
               <div>
-                <h3 className="text-2xl text-gray500 font-bold mb-4">Comentarios</h3>
-                <TextField typeField='textarea' name='notes' />
+                <h3 className="text-2xl text-gray500 font-bold mb-4">Notas</h3>
+                <TextField typeField='textarea' name='notes' onChange={(e) => {
+                  setFieldValue('notes', e.target.value)
+                  setNotes(e.target.value)
+                }}/>
               </div>
             </div>
           </ModalBody>
@@ -245,7 +250,7 @@ export const OrderForm = ({ token }: Props) => {
             <Button variant={ Variant.GHOST } text="Cancelar" size={ Size.LG } onClick={ ()=> closeModalPage() }/>
             <ReactToPrint
               trigger={() => <Button text='Imprimir Comanda' color={Color.ACCENT} size={Size.LG} variant={Variant.GHOST} />}
-              content={() => componentRef.current}
+              content={() => componentRef.current }
             />
             <Button
               text='Enviar Comanda'
@@ -260,14 +265,14 @@ export const OrderForm = ({ token }: Props) => {
         )}
       </Formik>
       <div style={{ display: 'none' }}>
-        <OrderPrint ref={componentRef} orderData={{
+        <OrderPrint ref={ componentRef } orderData={{
           order,
           orderNumber,
           floor: selectedFloor || '',
           table: selectedTable || '',
           total,
           orderType: selectedOrderType,
-          notes: '',
+          notes,
           client: clientSelected
         }} />
       </div>

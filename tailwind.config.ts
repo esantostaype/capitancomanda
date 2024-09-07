@@ -32,6 +32,9 @@ const config: Config = {
         foreground: 'var(--foreground)',
         foregroundLight: 'var(--foreground-light)'
       },
+      fontFamily: {
+        jetbrains: 'var(--jetbrains-mono)'
+      },
       keyframes: {
         enterBackgroundModal: {
           '0%': { opacity: '0' },

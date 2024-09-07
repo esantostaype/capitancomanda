@@ -1,12 +1,15 @@
 'use client'
 import { SessionProvider }from 'next-auth/react'
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'
-import { ThemeProvider, CssBaseline } from '@mui/material'
+import { ThemeProvider } from '@mui/material'
 import { darkTheme } from '@/theme/darkTheme'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { setSession } from '@/utils/session'
 import { fetchData } from '@/utils'
 import { useRestaurantStore } from '@/store/global-store'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Restaurant } from '@/interfaces'
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
 
@@ -16,7 +19,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
     const fetchRestaurant = async () => {
       const { branchId, token } = await setSession()
       if ( branchId ) {
-        const data = await fetchData({ url: `/restaurants/branchId/${branchId}` })
+        const data = await fetchData<Restaurant>({ url: `/restaurants/branchId/${ branchId }`, token })
         if ( data ) {
           setRestaurant( data )
         }
@@ -25,13 +28,24 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
     fetchRestaurant()
   }, [ setRestaurant ])
 
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false
+      }
+    }
+  })
+
   return (
     <>
     <ProgressBar color="var(--accent)" options={{ showSpinner: false }}/>
     <SessionProvider>
-      <ThemeProvider theme={ darkTheme }>
-        { children }
-      </ThemeProvider>
+      <QueryClientProvider client={ queryClient }>
+        <ThemeProvider theme={ darkTheme }>
+          { children }
+        </ThemeProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </SessionProvider>
     </>
   )

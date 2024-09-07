@@ -17,12 +17,12 @@ interface Props {
 
 export const Modal = ({ children, title, size, withBackRoute, isOpen, isEditMode }: Props ) => {
   
-  const { activeClassModal, activeModal, openModal, closeModal } = useUiStore()
+  const { activeClassModal, activeModal, activeModalById, openModal, closeModal } = useUiStore()
   
   useEffect(() => {
     const handleKeyDown = ( event: KeyboardEvent ) => {
       if ( event.key === 'Escape' && withBackRoute && activeModal ) {
-        closeModal( withBackRoute && activeModal )
+        closeModal( true )
       } else if( event.key === 'Escape' ) {
         closeModal()
       }
@@ -32,7 +32,7 @@ export const Modal = ({ children, title, size, withBackRoute, isOpen, isEditMode
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [activeModal, closeModal, withBackRoute])
+  }, [ closeModal, activeModal, withBackRoute ])
 
   useEffect(() => {  
     if ( isOpen ) {

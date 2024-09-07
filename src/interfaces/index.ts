@@ -224,7 +224,7 @@ export interface Branch {
 
 export interface Category {
   id: string
-  orderNumber: string
+  orderNumber: number
   name: string
   image: string
   products: Product[]
@@ -247,6 +247,7 @@ export type OrderItemFull = Omit<Product, ''> & {
   selectedVariations?: { [ key: string ]: string }
   selectedAdditionals?: { [ key: string ]: number }
   notes?: string
+  category: Category
 }
 
 export type OrderItem = Omit<Product, ''> & {

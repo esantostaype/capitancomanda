@@ -1,6 +1,5 @@
 import { setSession } from '@/utils/session'
-import { AdminTemplate, OpenModalPageButton } from '@/components'
-import { ProductsDataTable, ProductForm } from './Components'
+import { ProductsPage } from './Components/ProductsPage'
 
 export default async function ProductsLayout({ children }: Readonly<{ children: React.ReactNode; modal: React.ReactNode; }>) {
 
@@ -8,14 +7,8 @@ export default async function ProductsLayout({ children }: Readonly<{ children: 
 
   return (
     <>
-    <AdminTemplate
-      title='Productos'
-      button={ <OpenModalPageButton link="/admin/products/create"/> }
-    >
-      <ProductsDataTable token={ token } role={ role } />
-      { children }
-    </AdminTemplate>
-    <ProductForm token={ token }/>
+    <ProductsPage token={ token } role={ role }/>
+    { children }
     </>
   )
 }

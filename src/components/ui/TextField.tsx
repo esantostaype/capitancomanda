@@ -12,8 +12,8 @@ export interface TextFieldProps {
 	placeholder?: string
 	asSelect?: boolean
 	options?: { label: string; value: string }[]
-	errors?: string | undefined
-	touched?: boolean | undefined
+	errors?: string
+	touched?: boolean
 	value?: any
 	defaultValue?: string
 	innerRef?: Ref<any>

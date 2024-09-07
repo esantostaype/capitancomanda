@@ -3,7 +3,7 @@ import { useParams, usePathname } from 'next/navigation'
 import { Formik, Form, FormikHelpers } from 'formik'
 import { Button, Spinner, ModalFooter, ModalBody, ModalPage } from '@/components'
 import { toast } from 'react-toastify'
-import { Category, Color, Product, ProductFormValues, Size, Variant } from '@/interfaces'
+import { Color, ProductFormValues, Size, Variant } from '@/interfaces'
 import { addProduct, editProduct } from '@/actions/product-actions'
 import { useUiStore } from '@/store/ui-store'
 import { useEffect, useState } from 'react'
@@ -13,52 +13,30 @@ import { ProductFormInformation } from './ProductFormInformation'
 import { ProductFormVariations } from './ProductFormVariations'
 import { ProductFormIngredients } from './ProductFormIngredients'
 import { ProductFormAdditionals } from './ProductFormAdditionals'
-import { fetchData } from '@/utils'
-import { useGlobalStore } from '@/store/global-store'
 import { ProductFormSkeleton } from '../'
+import { useProduct, useCategories } from '@/hooks'
 
 type Props = {
+  refetchProducts: () => void
   token?: string
 }
 
-export const ProductForm = ({ token }: Props ) => {
+export const ProductForm = ({ token, refetchProducts }: Props ) => {
 
   const pathName = usePathname()
   const { id } = useParams()
+  const productId = Array.isArray( id ) ? id[0] : id
+  
+  const { isLoading, data: product, refetch: refetchProduct } = useProduct({ productId, token })
+  const { data: categories } = useCategories({ token })
 
-  const [ product, setProduct ] = useState<Product | null>(null)
-  const [ categories, setCategories ] = useState<Category[] | []>([])
   const [ newImage, setNewImage ] = useState<string | null>(null)
   const [ deleteImage, setDeleteImage ] = useState<boolean>(false)
   const [ tabIndex, setTabIndex ] = useState(0)
   const { activeModalPage, closeModal, closeModalPage } = useUiStore()
-  const { toggleUpdateTrigger } = useGlobalStore()
 
   const isEditMode = pathName.startsWith('/admin/products/edit')
   const isCreateMode = pathName === '/admin/products/create'
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      if ( id ) {
-        try {
-          const data: Product = await fetchData({ url: `/products/${ id }`, token })
-          setProduct( data )
-        } catch ( error ) {
-          toast.error('Error al obtener el producto')
-        }
-      }
-    }
-    fetchProduct()
-    const fetchCategories = async () => {
-      try {
-        const data: Category[] = await fetchData({ url: `/categories`, token })
-        setCategories( data )
-      } catch ( error ) {
-        toast.error('Error al obtener las categorías')
-      }
-    }
-    fetchCategories()
-  }, [ id, token ])
 
   const removeEmptyOptions = ( formValues: ProductFormValues ): ProductFormValues => {
     const newVariations = formValues.variations
@@ -95,7 +73,7 @@ export const ProductForm = ({ token }: Props ) => {
       categoryId: values.categoryId,
       image: deleteImage ? null : ( newImage || product?.image || null ),
     }
-    { product
+    { isEditMode && product
       ? await editProduct( product.id, productValues, token ? token : '' )
       : await addProduct( productValues, token ? token : '' )
     }
@@ -103,12 +81,12 @@ export const ProductForm = ({ token }: Props ) => {
     closeModal()
     closeModalPage( true )
     toast.success( product ? '¡Producto Actualizado!' : '¡Producto Creado!')
-    toggleUpdateTrigger()
+    refetchProducts()
+    refetchProduct()
   }
 
   useEffect(() => {
     if ( !activeModalPage ) {
-      setProduct( null )
       setTabIndex( 0 )
       setNewImage( null )
     }
@@ -124,7 +102,7 @@ export const ProductForm = ({ token }: Props ) => {
       isEditMode={ isEditMode }
     >
       {
-        !product && isEditMode
+        isLoading && isEditMode
         ?<ProductFormSkeleton/>
         :<Formik initialValues={ initialValues } onSubmit={ handleSubmit } validationSchema={ ProductSchema }>
           {({ errors, touched, values, isSubmitting }) => (
@@ -140,7 +118,7 @@ export const ProductForm = ({ token }: Props ) => {
                   </TabList>
                   <TabPanel>
                     <ProductFormInformation
-                      categories={ categories }
+                      categories={ categories || [] }
                       values={ values }
                       errors={ errors }
                       touched={ touched }

@@ -1,39 +1,28 @@
 'use client'
 
 import { Product, Role } from '@/interfaces'
-import { fetchData, formatCurrency } from '@/utils'
+import { formatCurrency } from '@/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { EmptyData, TanstackTable, TableActions, TableFlex, TableImage, LoadingData } from '@/components'
 import { deleteProduct } from '@/actions/product-actions'
-import { useEffect, useState } from 'react'
-import { ProductsTableSkeleton } from './'
-import { useGlobalStore } from '@/store/global-store'
 
 type Props = {
+  products?: Product[]
   token?: string
   role?: string
+  refetchProducts: () => void
+  isLoading: boolean
 }
 
-export const ProductsDataTable = ({ token, role }: Props ) => {
+export const ProductsDataTable = ({ products, refetchProducts, isLoading, token, role }: Props ) => {
 
   const isOwner = role === Role.OWNER
-  
-  const [ products, setProducts ] = useState<Product[] | []>([])
-  const [ loading, setLoading ] = useState(true)
-  const { updateTrigger, toggleUpdateTrigger } = useGlobalStore()
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const data: Product[] = await fetchData({ url: `/products`, token })
-      setProducts( data )
-      setLoading( false )
-    }
-    fetchProducts()
-  }, [ token, updateTrigger ])
 
   const handleDeleteProduct = async ( id: string ) => {
-    await deleteProduct( id, token! )
-    toggleUpdateTrigger()
+    if( token ) {
+      await deleteProduct( id, token )
+      refetchProducts()
+    }
   }
 
   const columns: ColumnDef<Product>[] = [
@@ -101,11 +90,11 @@ export const ProductsDataTable = ({ token, role }: Props ) => {
 
   return (
     <>
-      { loading
+      { isLoading
       ? ( <LoadingData text="Productos"/> )
-      : ( products.length === 0
+      : ( products && products.length === 0
         ? ( <EmptyData text='Productos' /> )
-        : ( <TanstackTable data={ products } columns={ columns } placeholder="Buscar Producto" /> )
+        : products && ( <TanstackTable data={ products } columns={ columns } placeholder="Buscar Producto" /> )
       )}
     </>
   )

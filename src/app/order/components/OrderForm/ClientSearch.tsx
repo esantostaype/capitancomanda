@@ -5,7 +5,7 @@ import { SimpleSpinner } from '@/components'
 
 interface ClientSearchProps {
   onSelectClient: (client: Client) => void
-  token: string
+  token?: string
 }
 
 export const ClientSearch = ({ onSelectClient, token }: ClientSearchProps) => {
@@ -22,7 +22,7 @@ export const ClientSearch = ({ onSelectClient, token }: ClientSearchProps) => {
       if (searchTerm.length >= 3 || searchTerm.length === 8) {
         setLoading(true)
         setNoResults(false) // Restablecer el estado de no resultados antes de hacer la búsqueda
-        const data = await fetchData({ url: `/clients/search/${searchTerm}`, token })
+        const data = await fetchData<Client[]>({ url: `/clients/search/${searchTerm}`, token })
         if (data.length === 0) {
           setNoResults(true) // Actualizar el estado si no hay resultados
         }

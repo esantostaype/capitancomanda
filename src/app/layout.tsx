@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import '@fontsource-variable/inter'
+import '@fontsource-variable/jetbrains-mono'
 import { Providers } from './providers'
 import { ToastNotification } from '@/components'
 import './globals.css'

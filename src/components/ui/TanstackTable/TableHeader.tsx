@@ -14,7 +14,7 @@ type TableHeaderProps<TData extends object> = {
 export const TableHeader = <TData extends object>({ table, filtering, setFiltering, placeholder }: TableHeaderProps<TData> ) => {
 
   return (
-    <div className="flex justify-between px-6 py-4 bg-background border-b border-b-gray50">
+    <div className="flex justify-between px-6 py-4 bg-background border-b border-b-gray50 sticky top-0 z-20">
       <div className="flex items-center gap-2">
         <i className="fi fi-rr-search"></i>
         <input

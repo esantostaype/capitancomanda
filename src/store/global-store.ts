@@ -4,6 +4,8 @@ import { Restaurant } from '@/interfaces'
 interface GlobalState {
   updateTrigger: boolean
   toggleUpdateTrigger: () => void
+  refetchData: () => void;
+  setRefetchData: (fn: () => void) => void;
 }
 
 interface RestaurantState {
@@ -12,6 +14,8 @@ interface RestaurantState {
 }
 
 export const useGlobalStore = create<GlobalState>((set) => ({
+  refetchData: () => {},
+  setRefetchData: (fn) => set({ refetchData: fn }),
   updateTrigger: false,
   toggleUpdateTrigger: () => set((state) => ({ updateTrigger: !state.updateTrigger }))
 }))

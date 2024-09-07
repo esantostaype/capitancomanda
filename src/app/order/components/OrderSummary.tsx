@@ -6,7 +6,7 @@ import { OrderSummaryItem } from '../components'
 import { fetchData, formatCurrency } from '@/utils'
 import { Button } from '@/components'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { Color, IconButtonShape, Size, Variant } from '@/interfaces'
+import { Category, Color, IconButtonShape, OrderItemFull, Size, Variant } from '@/interfaces'
 import { useUiStore } from '@/store/ui-store'
 import { useGlobalStore } from '@/store/global-store'
 
@@ -46,6 +46,23 @@ export const OrderSummary = () => {
 
   const [ listRef ] = useAutoAnimate()
 
+  const groupedOrder = useMemo(() => {
+    const grouped = order.reduce((acc, item) => {
+      if (!acc[item.category.name]) {
+        acc[item.category.name] = {
+          category: item.category,
+          items: []
+        };
+      }
+      acc[item.category.name].items.push(item);
+      return acc;
+    }, {} as Record<string, { category: Category, items: OrderItemFull[] }>);
+  
+    return Object.values(grouped).sort((a, b) => {
+      return a.category.orderNumber - b.category.orderNumber;
+    });
+  }, [order]);
+
   return (
     <div className="flex flex-col bg-surface border-l border-l-gray50 flex-[0_0_20rem] h-screen overflow-y-auto sticky top-0">
       { order.length === 0
@@ -68,11 +85,18 @@ export const OrderSummary = () => {
             <div>Subtotal</div>
           </div>
         </div>
-        <div className="flex-1 relative z-10 px-6">
+        <div className="flex-1 relative z-10">
           <ul className="flex flex-col" ref={ listRef }>
-            { order.map( item => (
-              <OrderSummaryItem key={ item.uniqueId } item={ item } />
-            ))}
+            { groupedOrder.map(({ category, items }) => (
+              <li key={category.id} className='border-b border-b-gray50 py-6 last:border-b-transparent px-6'>
+                <h4 className="uppercase font-semibold mb-6 text-gray600">{category.name}</h4>
+                <ul className="flex flex-col gap-6">
+                  { items.map(item => (
+                    <OrderSummaryItem key={item.uniqueId} item={item} />
+                  ))}
+                </ul>
+              </li>
+            )) }
           </ul>
         </div>
         <div className="sticky bottom-0 bg-surface z-20">
