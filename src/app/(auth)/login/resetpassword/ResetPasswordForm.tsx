@@ -27,7 +27,7 @@ export const ResetPasswordForm = () => {
   }
 
   const handleSubmit = async ( values: FormValues, actions: FormikHelpers<FormValues>) => {  
-    const response = await resetPassword( values.email )
+    const response: any = await resetPassword( values.email )
   
     if ( response.error ) {
       toast.error( response.message )

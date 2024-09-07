@@ -35,7 +35,7 @@ export const ChangePasswordForm = () => {
   }
 
   const handleSubmit = async ( values: FormValues, actions: FormikHelpers<FormValues>) => {  
-    const response = await changePassword( values.password, token! )
+    const response: any = await changePassword( values.password, token! )
     
     if ( response.error ) {
       toast.error( response.message )

@@ -50,7 +50,7 @@ export const SignUpCompleteForm = () => {
       token
     }
     
-    const response = await completeRegistration( registerData )
+    const response: any = await completeRegistration( registerData )
     
     if ( response.error ) {
       toast.error( response.message )

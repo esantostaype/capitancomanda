@@ -45,7 +45,7 @@ export const UserForm = ({ token, branches, isJustPage }: Props) => {
     const fetchUser = async () => {
       if ( id ) {
         try {
-          const fetchedUser = await fetchData({ url: `/users/${ id }`, token })
+          const fetchedUser = await fetchData<User>({ url: `/users/${ id }`, token })
           setUser( fetchedUser )
         } catch (error) {
           toast.error('Error al obtener la sucursal')

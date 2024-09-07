@@ -35,7 +35,7 @@ export const SignUpForm = () => {
       email: values.email
     };
   
-    const response = await register(registerData)
+    const response: any = await register(registerData)
 
     if ( response.user ) {
       if ( response.user.isVerified === true ) {

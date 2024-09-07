@@ -64,7 +64,7 @@ export const SignUpCompleteOAuthForm = () => {
       password: values.password
     }
     
-    const response = await completeRegistrationOAuth( registerData )
+    const response: any = await completeRegistrationOAuth( registerData )
     
     if ( response.error ) {
       toast.error( response.message )
