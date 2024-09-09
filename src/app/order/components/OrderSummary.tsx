@@ -64,7 +64,7 @@ export const OrderSummary = () => {
   }, [order]);
 
   return (
-    <div className="flex flex-col bg-surface border-l border-l-gray50 flex-[0_0_20rem] h-screen overflow-y-auto sticky top-0">
+    <div className="hidden xl:flex flex-col bg-surface border-l border-l-gray50 flex-[0_0_20rem] h-screen overflow-y-auto sticky top-0">
       { order.length === 0
         ? (
         <div className="w-full flex-1 flex items-center justify-center text-base text-gray500">

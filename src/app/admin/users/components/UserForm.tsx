@@ -23,17 +23,17 @@ interface FormValues {
 }
 
 type Props = {
-  branches?: Branch[]
   token?: string
   isJustPage?: boolean
 }
 
-export const UserForm = ({ token, branches, isJustPage }: Props) => {
+export const UserForm = ({ token, isJustPage }: Props) => {
 
   const pathName = usePathname()
   const { id } = useParams()
 
   const [ user, setUser ] = useState<User | null>(null)
+  const [ branches, setBranches ] = useState<Branch[] | null>(null)
 
   const { closeModalPage, activeModalPage } = useUiStore()
   const { data: session } = useSession()
@@ -54,6 +54,18 @@ export const UserForm = ({ token, branches, isJustPage }: Props) => {
       }
     }
     fetchUser()
+    const fetchBranches = async () => {
+      if ( id ) {
+        try {
+          const fetchedBranches = await fetchData<Branch[]>({ url: `/branches`, token })
+          setBranches( fetchedBranches )
+        } catch (error) {
+          toast.error('Error al obtener la sucursal')
+        } finally {
+        }
+      }
+    }
+    fetchBranches()
   }, [ id, token ])
 
   const userRole = session?.user.role

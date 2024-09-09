@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { useOrderStore } from '@/store/order-store'
 import { Color, Variant, OrderItemFull, Size } from '@/interfaces'
-import { Button, Counter, Modal, ModalBody, ModalFooter, ModalHeader, SimpleSpinner, TextField } from '@/components'
+import { Button, Counter, IconButton, Modal, ModalBody, ModalFooter, ModalHeader, SimpleSpinner, TextField } from '@/components'
 import { toast } from 'react-toastify'
 import { fetchData, formatCurrency, generateUniqueId, getMinVariantPrice, getVariantPrice } from '@/utils'
 import { useUiStore } from '@/store/ui-store'
@@ -101,10 +101,13 @@ export const OrderProductDetail = ({ token }: Props) => {
           product ?
           <>
           <div className="flex gap-4 items-center">
-            <h1 className="text-xl font-semibold">{ product.name }</h1>
+            <div className="block xl:hidden">
+              <IconButton iconName='arrow-left' size={ Size.MD } onClick={ ()=>closeModal( true ) }/>
+            </div>
+            <h1 className="text-lg md:text-xl font-semibold">{ product.name }</h1>
             <div className="flex items-center gap-1">
               { hasVariationPrices && <span className="text-gray500">Desde:</span> }
-              <span className="text-xl font-bold text-accent opacity-60">{ formatCurrency( product.price ) }</span>
+              <span className="text-lg md:text-xl font-bold text-accent opacity-60">{ formatCurrency( product.price ) }</span>
             </div>
           </div>
           {
@@ -121,10 +124,10 @@ export const OrderProductDetail = ({ token }: Props) => {
           onSubmit={ handleAddToOrder }
         >
           {({ values, setFieldValue }) => (
-            <Form className="overflow-y-auto">
+            <Form className="overflow-y-auto flex flex-col flex-1">
               <ModalBody>
-                <div className={`grid grid-cols-6 gap-8 relative ${ !product ? "" : "items-start" } `}>
-                  <div className='col-span-2 sticky top-10'>
+                <div className={`block md:grid grid-cols-6 gap-6 xl:gap-8 relative ${ !product ? "" : "items-start" } `}>
+                  <div className='hidden md:block col-span-2 sticky top-4 md:top-8 xl:top-10'>
                     <div className="relative z-20 bg-gray50 flex items-center justify-center rounded-lg w-full aspect-square overflow-hidden">
                     { product?.image ? (
                       <Image src={ product.image } alt={ product.name } width={ 512 } height={ 512 } className="object-cover aspect-square" />
@@ -203,6 +206,7 @@ export const OrderProductDetail = ({ token }: Props) => {
                     ( product?.variations || product?.additionals ) && 
                     ( !product || ( hasVariations && !areAllVariantsSelected( values )))
                   }
+                  className="w-full md:w-auto"
                   submit
                 />
               </ModalFooter>

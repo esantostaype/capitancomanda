@@ -52,6 +52,7 @@
     "react-tabs": "^6.0.2",
     "react-to-print": "^2.15.1",
     "react-toastify": "^10.0.5",
+    "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.11",
     "swr": "^2.2.5",

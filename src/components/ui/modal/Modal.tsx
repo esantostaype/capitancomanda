@@ -45,40 +45,40 @@ export const Modal = ({ children, title, size, withBackRoute, isOpen, isEditMode
 
   switch ( size ) {
     case Size.XS:
-      sizeClass = "max-w-xs"
+      sizeClass = "w-full sm:max-w-xs sm:rounded-xl"
       break
     case Size.SM:
-      sizeClass = "max-w-sm"
+      sizeClass = "w-full sm:max-w-sm sm:rounded-xl"
       break
     case Size.MD:
-      sizeClass = "max-w-md"
+      sizeClass = "w-full sm:max-w-md sm:rounded-xl"
       break
     case Size.LG:
-      sizeClass = "max-w-lg"
+      sizeClass = "w-full sm:max-w-lg sm:rounded-xl"
       break
     case Size.XL:
-      sizeClass = "max-w-xl"
+      sizeClass = "w-full sm:max-w-xl sm:rounded-xl"
       break
     case Size._2XL:
-      sizeClass = "max-w-2xl"
+      sizeClass = "w-full md:max-w-2xl md:rounded-xl"
       break
     case Size._3XL:
-      sizeClass = "max-w-3xl"
+      sizeClass = "w-full lg:max-w-3xl lg:rounded-xl"
       break
     case Size._4XL:
-      sizeClass = "max-w-4xl"
+      sizeClass = "w-full lg:max-w-4xl lg:rounded-xl"
       break
     case Size._5XL:
-      sizeClass = "max-w-5xl"
+      sizeClass = "w-full xl:max-w-5xl xl:rounded-xl"
       break
     case Size._6XL:
-      sizeClass = "max-w-6xl"
+      sizeClass = "w-full xl:max-w-6xl xl:rounded-xl"
       break
     case Size._7XL:
-      sizeClass = "max-w-7xl"
+      sizeClass = "w-full 2xl:max-w-7xl 2xl:rounded-xl"
       break
     default:
-      sizeClass = ""
+      sizeClass = "w-full sm:max-w-xl sm:rounded-xl"
       break
   }
   
@@ -86,9 +86,9 @@ export const Modal = ({ children, title, size, withBackRoute, isOpen, isEditMode
     <>
     {
       ( isOpen ) && (
-        <section className={`${ activeClassModal ? "pointer-events-auto" : "pointer-events-none" } flex items-center justify-center fixed h-screen w-full top-0 left-0 z-[9999] py-8`}>
-          <div className={`${ activeClassModal ? "animate-enterModal" : "animate-leaveModal bottom-[-20px] opacity-0" } bg-surface flex-1 ${ sizeClass } flex flex-col rounded-xl relative z-[9999] bottom-auto max-h-[90vh] overflow-hidden`}>
-            <div className="absolute top-4 right-4 z-30">
+        <section className={`${ activeClassModal ? "pointer-events-auto" : "pointer-events-none" } flex flex-col items-center justify-center fixed h-screen w-full top-0 left-0 z-[9999]`}>
+          <div className={`${ activeClassModal ? "animate-enterModal" : "animate-leaveModal bottom-[-20px] opacity-0" } bg-surface flex flex-col flex-1 ${ sizeClass } flex flex-col relative z-[9999] bottom-auto h-screen max-h-screen md:h-auto md:max-h-[90vh] overflow-hidden`}>
+            <div className="hidden md:block absolute md:top-3 xl:top-4 right-4 z-30">
               <IconButton onClick={ ()=> closeModal( withBackRoute ) } iconName='cross-small' variant={ Variant.GHOST } />
             </div>
             {
