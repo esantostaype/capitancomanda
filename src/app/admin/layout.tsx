@@ -5,7 +5,7 @@ export default function AdminLayout({ children }: Readonly<{ children: React.Rea
     <>
     <section className="flex">
       <AdminSidebar/>
-      <section className="flex flex-1 flex-col h-vdh">
+      <section className="flex flex-1 flex-col h-dvh">
         { children }
       </section>
     </section>

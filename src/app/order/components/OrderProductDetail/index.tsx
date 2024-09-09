@@ -101,10 +101,12 @@ export const OrderProductDetail = ({ token }: Props) => {
           product ?
           <>
           <div className="flex gap-4 items-center">
-            <div className="block xl:hidden">
-              <IconButton iconName='arrow-left' size={ Size.MD } onClick={ ()=>closeModal( true ) }/>
+            <div className="flex items-center gap-2">
+              <div className="block xl:hidden">
+                <IconButton iconName='arrow-left' size={ Size.SM } onClick={ ()=>closeModal( true ) }/>
+              </div>
+              <h1 className="text-lg md:text-xl font-semibold">{ product.name }</h1>
             </div>
-            <h1 className="text-lg md:text-xl font-semibold">{ product.name }</h1>
             <div className="flex items-center gap-1">
               { hasVariationPrices && <span className="text-gray500">Desde:</span> }
               <span className="text-lg md:text-xl font-bold text-accent opacity-60">{ formatCurrency( product.price ) }</span>
