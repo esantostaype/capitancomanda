@@ -7,7 +7,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const { token } = await setSession()
   return (
     <>
-    <section className="flex flex-col md:flex-row min-h-screen">
+    <section className="flex flex-col md:flex-row min-h-vdh">
       <section className="flex flex-1 flex-col p-4 md:p-6">
         <header>
           {/* <div className="flex items-center justify-between gap-4 mb-6">

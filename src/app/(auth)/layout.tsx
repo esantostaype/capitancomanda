@@ -7,7 +7,7 @@ export default function AuthLayout({ children }: Readonly<{ children: React.Reac
       <div className="left-8 top-8 absolute">
         <Image src='/images/logo-restify.svg' width='40' height='40' alt="Restify" />
       </div>
-      <section className="min-h-screen w-full flex items-center justify-center">
+      <section className="min-h-vdh w-full flex items-center justify-center">
         <div className="flex-1 p-6 max-w-md">
           { children }
         </div>

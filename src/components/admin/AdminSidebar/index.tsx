@@ -63,7 +63,7 @@ export const AdminSidebar = () => {
   }
 
   return (
-    <aside className="flex flex-col h-screen overflow-y-auto w-64 bg-surface border-gray50 border-r">
+    <aside className="flex flex-col h-vdh overflow-y-auto w-64 bg-surface border-gray50 border-r">
       <div className="flex items-center sticky font-semibold text-2xl gap-2 p-6 w-full leading-6">
         <Image src="/images/logo-restify.svg" width="32" height="32" alt="Restify" />
         <h2>Restify</h2>

@@ -11,7 +11,7 @@ export const OrderSidebar = async() => {
 
   return (
     <>
-    <aside className="bg-surface border-r border-r-gray50 max-w-16 h-screen flex-[0_0_8rem] py-4 text-center">
+    <aside className="bg-surface border-r border-r-gray50 max-w-16 h-vdh flex-[0_0_8rem] py-4 text-center">
       <Link href="/order" className="flex justify-center">
         <Image src="/images/logo-restify.svg" width="32" height="32" alt="Capitán Comanda" />
       </Link>

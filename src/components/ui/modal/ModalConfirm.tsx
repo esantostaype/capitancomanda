@@ -41,7 +41,7 @@ export const ModalConfirm = ({ title, detail, buttonConfirmText, onClickConfirm,
     <>
     {
       ( isOpen ) && (
-        <section className={`${ activeClassModalConfirm ? "pointer-events-auto" : "pointer-events-none" } px-4 md:px-0 flex items-center justify-center fixed h-screen w-full top-0 left-0 z-[9999] overflow-y-auto py-8`}>
+        <section className={`${ activeClassModalConfirm ? "pointer-events-auto" : "pointer-events-none" } px-4 md:px-0 flex items-center justify-center fixed h-vdh w-full top-0 left-0 z-[9999] overflow-y-auto py-8`}>
           <div className={`${ activeClassModalConfirm ? "animate-enterModal" : "animate-leaveModal bottom-[-20px] opacity-0" } p-8 bg-surface flex-1 md:max-w-lg flex flex-col rounded-xl relative z-[9999] bottom-0`}>
             <div className="absolute top-4 right-4">
               <IconButton onClick={ ()=> closeModalConfirm() } iconName='cross-small'/>
