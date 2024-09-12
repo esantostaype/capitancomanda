@@ -45,15 +45,15 @@ export const ModalPage = ({ children, title, backText, withBackRoute, withTabs, 
     {
       ( isOpen ) && (
         <section className={ `${ activeClassModalPage ? "pointer-events-auto" : "pointer-events-none" } ${ activeOrderSummary ? "z-[9999]" : "z-[999999]" }` }>
-          <div className={`${ activeClassModalPage ? "animate-enterModalPage" : "animate-leaveModalPage right-[-100%]" } z-20 bg-surface fixed overflow-hidden top-0 right-0 w-1/2 flex flex-col mt-6 h-[calc(100vh-1.5rem)] border-t border-l border-gray50 rounded-tl-2xl`}>
-            <div className={`flex items-center gap-4 p-8 border-b border-gray50 ${ withTabs ? "pb-16" : "" } `}>
+          <div className={`${ activeClassModalPage ? "animate-enterModalPage" : "animate-leaveModalPage right-[-100%]" } z-[9999] bg-surface fixed overflow-hidden top-0 right-0 w-full md:w-1/2 md:min-w-[40rem] flex flex-col md:mt-6 h-dvh md:h-[calc(100dvh-1.5rem)] md:border-t md:border-l border-gray50 md:rounded-tl-2xl`}>
+            <div className={`flex items-center gap-4 p-4 md:p-6 lg:p-8 xl:p-10 border-b border-gray50 ${ withTabs ? "pb-16" : "" } `}>
               <IconButton iconName='arrow-left' color={ Color.ACCENT } size={ Size.LG } variant={ Variant.GHOST } onClick={ ()=> closeModalPage( withBackRoute ) }/>
               <div>
-                <span className="text-gray600">{ backText }</span>                
+                <span className="text-xs md:text-sm text-gray600">{ backText }</span>                
                 {
                   !title && isEditMode
                   ? <div className="mt-1"><Skeleton animation="wave" variant="rounded" width={ 320 } height={ 32 } className="bg-gray50" /></div>
-                  : <h1 className="text-3xl font-semibold">{ title }</h1>
+                  : <h1 className="text-xl md:text-3xl font-semibold">{ title }</h1>
                 }
               </div>
             </div>

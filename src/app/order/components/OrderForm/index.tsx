@@ -138,11 +138,11 @@ export const OrderForm = ({ token }: Props) => {
         <Spinner isActive={ isSubmitting }/>
         <Form className="flex flex-col flex-1 overflow-y-auto">
           <ModalBody>
-            <div className='flex flex-col gap-16'>
+            <div className='flex flex-col gap-6 md:gap-8 lg:gap-12 xl:gap-16'>
               <div>
-                <h3 className="row-span-1 text-2xl text-gray500 font-bold mb-4">Cliente</h3>                  
-                <div className='grid grid-cols-2 gap-6'>
-                  <div className="grid grid-cols-2 col-span-2 gap-6 relative">
+                <h3 className="text-lg md:text-2xl text-gray500 font-bold mb-2 md:mb-4">Cliente</h3>                  
+                <div className='flex flex-col md:grid md:grid-cols-2 gap-6'>
+                  <div className="md:grid grid-cols-2 col-span-2 gap-6 relative">
                     <div className="col-span-1">
                       <ClientSearch onSelectClient={( client ) => {
                         setClientSelected( client )
@@ -182,8 +182,8 @@ export const OrderForm = ({ token }: Props) => {
               </div>
 
               <div>
-                <h3 className="text-2xl text-gray500 font-bold">Tipo de Órden</h3>
-                <ul className="flex flex-wrap gap-4 mt-4">
+                <h3 className="text-lg md:text-2xl text-gray500 font-bold mb-2 md:mb-4">Tipo de Órden</h3>
+                <ul className="flex flex-wrap gap-4">
                   <OrderFormTypeItem
                     type={ OrderType.DINE_IN }
                     isSelected={ selectedOrderType === OrderType.DINE_IN }
@@ -203,31 +203,31 @@ export const OrderForm = ({ token }: Props) => {
               </div>
 
               <div>
-                <h3 className="text-2xl text-gray500 font-bold mb-4">Selecciona una Mesa</h3>
+                <h3 className="text-lg md:text-2xl text-gray500 font-bold mb-2 md:mb-4">Selecciona una Mesa</h3>
                 <Tabs selectedIndex={ tabFloorIndex } onSelect={( index ) => {
                     setTabFloorIndex( index )
                     setSelectedFloor( branch?.floors[index].name || null )
                     setSelectedTable( null )
                   }} className="flex flex-col flex-1">
-                  <TabList className="border-b border-b-gray50 mb-6 z-[999] flex gap-6 text-base font-500 leading-none text-gray500">
+                  <TabList className="border-b border-b-gray50 mb-6 z-[999] flex gap-4 md:gap-6 text-base font-500 leading-none text-gray500">
                     { branch?.floors.map(( floor ) => (
                       <Tab key={ floor.id }>{ floor.name }</Tab>
                     ))}
                   </TabList>
                   { branch?.floors.map(( floor, floorIndex ) => (
                     <TabPanel key={floor.id}>
-                      <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] mt-8">
+                      <div className="grid grid-cols-[repeat(auto-fill,minmax(5rem,1fr))] md:grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] gap-4 md:gap-6">
                         {Array.from({ length: floor.tables }).map((_, tableIndex) => (
                           <div
                             key={tableIndex}
                             className="flex items-center justify-center aspect-square cursor-pointer"
                             onClick={() => setSelectedTable((tableIndex + 1).toString())}
                           >
-                            <div className="relative flex items-center justify-center h-24 w-24">
+                            <div className="relative flex items-center justify-center w-16 h-16 md:h-24 md:w-24">
                               <span className={`relative z-20 text-lg font-bold ${selectedTable === (tableIndex + 1).toString() ? 'text-gray50' : ' text-gray600'}`}>
                                 {tableIndex + 1}
                               </span>
-                              <RestaurantTable className={`absolute z-10 transition-all ${selectedTable === (tableIndex + 1).toString() ? 'fill-gray900' : 'fill-gray50'}`} />
+                              <RestaurantTable className={`w-16 h-16 md:w-24 md:h-24 absolute z-10 transition-all ${selectedTable === (tableIndex + 1).toString() ? 'fill-gray900' : 'fill-gray50'}`} />
                             </div>
                           </div>
                         ))}
@@ -238,7 +238,7 @@ export const OrderForm = ({ token }: Props) => {
               </div>
 
               <div>
-                <h3 className="text-2xl text-gray500 font-bold mb-4">Notas</h3>
+                <h3 className="text-lg md:text-2xl text-gray500 font-bold mb-2 md:mb-4">Notas</h3>
                 <TextField typeField='textarea' name='notes' onChange={(e) => {
                   setFieldValue('notes', e.target.value)
                   setNotes(e.target.value)
@@ -247,18 +247,20 @@ export const OrderForm = ({ token }: Props) => {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button variant={ Variant.GHOST } text="Cancelar" size={ Size.LG } onClick={ ()=> closeModalPage() }/>
-            <ReactToPrint
-              trigger={() => <Button text='Imprimir Comanda' color={Color.ACCENT} size={Size.LG} variant={Variant.GHOST} />}
-              content={() => componentRef.current }
-            />
-            <Button
-              text='Enviar Comanda'
-              color={ Color.ACCENT }
-              size={ Size.LG }
-              variant={ Variant.CONTAINED }
-              submit
-            />
+            <div className="pb-16 md:pb-0 flex justify-end gap-4 w-full">
+              <Button variant={ Variant.GHOST } text="Cancelar" size={ Size.LG } onClick={ ()=> closeModalPage() }/>
+              <ReactToPrint
+                trigger={() => <Button className="flex-1" text='Enviar' color={Color.ACCENT} size={Size.LG} variant={ Variant.CONTAINED } />}
+                content={() => componentRef.current }
+              />
+              {/* <Button
+                text='Enviar Comanda'
+                color={ Color.ACCENT }
+                size={ Size.LG }
+                variant={ Variant.CONTAINED }
+                submit
+              /> */}
+            </div>
           </ModalFooter>
         </Form>
         </>

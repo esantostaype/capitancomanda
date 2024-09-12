@@ -404,6 +404,7 @@ body {
   border-bottom: 1px solid transparent;
   cursor: pointer;
   display: flex;
+  font-size: 12px;
   gap: 4px;
   height: 2.5rem;
   line-height: 2.5rem;
@@ -416,6 +417,18 @@ body {
 .react-tabs__tab--selected{
   border-bottom: 1px solid var(--foreground);
   color: var(--foreground);
+}
+
+@media screen and ( min-width: 768px ) {
+  .react-tabs__tab{
+    font-size: 14px;
+  }
+}
+
+@media screen and ( min-width: 1280px ) {
+  .react-tabs__tab{
+    font-size: 16px;
+  }
 }
 
 

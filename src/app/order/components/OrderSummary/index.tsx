@@ -63,8 +63,13 @@ export const OrderSummary = () => {
     });
   }, [order])
 
+  const handleContinue = () => {
+    openModalPage()
+    closeOrderSummary()
+  }
+
   return (
-    <div className={`fixed xl:sticky right-0 flex flex-col h-dvh top-0 flex-[0_0_20rem] xl:w-80 z-[99999]`}>
+    <div className={`fixed xl:sticky right-0 flex flex-col h-dvh top-0 flex-[0_0_20rem] xl:w-80 ${ activeOrderSummary ? "z-[99999]" : "z-[9999]" }`}>
       <div className={`${ activeOrderSummary ? "right-80" : "right-0" } rounded-bl-lg fixed w-14 h-14 bg-gray50 hidden md:flex xl:hidden items-center justify-center top-0 z-20 transition-all`} onClick={ !activeOrderSummary ? openOrderSummary : closeOrderSummary }>
         <i className={`${ activeOrderSummary ? "fi-rr-arrow-right" : "fi-rr-shopping-bag" } fi text-xl`}></i>
       </div>
@@ -120,14 +125,14 @@ export const OrderSummary = () => {
                 </tr>
               </table>
             </div>
-            <div className="flex gap-4 p-4 md:p-6 relative z-20 pb-20 md:pb-0">
+            <div className="flex gap-4 p-4 md:p-6 relative z-20 pb-20 md:pb-6">
               <IconButton iconName='trash' color={ Color.ERROR } variant={ Variant.GHOST } size={ Size.LG } shape={ IconButtonShape.SQUARE } onClick={ () => clearOrder() } />
               <Button
                 text='Continuar'
                 color={ Color.ACCENT }
                 size={ Size.LG }
                 variant={ Variant.CONTAINED }
-                onClick={ () => openModalPage() }
+                onClick={ () => handleContinue() }
                 full
               />
             </div>

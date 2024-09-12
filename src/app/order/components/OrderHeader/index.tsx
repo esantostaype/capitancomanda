@@ -10,7 +10,7 @@ export const OrderHeader = () => {
   const { openOrderSummary, closeOrderSummary, activeOrderSummary } = useUiStore()
 
   return (
-    <header className='fixed bottom-0 md:bottom-auto md:sticky md:top-0 px-4 md:px-6 md:pr-20 xl:pr-6 flex items-center w-full border-t border-t-gray50 md:border-t-0 md:border-b md:border-b-gray50 bg-surface h-16 md:h-14 z-[99999999] md:z-[9999]'>
+    <header className='fixed bottom-0 md:bottom-auto md:sticky md:top-0 px-4 md:px-6 md:pr-20 xl:pr-6 flex items-center w-full border-t border-t-gray50 md:border-t-0 md:border-b md:border-b-gray50 bg-surface h-16 md:h-14 z-[99999999] md:z-[99]'>
       <div className="flex items-center justify-center md:justify-between gap-4 w-full">
         <nav className="flex items-center w-full md:w-auto">
           <ul className="text-center justify-between text-[9px] md:text-sm flex items-center md:gap-6 uppercase md:font-semibold w-full text-gray600">

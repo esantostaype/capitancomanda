@@ -87,7 +87,7 @@ export const Modal = ({ children, title, size, withBackRoute, isOpen, isEditMode
     {
       ( isOpen ) && (
         <section className={`${ activeClassModal ? "pointer-events-auto" : "pointer-events-none" } flex flex-col items-center justify-center fixed h-dvh w-full top-0 left-0  ${ activeOrderSummary ? "z-[9999]" : "z-[999999]" }`}>
-          <div className={`${ activeClassModal ? "animate-enterModal" : "animate-leaveModal bottom-[-20px] opacity-0" } z-20 bg-surface flex flex-col flex-1 md:flex-initial ${ sizeClass } flex flex-col relative bottom-auto h-dvh max-h-dvh md:h-auto md:max-h-[90dvh] overflow-hidden`}>
+          <div className={`${ activeClassModal ? "animate-enterModal" : "animate-leaveModal bottom-[-20px] opacity-0" } z-[9999] bg-surface flex flex-col flex-1 md:flex-initial ${ sizeClass } flex flex-col relative bottom-auto h-dvh max-h-dvh md:h-auto md:max-h-[90dvh] overflow-hidden`}>
             <div className="hidden md:block absolute md:top-3 xl:top-4 right-4 z-30">
               <IconButton onClick={ ()=> closeModal( withBackRoute ) } iconName='cross-small' variant={ Variant.GHOST } />
             </div>
