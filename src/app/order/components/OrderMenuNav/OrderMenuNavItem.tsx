@@ -8,7 +8,7 @@ type Props = {
   category: Category
 }
 
-export const OrderNavItem = ({ category } : Props ) => {
+export const OrderMenuNavItem = ({ category } : Props ) => {
   
   const params = useParams()
   const isActive = category.id === params.category

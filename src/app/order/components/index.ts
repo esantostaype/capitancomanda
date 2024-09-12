@@ -1,6 +1,6 @@
 export * from './OrderForm'
 export * from './OrderHeader'
-export * from './OrderNav'
+export * from './OrderMenuNav'
 export * from './OrderProductDetail'
 export * from './OrderProducts/OrderProductItem'
 export * from './OrderSidebar'

@@ -1,7 +1,5 @@
 import { setSession } from '@/utils/session'
-import { OrderForm, OrderHeader, OrderNav, OrderProductDetail, OrderProducts, OrderSummary } from './components'
-import Image from 'next/image';
-import Link from 'next/link';
+import { OrderForm, OrderHeader, OrderProductDetail, OrderSummary } from './components'
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {  
   const { token } = await setSession()
