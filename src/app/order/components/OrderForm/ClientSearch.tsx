@@ -13,7 +13,7 @@ export const ClientSearch = ({ onSelectClient, token }: ClientSearchProps) => {
   const [results, setResults] = useState<Client[]>([])
   const [loading, setLoading] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
-  const [noResults, setNoResults] = useState(false) // Estado para manejar los resultados
+  const [noResults, setNoResults] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const resultsRef = useRef<HTMLUListElement>(null)
 
@@ -21,16 +21,16 @@ export const ClientSearch = ({ onSelectClient, token }: ClientSearchProps) => {
     const handler = setTimeout(async () => {
       if (searchTerm.length >= 3 || searchTerm.length === 8) {
         setLoading(true)
-        setNoResults(false) // Restablecer el estado de no resultados antes de hacer la búsqueda
+        setNoResults(false)
         const data = await fetchData<Client[]>({ url: `/clients/search/${searchTerm}`, token })
         if (data.length === 0) {
-          setNoResults(true) // Actualizar el estado si no hay resultados
+          setNoResults(true)
         }
         setResults(data)
         setLoading(false)
       } else {
         setResults([])
-        setNoResults(false) // Restablecer el estado de no resultados si la búsqueda es demasiado corta
+        setNoResults(false)
       }
     }, 500)
 
@@ -46,9 +46,9 @@ export const ClientSearch = ({ onSelectClient, token }: ClientSearchProps) => {
         resultsRef.current && !resultsRef.current.contains(event.target as Node)
       ) {
         setIsFocused(false)
-        setSearchTerm('') // Vaciar el término de búsqueda al hacer clic fuera
-        setResults([]) // Opcional: Limpiar los resultados también
-        setNoResults(false) // Opcional: Restablecer el estado de no resultados
+        setSearchTerm('')
+        setResults([])
+        setNoResults(false)
       }
     }
 

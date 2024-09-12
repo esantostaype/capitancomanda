@@ -45,7 +45,7 @@ export const ModalPage = ({ children, title, backText, withBackRoute, withTabs, 
     {
       ( isOpen ) && (
         <section className={ activeClassModalPage ? "pointer-events-auto" : "pointer-events-none" }>
-          <div className={`${ activeClassModalPage ? "animate-enterModalPage" : "animate-leaveModalPage right-[-100%]" } bg-surface fixed overflow-hidden top-0 right-0 w-1/2 z-[9999] flex flex-col mt-6 h-[calc(100vh-1.5rem)] border-t border-l border-gray50 rounded-tl-2xl`}>
+          <div className={`${ activeClassModalPage ? "animate-enterModalPage" : "animate-leaveModalPage right-[-100%]" } bg-surface fixed overflow-hidden top-0 right-0 w-1/2 z-[999999] flex flex-col mt-6 h-[calc(100vh-1.5rem)] border-t border-l border-gray50 rounded-tl-2xl`}>
             <div className={`flex items-center gap-4 p-8 border-b border-gray50 ${ withTabs ? "pb-16" : "" } `}>
               <IconButton iconName='arrow-left' color={ Color.ACCENT } size={ Size.LG } variant={ Variant.GHOST } onClick={ ()=> closeModalPage( withBackRoute ) }/>
               <div>

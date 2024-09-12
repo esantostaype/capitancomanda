@@ -48,7 +48,7 @@ export const ModalConfirm = ({ title, detail, buttonConfirmText, onClickConfirm,
             </div>
             <div className="text-center flex flex-col gap-4 items-center">
               <div className='relative h-16 w-16 flex items-center justify-center text-2xl rounded-full overflow-hidden'>
-                <i className="fi fi-rr-trash z-20 relative"></i>
+                <i className="fi fi-rr-trash z-20 relative text-error"></i>
                 <div className="opacity-20 bg-error absolute top-0 left-0 w-full h-full z-10"></div>
               </div>
               <h3 className="text-lg font-semibold">{ title }</h3>

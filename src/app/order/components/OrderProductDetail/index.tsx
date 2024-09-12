@@ -98,26 +98,25 @@ export const OrderProductDetail = ({ token }: Props) => {
       <ModalHeader>
         <>
         {
-          product ?
+          product &&
           <>
-          <div className="flex gap-4 items-center">
-            <div className="flex items-center gap-2">
+          <div className="w-full flex gap-4 items-center">
+            <div className="flex w-full md:w-auto items-center gap-2">
               <div className="block xl:hidden">
                 <IconButton iconName='arrow-left' size={ Size.SM } onClick={ ()=>closeModal( true ) }/>
               </div>
-              <h1 className="text-lg md:text-xl font-semibold">{ product.name }</h1>
+              <h1 className="w-full flex-1 text-base md:text-xl leading-tight font-semibold text-ellipsis text-nowrap overflow-hidden">{ product.name }</h1>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="hidden md:flex items-center gap-1 leading-tight">
               { hasVariationPrices && <span className="text-gray500">Desde:</span> }
-              <span className="text-lg md:text-xl font-bold text-accent opacity-60">{ formatCurrency( product.price ) }</span>
+              <span className="text-base md:text-xl font-bold text-accent opacity-60 leading-tight">{ formatCurrency( product.price ) }</span>
             </div>
           </div>
           {
             product.description &&
-            <div className="text-gray500 mt-1">{ product.description }</div>
+            <div className="hidden md:block text-gray500 mt-1">{ product.description }</div>
           }
-          </> :
-          <OrderProductDetailHeaderSkeleton/>
+          </>
         }
         </>
       </ModalHeader>
@@ -140,7 +139,18 @@ export const OrderProductDetail = ({ token }: Props) => {
                   </div>
                   { !product
                     ? <div className='col-span-4 flex items-center justify-center'><SimpleSpinner/></div>
-                    : <div className='col-span-4 flex flex-col gap-8'>
+                    : <div className='col-span-4 flex flex-col gap-8'> 
+                      <div className="flex md:hidden flex-col gap-4">
+                        <div className="flex items-center gap-1 leading-tight">
+                          Precio: 
+                          { hasVariationPrices && <span className="text-gray500">Desde:</span> }
+                          <span className="text-base md:text-xl font-bold text-accent opacity-60 leading-tight">{ formatCurrency( product.price ) }</span>
+                        </div>                     
+                        {
+                          product.description &&
+                          <div className="text-gray500">{ product.description }</div>
+                        }
+                      </div>
                       { product && 
                         <>
                         <OrderProductDetailVariantSelector

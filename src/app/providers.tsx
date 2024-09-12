@@ -44,7 +44,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
         <ThemeProvider theme={ darkTheme }>
           { children }
         </ThemeProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </SessionProvider>
     </>

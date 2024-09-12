@@ -41,7 +41,7 @@ export const AdminSortableCard = ({
         onClickDelete={onDelete}
         linkEdit={`/admin/categories/edit/${category.id}`}
         hasFooter={isOwner}
-        className="hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
+        className="dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
         footer={
           <>
           {

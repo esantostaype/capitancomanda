@@ -18,17 +18,16 @@
   --info: #03a9f4;
   --warning: #ff9800;
   --error: #ef5350;
-  --gray-50: #f7f6fc;
-  --gray-100: #eeedf3;
-  --gray-200: #dcdbe1;
-  --gray-300: #c5c4ca;
-  --gray-400: #a2a1a7;
-  --gray-500: #87868c;
-  --gray-600: #6d6c72;
-  --gray-700: #545359;
-  --gray-800: #434248;
-  --gray-900: #35343a;
-  --gray-950: #25242a;
+  --gray-50: #eeedf3;
+  --gray-100: #dcdbe1;
+  --gray-200: #c5c4ca;
+  --gray-300: #a2a1a7;
+  --gray-400: #87868c;
+  --gray-500: #6d6c72;
+  --gray-600: #545359;
+  --gray-700: #434248;
+  --gray-800: #35343a;
+  --gray-900: #25242a;
   --jetbrains-mono: 'JetBrains Mono Variable', monospace;
 }
 
@@ -411,12 +410,12 @@ body {
 }
 
 .react-tabs__tab:hover{
-  color: #fff;
+  color: var(--foreground);
 }
 
 .react-tabs__tab--selected{
-  border-bottom: 1px solid #fff;
-  color: #fff;
+  border-bottom: 1px solid var(--foreground);
+  color: var(--foreground);
 }
 
 
@@ -580,6 +579,6 @@ body {
 
 @media print {
   @page {
-    size: 80mm 180mm;
+    size: 80mm 297mm;
   }
 }

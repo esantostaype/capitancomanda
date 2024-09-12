@@ -14,7 +14,7 @@ export const ToastNotification = () => {
       pauseOnFocusLoss
       draggable
       pauseOnHover={false}
-      theme="dark"
+      theme="colored"
     />
   )
 }

@@ -25,6 +25,10 @@ interface UiStore {
   activePopover: boolean
   activeClassPopover: boolean
   closePopover: () => void
+
+  openOrderSummary: () => void
+  activeOrderSummary: boolean
+  closeOrderSummary: () => void
   
 }
 
@@ -40,6 +44,7 @@ export const useUiStore = create<UiStore>((set) => ({
   activeClassModalPage: false,
   activePopover: false,
   activeClassPopover: false,
+  activeOrderSummary: false,
   openModal: () => {
     set({ activeModal: true, activeClassModal: true })
   },
@@ -54,6 +59,12 @@ export const useUiStore = create<UiStore>((set) => ({
   },
   openPopover: () => {
     set({ activePopover: true, activeClassPopover: true })
+  },
+  openOrderSummary: () => {
+    set({ activeOrderSummary: true })
+  },
+  closeOrderSummary: () => {
+    set({ activeOrderSummary: false })
   },
   closeModal: ( withBackRoute?: boolean ) => {
     set({ activeClassModal: false })
