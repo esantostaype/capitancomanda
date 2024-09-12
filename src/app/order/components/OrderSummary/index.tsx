@@ -80,7 +80,7 @@ export const OrderSummary = () => {
           )
           : (
           <>
-          <div className="bg-surface border-b border-b-gray50 p-6 pb-2 sticky top-0 z-30">
+          <div className="bg-surface border-b border-b-gray50 p-4 md:p-6 pb-2 sticky top-0 z-30">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">Orden #{ orderNumber }</h3>
             </div>
@@ -92,9 +92,9 @@ export const OrderSummary = () => {
           <div className="flex-1 relative z-20">
             <ul className="flex flex-col" ref={ listRef }>
               { groupedOrder.map(({ category, items }) => (
-                <li key={category.id} className="border-b border-b-gray50 py-6 last:border-b-transparent px-6">
-                  <h4 className="uppercase font-semibold mb-6 text-gray600">{category.name}</h4>
-                  <ul className="flex flex-col gap-6">
+                <li key={category.id} className="border-b border-b-gray50 p-4 md:p-6 last:border-b-transparent">
+                  <h4 className="uppercase font-semibold mb-4 md:mb-6 text-gray600">{category.name}</h4>
+                  <ul className="flex flex-col gap-4 md:gap-6">
                     { items.map(item => (
                       <OrderSummaryItem key={item.uniqueId} item={item} />
                     ))}
@@ -104,7 +104,7 @@ export const OrderSummary = () => {
             </ul>
           </div>
           <div className="sticky bottom-0 bg-surface z-30">
-            <div className="py-4 px-6 border-t border-b border-gray50">
+            <div className="py-3 md:py-4 px-4 md:px-6 border-t border-b border-gray50">
               <table className="w-full text-gray600">
                 <tr>
                   <td>Subtotal:</td>
@@ -120,7 +120,7 @@ export const OrderSummary = () => {
                 </tr>
               </table>
             </div>
-            <div className='flex gap-4 p-6 relative z-20'>
+            <div className="flex gap-4 p-4 md:p-6 relative z-20 pb-20 md:pb-0">
               <IconButton iconName='trash' color={ Color.ERROR } variant={ Variant.GHOST } size={ Size.LG } shape={ IconButtonShape.SQUARE } onClick={ () => clearOrder() } />
               <Button
                 text='Continuar'

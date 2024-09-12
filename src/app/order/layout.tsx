@@ -6,7 +6,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   return (
     <>
     <section className="flex flex-col md:flex-row min-h-dvh">
-      <section className="flex flex-1 flex-col">
+      <section className="flex flex-1 flex-col pb-16 md:pb-0">
         <OrderHeader/>
         <div className='flex flex-1 flex-col'>
           { children }

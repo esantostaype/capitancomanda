@@ -208,19 +208,21 @@ export const OrderProductDetail = ({ token }: Props) => {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Counter value={ quantity } onQuantityChange={ setQuantity } />
-                <Button
-                  text="Agregar"
-                  size={ Size.LG }
-                  color={ Color.ACCENT }
-                  variant={ Variant.CONTAINED }
-                  disabled={
-                    ( product?.variations || product?.additionals ) && 
-                    ( !product || ( hasVariations && !areAllVariantsSelected( values )))
-                  }
-                  className="w-full md:w-auto"
-                  submit
-                />
+                <div className="pb-16 md:pb-0 flex justify-between items-center gap-4 w-full">
+                  <Counter value={ quantity } onQuantityChange={ setQuantity } />
+                  <Button
+                    text="Agregar"
+                    size={ Size.LG }
+                    color={ Color.ACCENT }
+                    variant={ Variant.CONTAINED }
+                    disabled={
+                      ( product?.variations || product?.additionals ) && 
+                      ( !product || ( hasVariations && !areAllVariantsSelected( values )))
+                    }
+                    className="w-full md:w-auto"
+                    submit
+                  />
+                </div>
               </ModalFooter>
             </Form>
           )}

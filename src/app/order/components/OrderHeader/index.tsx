@@ -38,14 +38,14 @@ export const OrderHeader = () => {
             </li>
             <li className={`${ pathname === '/order/orders' && !activeOrderSummary ? "text-accent" : "" } flex-1 md:flex-auto`}>
               <Link href='/order/orders' className="flex flex-col gap-[6px]">
-                <i className="block md:hidden fi fi-rr-apps text-base"></i>
+                <i className="block md:hidden fi fi-rr-list text-base"></i>
                 Historial
               </Link>
             </li>
             <li className={`${ activeOrderSummary ? "text-accent" : "" } flex-1 md:flex-auto block md:hidden`}>
               <button onClick={ !activeOrderSummary ? openOrderSummary : closeOrderSummary } className="flex flex-col gap-[6px] items-center uppercase text-center w-full">
                 <i className="fi-rr-shopping-bag text-base"></i>
-                Comanda
+                Órden
               </button>
             </li>
           </ul>
