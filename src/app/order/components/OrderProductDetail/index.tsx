@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import { fetchData, formatCurrency, generateUniqueId, getMinVariantPrice, getVariantPrice } from '@/utils'
 import { useUiStore } from '@/store/ui-store'
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, usePathname } from 'next/navigation'
 import { OrderProductDetailVariantSelector } from './OrderProductDetailVariantSelector'
 import { Formik, Form } from 'formik'
 import { useOrderProduct } from '@/hooks'
@@ -20,6 +20,7 @@ type Props = {
 export const OrderProductDetail = ({ token }: Props) => {
 
   const searchParams = useSearchParams()
+  const pathName = usePathname()
   const productId = searchParams.get('p')
 
   const { data: product } = useOrderProduct({ productId: productId, token })
@@ -51,12 +52,6 @@ export const OrderProductDetail = ({ token }: Props) => {
       openModal()
     }
   }, [ productId, openModal, product?.id ])
-
-  useEffect(() => {
-    if ( productId && productId === '' ) {
-      closeModal(true)
-    }
-  }, [ productId ])
 
   const handleAddToOrder = ( values : FormValues ) => {
 
@@ -133,7 +128,7 @@ export const OrderProductDetail = ({ token }: Props) => {
           {({ values, setFieldValue }) => (
             <Form className="overflow-y-auto flex flex-col flex-1">
               <ModalBody>
-                <div className={`block md:grid grid-cols-6 gap-6 xl:gap-8 relative ${ !product ? "" : "items-start" } `}>
+                <div className={`w-full flex flex-1 flex-col md:grid grid-cols-6 gap-6 xl:gap-8 relative ${ !product ? "" : "items-start" } `}>
                   <div className='hidden md:block col-span-2 sticky top-4 md:top-8 xl:top-10'>
                     <div className="relative z-20 bg-gray50 flex items-center justify-center rounded-lg w-full aspect-square overflow-hidden">
                     { product?.image ? (
@@ -144,8 +139,8 @@ export const OrderProductDetail = ({ token }: Props) => {
                     </div>
                   </div>
                   { !product
-                    ? <div className='col-span-4 flex items-center justify-center'><SimpleSpinner/></div>
-                    : <div className='col-span-4 flex flex-col gap-8'> 
+                    ? <div className='w-full col-span-4 flex flex-1 items-center justify-center'><SimpleSpinner/></div>
+                    : <div className='w-full col-span-4 flex flex-1 flex-col gap-8'> 
                       <div className="flex md:hidden flex-col gap-4">
                         <div className="flex items-center gap-1 leading-tight">
                           Precio: 
@@ -214,7 +209,7 @@ export const OrderProductDetail = ({ token }: Props) => {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <div className="pb-16 md:pb-0 flex justify-between items-center gap-4 w-full">
+                <div className="pb-16 md:pb-0 flex justify-between md:justify-end items-center gap-4 w-full">
                   <Counter value={ quantity } onQuantityChange={ setQuantity } />
                   <Button
                     text="Agregar"
@@ -222,6 +217,7 @@ export const OrderProductDetail = ({ token }: Props) => {
                     color={ Color.ACCENT }
                     variant={ Variant.CONTAINED }
                     disabled={
+                      !product ||
                       ( product?.variations || product?.additionals ) && 
                       ( !product || ( hasVariations && !areAllVariantsSelected( values )))
                     }

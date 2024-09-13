@@ -80,6 +80,7 @@ html::-webkit-scrollbar {
 }
 
 *:disabled{
+  filter: grayscale(100%);
   opacity: 0.5;
   pointer-events: none;
 }

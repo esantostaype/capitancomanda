@@ -30,24 +30,24 @@ export const OrderHeader = () => {
               </Link>
             </li>
             <li className={`${ pathname === '/order/tables' && !activeOrderSummary ? "text-accent" : "" } flex-1 md:flex-auto`}>
-              <Link href='/order/tables' className="flex flex-col gap-[6px]">
+              <Link href='/order/tables' className="flex flex-col gap-[6px]" onClick={() => closeModal() }>
                 <i className="block md:hidden fi fi-rr-apps text-base"></i>
                 Mesas
               </Link>
             </li>
             <li className={`${ pathname.startsWith('/order/menu') && !activeOrderSummary ? "text-accent" : "" } flex-1 md:flex-auto`}>
-              <Link href='/order/menu' className="flex flex-col gap-[6px]">
+              <Link href='/order/menu' className="flex flex-col gap-[6px]" onClick={() => closeModal() }>
                 <i className="block md:hidden fi fi-rr-room-service text-base"></i>
                 Menú
               </Link>
             </li>
             <li className="flex-1 md:flex-auto block md:hidden">
-              <Link href="/order" className="flex justify-center">
+              <Link href="/order" className="flex justify-center" onClick={() => closeModal() }>
                 <Image src="/images/logo-restify.svg" width="24" height="24" alt="Capitán Comanda" />
               </Link>
             </li>
             <li className={`${ pathname === '/order/orders' && !activeOrderSummary ? "text-accent" : "" } flex-1 md:flex-auto`}>
-              <Link href='/order/orders' className="flex flex-col gap-[6px]">
+              <Link href='/order/orders' className="flex flex-col gap-[6px]" onClick={() => closeModal() }>
                 <i className="block md:hidden fi fi-rr-list text-base"></i>
                 Historial
               </Link>
