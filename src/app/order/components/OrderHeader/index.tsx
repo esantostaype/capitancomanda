@@ -26,7 +26,8 @@ export const OrderHeader = () => {
           <ul className="text-center justify-between text-[9px] md:text-sm flex items-center md:gap-6 uppercase md:font-semibold w-full text-gray600">
             <li className="hidden md:block ">
               <Link href="/order" className="flex justify-center">
-                <Image src="/images/logo-restify.svg" width="24" height="24" alt="Capitán Comanda" />
+                <Image src="/images/logo-restify-light.svg" className="block dark:hidden" width="24" height="24" alt="Capitán Comanda" />
+                <Image src="/images/logo-restify-dark.svg" className="hidden dark:block" width="24" height="24" alt="Capitán Comanda" />
               </Link>
             </li>
             <li className={`${ pathname === '/order/tables' && !activeOrderSummary ? "text-accent" : "" } flex-1 md:flex-auto`}>
