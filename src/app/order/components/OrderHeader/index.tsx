@@ -7,7 +7,17 @@ import Link from 'next/link'
 export const OrderHeader = () => {
   
   const pathname = usePathname()
-  const { openOrderSummary, closeOrderSummary, activeOrderSummary } = useUiStore()
+  const { openOrderSummary, closeOrderSummary, activeOrderSummary, closeModal } = useUiStore()
+
+  const handleOpenOrderSummary = () => {
+    openOrderSummary()
+    closeModal()
+  }
+
+  const handleCloseOrderSummary = () => {
+    closeOrderSummary()
+    closeModal()
+  }
 
   return (
     <header className='fixed bottom-0 md:bottom-auto md:sticky md:top-0 px-4 md:px-6 md:pr-20 xl:pr-6 flex items-center w-full border-t border-t-gray50 md:border-t-0 md:border-b md:border-b-gray50 bg-surface h-16 md:h-14 z-[99999999] md:z-[99]'>
@@ -25,7 +35,7 @@ export const OrderHeader = () => {
                 Mesas
               </Link>
             </li>
-            <li className={`${ pathname === '/order/menu' && !activeOrderSummary ? "text-accent" : "" } flex-1 md:flex-auto`}>
+            <li className={`${ pathname.startsWith('/order/menu') && !activeOrderSummary ? "text-accent" : "" } flex-1 md:flex-auto`}>
               <Link href='/order/menu' className="flex flex-col gap-[6px]">
                 <i className="block md:hidden fi fi-rr-room-service text-base"></i>
                 Menú
@@ -43,7 +53,7 @@ export const OrderHeader = () => {
               </Link>
             </li>
             <li className={`${ activeOrderSummary ? "text-accent" : "" } flex-1 md:flex-auto block md:hidden`}>
-              <button onClick={ !activeOrderSummary ? openOrderSummary : closeOrderSummary } className="flex flex-col gap-[6px] items-center uppercase text-center w-full">
+              <button onClick={ !activeOrderSummary ? handleOpenOrderSummary : handleCloseOrderSummary } className="flex flex-col gap-[6px] items-center uppercase text-center w-full">
                 <i className="fi-rr-shopping-bag text-base"></i>
                 Órden
               </button>

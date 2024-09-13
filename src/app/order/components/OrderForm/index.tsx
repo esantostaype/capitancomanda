@@ -36,7 +36,7 @@ export const OrderForm = ({ token }: Props) => {
   const setOrder = useOrderStore((state) => state.setOrder)
   const clearOrder = useOrderStore(( state ) => state.clearOrder )
   const total = useMemo(() => order.reduce(( total, item ) => total + ( item.quantity * item.price ), 0), [ order ])
-  const { activeModalPage, closeModalPage } = useUiStore()
+  const { activeModalPage, closeModalPage, closeModal } = useUiStore()
   const { findLastOrder } = useOrderStore()
   const [ tabFloorIndex, setTabFloorIndex ] = useState(0)
   const [ orderNumber, setOrderNumber ] = useState("")
@@ -250,7 +250,7 @@ export const OrderForm = ({ token }: Props) => {
             <div className="pb-16 md:pb-0 flex justify-end gap-4 w-full">
               <Button variant={ Variant.GHOST } text="Cancelar" size={ Size.LG } onClick={ ()=> closeModalPage() }/>
               <ReactToPrint
-                trigger={() => <Button className="flex-1" text='Enviar' color={Color.ACCENT} size={Size.LG} variant={ Variant.CONTAINED } />}
+                trigger={() => <Button onClick={ () => closeModal(true) } className="flex-1" text='Enviar' color={Color.ACCENT} size={Size.LG} variant={ Variant.CONTAINED } />}
                 content={() => componentRef.current }
               />
               {/* <Button
