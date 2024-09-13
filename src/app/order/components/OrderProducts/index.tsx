@@ -18,7 +18,7 @@ export const OrderProducts = ({ token }: Props) => {
 
   return (
     <>
-      <div className="h-12 md:h-16 xl:h-auto px-4 xl:px-0 fixed md:hidden flex items-center gap-2 top-0 left-0 w-full xl:relative z-50 bg-surface border-b border-b-gray50 xl:border-b-0 xl:bg-transparent xl:mb-4">
+      <div className="h-16 xl:h-auto px-4 xl:px-0 fixed md:hidden flex items-center gap-2 top-0 left-0 w-full xl:relative z-50 bg-surface border-b border-b-gray50 xl:border-b-0 xl:bg-transparent xl:mb-4">
         <div className="block xl:hidden">
           <IconButton iconName='arrow-left' size={ Size.SM } href="/order/menu"/>
         </div>
@@ -32,7 +32,7 @@ export const OrderProducts = ({ token }: Props) => {
         ? ( <EmptyData text='Productos' /> )
         : (
           <>
-            <ul className="mt-12 md:mt-0 xl:mt-0 grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
+            <ul className="mt-16 md:mt-0 xl:mt-0 grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
               { products?.map( ( product ) => (
                 <OrderProductItem key={ product.id } product={ product } />
               ))}
