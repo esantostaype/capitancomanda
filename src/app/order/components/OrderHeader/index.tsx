@@ -43,7 +43,8 @@ export const OrderHeader = () => {
             </li>
             <li className="flex-1 md:flex-auto block md:hidden">
               <Link href="/order" className="flex justify-center" onClick={() => closeModal() }>
-                <Image src="/images/logo-restify.svg" width="24" height="24" alt="Capitán Comanda" />
+                <Image src="/images/logo-restify-light.svg" className="block dark:hidden" width="24" height="24" alt="Capitán Comanda" />
+                <Image src="/images/logo-restify-dark.svg" className="hidden dark:block" width="24" height="24" alt="Capitán Comanda" />
               </Link>
             </li>
             <li className={`${ pathname === '/order/orders' && !activeOrderSummary ? "text-accent" : "" } flex-1 md:flex-auto`}>
