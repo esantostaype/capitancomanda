@@ -52,6 +52,12 @@ export const OrderProductDetail = ({ token }: Props) => {
     }
   }, [ productId, openModal, product?.id ])
 
+  useEffect(() => {
+    if ( productId && productId === '' ) {
+      closeModal(true)
+    }
+  }, [ productId ])
+
   const handleAddToOrder = ( values : FormValues ) => {
 
     const allVariations = { ...values.selectedVariantWithPrice, ...values.selectedVariants }
