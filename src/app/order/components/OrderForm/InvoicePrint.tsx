@@ -22,7 +22,7 @@ export const InvoicePrint = forwardRef<HTMLDivElement, Props>(({ orderData }, re
   const { restaurant } = useRestaurantStore()
 
   return (
-    <div ref={ref} className="uppercase font-jetbrains text-base w-[120mm] p-[8mm] text-black">
+    <div ref={ref} className="uppercase font-jetbrains text-base w-[105mm] text-black">
       <div className="mb-3 text-center">        
         <h2 className="leading-none text-gray600">Restify/@{ restaurant?.name }</h2>
         <h1 className="text-2xl font-bold leading-none mt-2 mb-1">Comanda #{ parseInt( orderData.orderNumber ) }</h1>

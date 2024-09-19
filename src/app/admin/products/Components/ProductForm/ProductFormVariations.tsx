@@ -46,6 +46,7 @@ export const ProductFormVariations = ({ variations }: Props ) => {
     setNewVariationIndex(variations.length);
     closeModal();
   }
+  
 
   return (
     <>
@@ -91,6 +92,38 @@ export const ProductFormVariations = ({ variations }: Props ) => {
                           iconName='trash'
                           variant={Variant.GHOST}
                           onClick={() => remove(index)}
+                        />
+                        <IconButton
+                          color={Color.ACCENT}
+                          iconName='copy'
+                          variant={Variant.GHOST}
+                          onClick={() => {
+                            const variationToCopy = variations[index];
+                            navigator.clipboard.writeText(JSON.stringify(variationToCopy))
+                          }}
+                        />
+                        <IconButton
+                          color={Color.SUCCESS}
+                          iconName='paste'
+                          variant={Variant.GHOST}
+                          onClick={() => {
+                            navigator.clipboard.readText()
+                              .then(text => {
+                                const copiedVariation = JSON.parse(text);
+                                const variationToAdd = {
+                                  ...copiedVariation,
+                                  id: uuidv4(),
+                                  options: copiedVariation.options.map((option: any) => ({
+                                    ...option,
+                                    id: uuidv4(),
+                                  })),
+                                };
+                                push(variationToAdd);
+                              })
+                              .catch(err => {
+                                console.error('Error al pegar la variación:', err);
+                              });
+                          }}
                         />
                         <TextField
                           name={`variations.${index}.name`}

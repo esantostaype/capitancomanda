@@ -72,7 +72,7 @@ export const OrderPrint = forwardRef<HTMLDivElement, Props>(({ orderData }, ref)
               <>
                 <tr>
                   <td colSpan={ 2 }>
-                    <div className="font-semibold flex gap-2 items-center mt-8 text-xl overflow-hidden max-w-full flex-wrap">
+                    <div className="font-semibold flex gap-2 items-center mt-8 text-base overflow-hidden max-w-full flex-wrap">
                       <span>{category.name}</span>
                       <span className="flex-1 overflow-hidden w-1 text-nowrap text-base"> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </span>
                     </div>
