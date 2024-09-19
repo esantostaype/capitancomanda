@@ -59,7 +59,7 @@ export const OrderSummary = () => {
     }, {} as Record<string, { category: Category, items: OrderItemFull[] }>);
   
     return Object.values(grouped).sort((a, b) => {
-      return b.category.orderNumber - a.category.orderNumber;
+      return a.category.orderNumber - b.category.orderNumber;
     });
   }, [order])
 
