@@ -46,7 +46,7 @@ export const OrderTables = ({ token, branchId }: Props) => {
                   <div
                     key={ table.id }
                     className="flex items-center justify-center aspect-square cursor-pointer"
-                    onClick={() => setSelectedTable(( table.id ).toString())}
+                    onClick={() => setSelectedTable( table.id || '' )}
                   >
                     <div className="relative flex items-center justify-center w-16 h-16 md:h-24 md:w-24">
                       <span className={`relative z-20 text-lg font-bold ${ selectedTable === table.id ? 'text-gray50' : ' text-gray600'}`}>

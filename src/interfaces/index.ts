@@ -206,13 +206,13 @@ export interface Product {
 }
 
 export interface Table {
-  id: string
+  id?: string
   number: string
   status: TableStatus
 }
 
 export interface Floor {
-  id: string
+  id?: string
   name: string
   tables: Table[]
 }
