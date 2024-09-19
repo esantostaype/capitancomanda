@@ -1,7 +1,7 @@
 import { Button } from '@/components'
 import { Color, Size, Variant } from '@/interfaces'
 
-type Props = {
+interface Props {
   buttonText: string
   onClick: React.MouseEventHandler<HTMLButtonElement | HTMLDivElement | HTMLAnchorElement>
   emptyText: string

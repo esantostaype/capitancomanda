@@ -1,10 +1,10 @@
 import { SimpleSpinner } from "@/components"
 
-type EmptyPropsData = {
+interface Props {
   text?: string
 }
 
-export const LoadingData = ({ text }: EmptyPropsData ) => {
+export const LoadingData = ({ text }: Props ) => {
   return (
     <div className="flex-1 flex items-center justify-center text-xl text-gray300">
       <div className="text-center flex flex-col gap-2 items-center">

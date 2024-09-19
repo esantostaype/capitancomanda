@@ -13,24 +13,26 @@ import { Tab, TabList, TabPanel, Tabs } from 'react-tabs'
 import { BranchFormFloors } from './BranchFormFloors'
 import { BranchFormSkeleton } from '../BranchFormSkeleton'
 import { useGlobalStore } from '@/store/global-store'
+import { useBranch } from '@/hooks'
 
-interface FormValues {
+interface BranchFormValues {
   name: string
   phoneNumber?: string
   address?: string
   floors: Floor[]
 }
 
-type Props = {
+interface Props {
+  refetchBranches: () => void
   token?: string
 }
 
-export const BranchForm = ({ token }: Props) => {
+export const BranchForm = ({ token, refetchBranches }: Props) => {
 
   const pathName = usePathname()
   const { id } = useParams()
+  const branchId = Array.isArray( id ) ? id[0] : id
 
-  const [ branch, setBranch ] = useState<Branch | null>(null)
   const [ newImage, setNewImage] = useState<string | null>(null)
   const [ deleteImage, setDeleteImage ] = useState<boolean>(false)
   const { activeModalPage, closeModalPage } = useUiStore()
@@ -40,46 +42,44 @@ export const BranchForm = ({ token }: Props) => {
   const isEditMode = pathName.startsWith('/admin/branches/edit')
   const isCreateMode = pathName === '/admin/branches/create'
 
-  useEffect(() => {
-    const fetchBranch = async () => {
-      if ( id ) {
-        try {
-          const fetchedBranch = await fetchData<Branch>({ url: `/branches/${ id }`, token })
-          setBranch( fetchedBranch )
-        } catch (error) {
-          toast.error('Error al obtener la sucursal')
-        } finally {
-        }
-      }
-    }
-    fetchBranch()
-  }, [ id, token ])
+  const { isLoading, data: branch, refetch: refetchBranch } = useBranch({ branchId, token })
 
-  const initialValues: FormValues = {
+  const initialValues: BranchFormValues = {
     name: branch ? branch.name : '',
     phoneNumber: branch ? branch.phoneNumber : '',
     address: branch ? branch.address : '',
     floors: branch?.floors ?? []
   }
 
-  const handleSubmit = async ( values: FormValues, actions: FormikHelpers<FormValues> ) => {
+  const handleSubmit = async (values: BranchFormValues, actions: FormikHelpers<BranchFormValues>) => {
     const branchValues = {
       ...values,
-      image: deleteImage ? null : ( newImage || branch?.image || null ),
+      image: deleteImage ? null : (newImage || branch?.image || null),
+      floors: values.floors.map(floor => ({
+        ...floor,
+        tables: floor.tables.map(( table, index ) => ({
+          number: `${ index + 1 }`,
+          status: table.status
+        }))
+      }))
     }
-    { branch
-      ? await editBranch( branch.id, branchValues, token ? token : '' )
-      : await addBranch( branchValues, token ? token : '' )
+  
+    if (branch) {
+      await editBranch(branch.id, branchValues, token ? token : '')
+    } else {
+      await addBranch(branchValues, token ? token : '')
     }
-    actions.setSubmitting( false )
+  
+    actions.setSubmitting(false)
     toggleUpdateTrigger()
     closeModalPage(true)
-    toast.success( branch ? 'Sucursal Actualizada!' : 'Sucursal Creada!')
+    toast.success(branch ? 'Sucursal Actualizada!' : 'Sucursal Creada!')
+    refetchBranches()
+    refetchBranch()
   }
 
   useEffect(() => {
     if ( !activeModalPage ) {
-      setBranch( null )
       setTabIndex( 0 )
       setNewImage( null )
     }
@@ -95,7 +95,7 @@ export const BranchForm = ({ token }: Props) => {
       isEditMode={ isEditMode }
     >
     {
-      !branch && isEditMode
+      isLoading && isEditMode
       ? <BranchFormSkeleton/>
       : <Formik initialValues={ initialValues } onSubmit={ handleSubmit } validationSchema={ BranchSchema }>
       {({ errors, touched, values, isSubmitting }) => (

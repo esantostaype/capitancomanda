@@ -4,14 +4,14 @@ import { Table as ReactTable } from '@tanstack/react-table'
 
 type TableInstance<TData extends object> = ReactTable<TData>
 
-type TableHeaderProps<TData extends object> = {
+type Props<TData extends object> = {
   table: TableInstance<TData>
   filtering: string
   setFiltering: any
   placeholder?: string
 }
 
-export const TableHeader = <TData extends object>({ table, filtering, setFiltering, placeholder }: TableHeaderProps<TData> ) => {
+export const TableHeader = <TData extends object>({ table, filtering, setFiltering, placeholder }: Props<TData> ) => {
 
   return (
     <div className="flex justify-between px-6 py-4 bg-background border-b border-b-gray50 sticky top-0 z-20">

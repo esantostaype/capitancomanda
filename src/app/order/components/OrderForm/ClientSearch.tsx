@@ -3,12 +3,12 @@ import { fetchData } from '@/utils'
 import { Client } from '@/interfaces'
 import { SimpleSpinner } from '@/components'
 
-interface ClientSearchProps {
+interface Props {
   onSelectClient: (client: Client) => void
   token?: string
 }
 
-export const ClientSearch = ({ onSelectClient, token }: ClientSearchProps) => {
+export const ClientSearch = ({ onSelectClient, token }: Props) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [results, setResults] = useState<Client[]>([])
   const [loading, setLoading] = useState(false)

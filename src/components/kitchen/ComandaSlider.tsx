@@ -5,7 +5,7 @@ import styles from './ComandaSlider.module.css';
 import { OrderStatus, OrderWithProducts } from '@/interfaces';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 
-type Props = {
+interface Props {
   orders: OrderWithProducts[]
 }
 

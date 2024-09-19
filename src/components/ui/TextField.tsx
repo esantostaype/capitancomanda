@@ -4,7 +4,7 @@ import { useState, type FC, type ChangeEvent, useEffect, Ref } from 'react'
 import { ErrorMessage, Field } from 'formik'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
-export interface TextFieldProps {
+export interface Props {
 	label?: string
 	type?: string
 	typeField?: string
@@ -21,7 +21,7 @@ export interface TextFieldProps {
 	onChange?: (e: ChangeEvent<any>) => void
 }
 
-export const TextField: FC<TextFieldProps> = ({
+export const TextField: FC<Props> = ({
 	type,
 	typeField,
 	label,

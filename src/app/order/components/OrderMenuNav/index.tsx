@@ -7,7 +7,7 @@ import { Skeleton } from '@mui/material'
 import { useCategories, useMediaQuery } from '@/hooks'
 import { SimpleSpinner } from '@/components'
 
-type Props = {
+interface Props {
   token?: string
 }
 

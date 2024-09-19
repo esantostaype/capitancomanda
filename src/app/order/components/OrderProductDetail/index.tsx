@@ -13,7 +13,7 @@ import { Formik, Form } from 'formik'
 import { useOrderProduct } from '@/hooks'
 import { OrderProductDetailHeaderSkeleton } from './OrderProductDetailHeaderSkeleton'
 
-type Props = {
+interface Props {
   token?: string
 }
 

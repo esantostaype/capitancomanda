@@ -6,7 +6,7 @@ import { Category, Size } from '@/interfaces'
 import Image from 'next/image'
 import { AdminCard } from './AdminCard'
 
-type SortableAdminCardProps = {
+interface Props {
   id: string
   category: Category
   isOwner: boolean
@@ -18,7 +18,7 @@ export const AdminSortableCard = ({
   category,
   isOwner,
   onDelete,
-}: SortableAdminCardProps ) => {
+}: Props ) => {
   const {
     attributes,
     listeners,

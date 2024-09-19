@@ -1,7 +1,7 @@
 import { setSession } from '@/utils'
 import { OrderMenuNav, OrderProducts } from '../components'
 
-export default async function OrderPage() {
+export default async function OrderMenuPage() {
   const { token } = await setSession()
   return (
     <>

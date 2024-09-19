@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import { useCategory, useOrderProducts } from '@/hooks'
 import { Color, Size, Variant } from '@/interfaces'
 
-type Props = {
+interface Props {
   token?: string
 }
 

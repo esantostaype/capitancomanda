@@ -1,12 +1,12 @@
 import { OrderType, orderTypeTranslations } from '@/interfaces'
 
-interface OrderFormTypeItemProps {
+interface Props {
   type: OrderType
   isSelected: boolean
   onClick: () => void
 }
 
-const OrderFormTypeItem: React.FC<OrderFormTypeItemProps> = ({ type, isSelected, onClick }) => {
+const OrderFormTypeItem = ({ type, isSelected, onClick }: Props) => {
   return (
     <li
       className={`flex items-center flex-1 gap-4 leading-4 rounded-md p-6 cursor-pointer border-2 transition-all ${ isSelected ? 'border-accent' : 'bg-gray50 border-gray50' }`}

@@ -6,16 +6,19 @@ import { ColumnDef } from '@tanstack/react-table'
 import { EmptyData, TanstackTable, TableActions, TableFlex, TableImage, LoadingData } from '@/components'
 import { deleteProduct } from '@/actions/product-actions'
 
-type Props = {
-  products?: Product[]
-  token?: string
-  role?: string
-  refetchProducts: () => void
-  isLoading: boolean
+interface Props {
+  productsData : {
+    products?: Product[]
+    token?: string
+    role?: string
+    refetchProducts: () => void
+    isLoading: boolean
+  }
 }
 
-export const ProductsDataTable = ({ products, refetchProducts, isLoading, token, role }: Props ) => {
+export const ProductsDataTable = ({ productsData }: Props ) => {
 
+  const { products, token, role, refetchProducts, isLoading } = productsData
   const isOwner = role === Role.OWNER
 
   const handleDeleteProduct = async ( id: string ) => {

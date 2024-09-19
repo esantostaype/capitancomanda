@@ -5,7 +5,7 @@ import 'moment/locale/es'
 import { ComandaButton } from './ComandaButton'
 moment.locale('es')
 
-type Props = {
+interface Props {
   order: OrderWithProducts
   className?: string
   status: string

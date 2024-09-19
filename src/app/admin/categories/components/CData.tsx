@@ -27,7 +27,7 @@ import {
 import { AdminSortableCard } from '@/components'
 import Image from 'next/image'
 
-type Props = {
+interface Props {
   token?: string
   role?: string
 }

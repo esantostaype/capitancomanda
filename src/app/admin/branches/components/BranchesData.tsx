@@ -3,49 +3,40 @@ import { AdminCard, AdminGrid, EmptyData, LoadingData, ModalConfirm } from '@/co
 import { useUiStore } from '@/store/ui-store'
 import { Branch, Role } from '@/interfaces'
 import { deleteBranch } from '@/actions/branch-actions'
-import { useEffect, useState } from 'react'
-import { useGlobalStore } from '@/store/global-store'
-import { fetchData } from '@/utils'
-import { BranchesDataSkeleton } from './BranchesDataSkeleton'
 
-type Props = {
-  token?: string
-  role?: string
+interface Props {
+  branchesData: {
+    branches?: Branch[]
+    token?: string
+    role?: string
+    refetchBranches: () => void
+    isLoading: boolean
+  }
 }
 
-export const BranchesData = ({ token, role }: Props ) => {
+export const BranchesData = ({ branchesData }: Props ) => {
 
-  const [ branches, setBranches ] = useState<Branch[] | []>([])
-  const [ loading, setLoading ] = useState(true)
-  const { updateTrigger, toggleUpdateTrigger } = useGlobalStore()
+  const { branches, token, role, refetchBranches, isLoading } = branchesData
   const { openModalConfirm, activeModalConfirmId, closeModalConfirm } = useUiStore()
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const data: Branch[] = await fetchData({ url: `/branches`, token })
-      setBranches( data )
-      setLoading( false )
-    }
-    fetchProducts()
-  }, [ token, updateTrigger ])
-
   const handleDeleteBranch = async ( id: string ) => {
-    await deleteBranch( id, token! )
-    closeModalConfirm()
-    toggleUpdateTrigger()
+    if( token ) {
+      await deleteBranch( id, token )
+      refetchBranches()
+    }
   }
 
   const isOwner = role === Role.OWNER
   
   return (
     <>
-      { loading
+      { isLoading
       ? ( <LoadingData text="Susursales"/> )
-      : ( branches.length === 0
+      : ( branches && branches.length === 0
         ? ( <EmptyData text='Susursales' /> )
         : (
           <AdminGrid>
-            { branches.map( branch => (
+            { branches?.map( branch => (
               <>
               <AdminCard
                 key={ branch.id }

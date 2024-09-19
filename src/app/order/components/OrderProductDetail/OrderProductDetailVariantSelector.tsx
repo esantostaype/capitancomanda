@@ -1,13 +1,13 @@
 import { ProductVariation } from '@/interfaces'
 import { OrderProductDetailVariant } from './OrderProductDetailVariant'
 
-type VariantSelectorProps = {
+interface Props {
   variations: ProductVariation[]
   selectedVariants: Record<string, string>
   handleVariantChange: ( variationName: string, option: string ) => void
 }
 
-export const OrderProductDetailVariantSelector = ({ variations, selectedVariants, handleVariantChange }: VariantSelectorProps) => {
+export const OrderProductDetailVariantSelector = ({ variations, selectedVariants, handleVariantChange }: Props) => {
   return (
     <>
       { variations.map((variation, index) => {

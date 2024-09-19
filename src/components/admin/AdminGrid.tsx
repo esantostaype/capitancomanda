@@ -1,11 +1,11 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
-type AdminTemplateProps = {
+interface Props {
   children: React.ReactNode
   listRef?: any
 }
 
-export const AdminGrid = ({ children, listRef }: AdminTemplateProps ) => {
+export const AdminGrid = ({ children, listRef }: Props ) => {
 
   return (
     <>

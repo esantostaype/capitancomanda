@@ -15,8 +15,9 @@ import { fetchData } from '@/utils'
 import { ClientSearch } from './ClientSearch'
 import { OrderPrint } from './OrderPrint'
 import ReactToPrint from 'react-to-print'
+import { useBranch } from '@/hooks'
 
-type Props = {
+interface Props {
   token?: string
 }
 
@@ -38,17 +39,14 @@ export const OrderForm = ({ token }: Props) => {
   const total = useMemo(() => order.reduce(( total, item ) => total + ( item.quantity * item.price ), 0), [ order ])
   const { activeModalPage, closeModalPage, closeModal } = useUiStore()
   const { findLastOrder } = useOrderStore()
-  const [ tabFloorIndex, setTabFloorIndex ] = useState(0)
-  const [ orderNumber, setOrderNumber ] = useState("")
+  const [ orderNumber, setOrderNumber ] = useState("00001")
   const [ clientSelected, setClientSelected ] = useState<Client | null>( null )
   const [ isClientSelected, setIsClientSelected ] = useState( false )
   const { toggleUpdateTrigger, updateTrigger } = useGlobalStore()
 
-  const [ selectedFloor, setSelectedFloor ] = useState<string | null>( null )
-  const [ selectedTable, setSelectedTable ] = useState<string | null>( null )
+  const { selectedFloor, setSelectedFloor, selectedTable, setSelectedTable } = useOrderStore()
   const [ selectedOrderType, setSelectedOrderType ] = useState<OrderType>( OrderType.DINE_IN )
   const [ notes, setNotes ] = useState<string>('')
-  const [ branch, setBranch ] = useState<Branch>()
 
   const componentRef = useRef<HTMLDivElement>(null)
 
@@ -62,28 +60,12 @@ export const OrderForm = ({ token }: Props) => {
 
   useEffect(() => {
     if (!activeModalPage) {
-      setTabFloorIndex(0)
-      setSelectedTable(null)
       setSelectedOrderType( OrderType.DINE_IN )
       setClientSelected( null )
       setIsClientSelected( false )
       setNotes('')
     }
-  }, [ activeModalPage ])
-
-  useEffect(() => {
-    const fetchBranch = async () => {
-      const { branchId, token } = await setSession()
-      if ( branchId ) {
-        const data = await fetchData<Branch>({ url: `/branches/${branchId}`, token })
-        setBranch(data)
-        if (data?.floors.length > 0) {
-          setSelectedFloor(data.floors[0].name)
-        }
-      }
-    }
-    fetchBranch()
-  }, [ activeModalPage ])
+  }, [ activeModalPage, setSelectedFloor, setSelectedTable ])
 
   const initialValues: FormValues = {
     floor: '',
@@ -123,7 +105,13 @@ export const OrderForm = ({ token }: Props) => {
       toast.error('Por favor, selecciona una mesa')
       return
     }
+
+    if( !selectedFloor ) {
+      toast.error('Por favor, selecciona un ambiente')
+      return
+    }
     await addOrder( orderData )
+    console.log("orderData GAAA", { orderData })
     toast.success('¡Comanda enviada!')
     closeModalPage()
     clearOrder()
@@ -138,7 +126,7 @@ export const OrderForm = ({ token }: Props) => {
         <Spinner isActive={ isSubmitting }/>
         <Form className="flex flex-col flex-1 overflow-y-auto">
           <ModalBody>
-            <div className='flex flex-col gap-6 md:gap-8 lg:gap-12 xl:gap-16'>
+            <div className='flex flex-col gap-6 md:gap-8 lg:gap-10 xl:gap-12'>
               <div>
                 <h3 className="text-lg md:text-2xl text-gray500 font-bold mb-2 md:mb-4">Cliente</h3>                  
                 <div className='flex flex-col md:grid md:grid-cols-2 gap-6'>
@@ -202,7 +190,7 @@ export const OrderForm = ({ token }: Props) => {
                 </ul>
               </div>
 
-              <div>
+              {/* <div>
                 <h3 className="text-lg md:text-2xl text-gray500 font-bold mb-2 md:mb-4">Selecciona una Mesa</h3>
                 <Tabs selectedIndex={ tabFloorIndex } onSelect={( index ) => {
                     setTabFloorIndex( index )
@@ -210,24 +198,24 @@ export const OrderForm = ({ token }: Props) => {
                     setSelectedTable( null )
                   }} className="flex flex-col flex-1">
                   <TabList className="border-b border-b-gray50 mb-6 z-[999] flex gap-4 md:gap-6 text-base font-500 leading-none text-gray500">
-                    { branch?.floors.map(( floor ) => (
-                      <Tab key={ floor.id }>{ floor.name }</Tab>
+                    { branch?.floors.map(( floor, index ) => (
+                      <Tab key={ index }>{ floor.name }</Tab>
                     ))}
                   </TabList>
                   { branch?.floors.map(( floor, floorIndex ) => (
-                    <TabPanel key={floor.id}>
+                    <TabPanel key={ floorIndex }>
                       <div className="grid grid-cols-[repeat(auto-fill,minmax(5rem,1fr))] md:grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] gap-4 md:gap-6">
-                        {Array.from({ length: floor.tables }).map((_, tableIndex) => (
+                        { floor.tables.map(( table, tableIndex ) => (
                           <div
-                            key={tableIndex}
+                            key={ tableIndex }
                             className="flex items-center justify-center aspect-square cursor-pointer"
-                            onClick={() => setSelectedTable((tableIndex + 1).toString())}
+                            onClick={() => setSelectedTable(( tableIndex + 1 ).toString())}
                           >
                             <div className="relative flex items-center justify-center w-16 h-16 md:h-24 md:w-24">
-                              <span className={`relative z-20 text-lg font-bold ${selectedTable === (tableIndex + 1).toString() ? 'text-gray50' : ' text-gray600'}`}>
-                                {tableIndex + 1}
-                              </span>
-                              <RestaurantTable className={`w-16 h-16 md:w-24 md:h-24 absolute z-10 transition-all ${selectedTable === (tableIndex + 1).toString() ? 'fill-gray900' : 'fill-gray50'}`} />
+                              <span className={`relative z-20 text-lg font-bold ${ selectedTable === ( tableIndex + 1 ).toString() ? 'text-gray50' : ' text-gray600'}`}>
+                                { tableIndex + 1 }
+                              </span>                              
+                              <RestaurantTable className={`w-16 h-16 md:w-24 md:h-24 absolute z-10 transition-all ${selectedTable === ( tableIndex + 1 ).toString() ? 'fill-gray900' : 'fill-gray50'}`} />
                             </div>
                           </div>
                         ))}
@@ -235,7 +223,7 @@ export const OrderForm = ({ token }: Props) => {
                     </TabPanel>
                   ))}
                 </Tabs>
-              </div>
+              </div> */}
 
               <div>
                 <h3 className="text-lg md:text-2xl text-gray500 font-bold mb-2 md:mb-4">Notas</h3>
@@ -250,7 +238,7 @@ export const OrderForm = ({ token }: Props) => {
             <div className="pb-16 md:pb-0 flex justify-end gap-4 w-full">
               <Button variant={ Variant.GHOST } text="Cancelar" size={ Size.LG } onClick={ ()=> closeModalPage() }/>
               <ReactToPrint
-                trigger={() => <Button onClick={ () => closeModal(true) } className="flex-1" text='Enviar' color={Color.ACCENT} size={Size.LG} variant={ Variant.CONTAINED } />}
+                trigger={() => <Button submit onClick={ () => closeModal(true) } className="flex-1" text='Enviar' color={Color.ACCENT} size={Size.LG} variant={ Variant.CONTAINED } />}
                 content={() => componentRef.current }
               />
               {/* <Button

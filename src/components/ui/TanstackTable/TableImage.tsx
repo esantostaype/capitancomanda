@@ -2,12 +2,12 @@
 
 import Image from 'next/image'
 
-type TableImageProps = {
+interface Props {
   src?: string | null
   alt: string
 }
 
-export const TableImage = ({ src, alt }: TableImageProps ) => {
+export const TableImage = ({ src, alt }: Props ) => {
 
   return (
     <div className="relative">

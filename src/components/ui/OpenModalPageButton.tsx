@@ -3,7 +3,7 @@ import { Button } from "@/components"
 import { Color, Size, Variant } from "@/interfaces"
 import { useUiStore } from "@/store/ui-store"
 
-type Props = {
+interface Props {
   link: string
   text?: string
 }

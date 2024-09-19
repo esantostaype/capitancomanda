@@ -5,13 +5,13 @@ import { useState, useEffect, useCallback } from 'react'
 import { IconButton } from '@/components'
 import { Size } from '@/interfaces'
 
-interface PopperProps {
+interface Props {
   children: React.ReactNode
   position?: any
   transformOrigin?: any
 }
 
-export const PopperC = ({ children, position, transformOrigin }: PopperProps) => {
+export const PopperC = ({ children, position, transformOrigin }: Props) => {
   const [ anchorEl, setAnchorEl ] = useState<HTMLButtonElement | null>(null)
   const [ open, setOpen ] = useState(false)
   const [ placement, setPlacement ] = useState<PopperPlacementType>()

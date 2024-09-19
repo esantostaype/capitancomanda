@@ -1,7 +1,7 @@
 import { ProductVariation } from '@/interfaces'
 import { formatCurrency } from '@/utils'
 
-type Props = {
+interface Props {
   variation: ProductVariation
   onClick?: (option: string) => void
   selectedOption?: string

@@ -18,7 +18,7 @@ export const ProductsPage = ({ role, token }: AdminTemplateProps ) => {
       title='Productos'
       button={ <OpenModalPageButton link="/admin/products/create"/> }
     >
-      <ProductsDataTable products={ data } isLoading={ isLoading } refetchProducts={ refetchProducts } token={ token } role={ role } />
+      <ProductsDataTable productsData={{ products: data, isLoading, refetchProducts, token, role }} />
     </AdminTemplate>
     <ProductForm token={ token } refetchProducts={ refetchProducts }/>
     </>

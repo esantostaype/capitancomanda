@@ -22,7 +22,7 @@ interface FormValues {
   confirmPassword: string
 }
 
-type Props = {
+interface Props {
   token?: string
   isJustPage?: boolean
 }

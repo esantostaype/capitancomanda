@@ -16,7 +16,7 @@ import { ProductFormAdditionals } from './ProductFormAdditionals'
 import { ProductFormSkeleton } from '../'
 import { useProduct, useCategories } from '@/hooks'
 
-type Props = {
+interface Props {
   refetchProducts: () => void
   token?: string
 }

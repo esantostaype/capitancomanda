@@ -10,7 +10,7 @@ import { useEffect, useState } from "react"
 import { useGlobalStore } from "@/store/global-store"
 import { OrdersTableSkeleton } from "./OrdersTableSkeleton"
 
-type Props = {
+interface Props {
   token?: string
   role?: string
 }

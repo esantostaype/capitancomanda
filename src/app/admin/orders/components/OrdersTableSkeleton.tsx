@@ -1,7 +1,7 @@
 'use client'
 import { Skeleton } from '@mui/material'
 
-type Props = {
+interface Props {
   isOwner?: boolean
 }
 

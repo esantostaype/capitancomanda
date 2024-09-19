@@ -5,7 +5,7 @@ import { Button, TextField } from '@/components'
 import { changeStatusOrder } from '@/actions/change-status-order-action'
 import { toast } from 'react-toastify'
 
-type Props = {
+interface Props {
   text: string
   orderId: number
   status: string

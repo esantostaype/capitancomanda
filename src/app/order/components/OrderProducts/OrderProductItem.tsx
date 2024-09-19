@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useUiStore } from '@/store/ui-store'
 import { useQueryClient } from '@tanstack/react-query'
 
-type Props = {
+interface Props {
   token?: string
   product: OrderItemFull
 }

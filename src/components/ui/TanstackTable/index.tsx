@@ -12,7 +12,7 @@ import { useState } from "react";
 import { TablePagination } from './TablePagination';
 import { TableHeader } from './TableHeader';
 
-type Props = {
+interface Props {
   data: any[]
   columns: ColumnDef<any>[]
   placeholder?: string

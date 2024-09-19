@@ -420,6 +420,32 @@ body {
   color: var(--foreground);
 }
 
+
+
+
+.tables-tab .react-tabs__tab{
+  background-color: var(--gray-50);
+  border-bottom: none;
+  border-radius: 0.25rem;
+  font-size: 14px;
+  line-height: 1.25em;
+  padding: 0.75rem 1.25rem;
+}
+
+.tables-tab .react-tabs__tab:hover{
+  background-color: var(--gray-100);
+}
+
+.tables-tab .react-tabs__tab--selected{
+  background-color: var(--accent);
+  border-bottom: none;
+  color: var(--foreground);
+}
+
+.tables-tab .react-tabs__tab--selected:hover{
+  background-color: var(--accent);
+}
+
 @media screen and ( min-width: 768px ) {
   .react-tabs__tab{
     font-size: 14px;
@@ -593,6 +619,6 @@ body {
 
 @media print {
   @page {
-    size: 80mm 297mm;
+    size: 80mm 280mm;
   }
 }

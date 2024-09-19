@@ -1,6 +1,5 @@
 import { setSession } from '@/utils/session'
-import { AdminTemplate, OpenModalButton } from '@/components'
-import { BranchForm, BranchesData } from './components'
+import { BranchesPage } from './components/BranchesPage'
 
 
 export default async function BranchesLayout({ children }: Readonly<{ children: React.ReactNode; modal: React.ReactNode; }>) {
@@ -9,14 +8,8 @@ export default async function BranchesLayout({ children }: Readonly<{ children: 
 
   return (
     <>
-    <AdminTemplate
-      title='Sucursales'
-      button={ <OpenModalButton text='Crear Nueva' link="/admin/branches/create"/> }
-    >
-      <BranchesData token={ token } role={ role } />
-      { children }
-    </AdminTemplate>
-    <BranchForm token={ token }/>
+    <BranchesPage token={ token } role={ role }/>
+    { children }
     </>
   )
 }

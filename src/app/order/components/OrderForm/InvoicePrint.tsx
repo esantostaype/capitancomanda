@@ -4,7 +4,7 @@ import { useRestaurantStore } from '@/store/global-store'
 import Image from 'next/image';
 import { formatCurrency } from '@/utils';
 
-interface InvoicePrintProps {
+interface Props {
   orderData: {
     orderNumber: string
     order: OrderItemFull[]
@@ -17,7 +17,7 @@ interface InvoicePrintProps {
   }
 }
 
-export const InvoicePrint = forwardRef<HTMLDivElement, InvoicePrintProps>(({ orderData }, ref) => {
+export const InvoicePrint = forwardRef<HTMLDivElement, Props>(({ orderData }, ref) => {
   
   const { restaurant } = useRestaurantStore()
 

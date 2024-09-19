@@ -3,7 +3,7 @@ import { OrderItem } from '@/interfaces'
 import { formatCurrency } from '@/utils'
 import { OrderSummaryCounter } from './OrderSummaryCounter'
 
-type Props = {
+interface Props {
   item: OrderItem
 }
 

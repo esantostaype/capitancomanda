@@ -7,7 +7,7 @@ import { OrderStatus, OrderWithProducts } from '@/interfaces'
 import { apiUrl } from '@/utils'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
-type Props = {
+interface Props {
   token: string
 }
 

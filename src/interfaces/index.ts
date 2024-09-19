@@ -70,6 +70,13 @@ export enum  OrderType {
   DELIVERY = 'DELIVERY'
 }
 
+export enum  TableStatus {
+  AVAILABLE = 'AVAILABLE',
+  RESERVED = 'RESERVED',
+  OCCUPIED_AWAITING_ORDER = 'OCCUPIED_AWAITING_ORDER',
+  OCCUPIED_SERVED = 'OCCUPIED_SERVED'
+}
+
 export const roleTranslations: { [ key in Role ]: string } = {
   [ Role.SUPERADMIN ]: 'Superadministrador',
   [ Role.OWNER ]: 'Propietario',
@@ -201,14 +208,13 @@ export interface Product {
 export interface Table {
   id: string
   number: string
-  capacity: string
+  status: TableStatus
 }
 
 export interface Floor {
   id: string
   name: string
-  number: number
-  tables: number
+  tables: Table[]
 }
 
 export interface Branch {

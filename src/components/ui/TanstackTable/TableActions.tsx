@@ -3,7 +3,7 @@ import { Button, Modal, ModalConfirm } from '@/components'
 import { Color, Size, Variant } from '@/interfaces'
 import { useUiStore } from '@/store/ui-store'
 
-type Props = {
+interface Props {
   link: string
   id: string
   token: string

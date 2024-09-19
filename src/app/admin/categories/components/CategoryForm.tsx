@@ -16,7 +16,7 @@ interface FormValues {
   name: string
 }
 
-type Props = {
+interface Props {
   token?: string
 }
 

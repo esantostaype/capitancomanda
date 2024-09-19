@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation'
 import { Category } from '@/interfaces'
 
-type Props = {
+interface Props {
   category: Category
 }
 

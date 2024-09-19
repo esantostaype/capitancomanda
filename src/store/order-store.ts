@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { Product, OrderItemFull } from '@/interfaces'
 import { findLastOrder as fetchLastOrder } from '@/actions/order-actions'
 
-interface Store {
+interface OrderStore {
   order: OrderItemFull[]
   addToOrder: (
     product: OrderItemFull,
@@ -21,9 +21,13 @@ interface Store {
   setOrder: ( newOrder: OrderItemFull[] ) => void
   findLastOrder: () => Promise<string>
   delivery: boolean
+  selectedFloor: string | null
+  selectedTable: string | null
+  setSelectedFloor: (floor: string | null) => void
+  setSelectedTable: (table: string | null) => void
 }
 
-export const useOrderStore = create<Store>(( set, get ) => {
+export const useOrderStore = create<OrderStore>(( set, get ) => {
 
   const updateLocalStorage = ( order: OrderItemFull[] ) => {
     if ( typeof window !== 'undefined' && window.localStorage ) {
@@ -32,6 +36,10 @@ export const useOrderStore = create<Store>(( set, get ) => {
   }
 
   return {
+    selectedFloor: null,
+    selectedTable: null,
+    setSelectedFloor: (floor) => set({ selectedFloor: floor }),
+    setSelectedTable: (table) => set({ selectedTable: table }),
     order: [],
     delivery: false,
     addToOrder: ( product, quantity) => {

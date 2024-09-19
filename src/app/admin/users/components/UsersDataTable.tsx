@@ -10,7 +10,7 @@ import { useUiStore } from "@/store/ui-store"
 import { fetchData } from "@/utils"
 import { UsersTableSkeleton } from "./UsersTableSkeleton"
 
-type Props = {
+interface Props {
   token?: string
   role?: string
 }

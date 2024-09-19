@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { Button, Spinner } from '@/components'
 import { Size, Variant } from '@/interfaces'
 
-interface ImageUploadProps {
+interface Props {
   newImage: string | null
   deleteImage: boolean
   setNewImage: (image: string | null) => void
@@ -15,7 +15,7 @@ interface ImageUploadProps {
   disabled?: boolean
 }
 
-export const ImageUpload: React.FC<ImageUploadProps> = ({
+export const ImageUpload: React.FC<Props> = ({
   newImage,
   deleteImage,
   setNewImage,

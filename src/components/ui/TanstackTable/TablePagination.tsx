@@ -5,12 +5,12 @@ import { TablePaginationItem } from "./TablePaginationItem"
 
 type TableInstance<TData extends object> = ReactTable<TData>
 
-type TablePaginationProps<TData extends object> = {
+type Props<TData extends object> = {
   table: TableInstance<TData>
   pages: number[]
 }
 
-export const TablePagination = <TData extends object>({ table, pages }: TablePaginationProps<TData> ) => {
+export const TablePagination = <TData extends object>({ table, pages }: Props<TData> ) => {
   return (
     <nav className="flex justify-center">
       <ul className="flex items-center">

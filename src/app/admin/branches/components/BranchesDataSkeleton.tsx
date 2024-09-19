@@ -2,7 +2,7 @@
 import { AdminCard, AdminGrid } from '@/components'
 import { Skeleton } from '@mui/material'
 
-type Props = {
+interface Props {
   isOwner?: boolean
 }
 

@@ -1,10 +1,10 @@
-type AdminTemplateProps = {
+interface Props {
   title: string
   button?: React.ReactNode
   children?: React.ReactNode
 }
 
-export const AdminTemplate = ({ title, button, children }: AdminTemplateProps ) => {
+export const AdminTemplate = ({ title, button, children }: Props ) => {
   return (
     <>
     <header className="flex items-center gap-8 justify-between py-6 px-8 sticky">

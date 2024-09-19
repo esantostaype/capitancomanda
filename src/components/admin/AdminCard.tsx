@@ -4,7 +4,7 @@ import { PopperC } from '@/components'
 import Image from 'next/image'
 import { Skeleton } from '@mui/material'
 
-type AdminTemplateProps = {
+interface Props {
   children: React.ReactNode
   footer?: React.ReactNode
   hasImage?: boolean
@@ -19,7 +19,7 @@ type AdminTemplateProps = {
   onClickDelete?: React.MouseEventHandler<HTMLButtonElement | HTMLDivElement | HTMLAnchorElement>
 }
 
-export const AdminCard = ({ children, footer, hasImage, image, alt, hasFooter, isSkeleton, linkEdit, className, onClickEdit, onClickDelete }: AdminTemplateProps ) => {
+export const AdminCard = ({ children, footer, hasImage, image, alt, hasFooter, isSkeleton, linkEdit, className, onClickEdit, onClickDelete }: Props ) => {
 
   return (
     <>

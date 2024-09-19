@@ -18,7 +18,7 @@ export const OrderSummary = () => {
   const total = useMemo(() => order.reduce(( total, item ) => total + ( item.quantity * item.price ), 0), [ order ])
   const { openModalPage, openOrderSummary, closeOrderSummary, activeOrderSummary } = useUiStore()
   const { findLastOrder } = useOrderStore()
-  const [ orderNumber, setOrderNumber ] = useState("")
+  const [ orderNumber, setOrderNumber ] = useState("00001")
   const { updateTrigger } = useGlobalStore()
 
   const subtotal = total / 1.18
@@ -59,7 +59,7 @@ export const OrderSummary = () => {
     }, {} as Record<string, { category: Category, items: OrderItemFull[] }>);
   
     return Object.values(grouped).sort((a, b) => {
-      return a.category.orderNumber - b.category.orderNumber;
+      return b.category.orderNumber - a.category.orderNumber;
     });
   }, [order])
 

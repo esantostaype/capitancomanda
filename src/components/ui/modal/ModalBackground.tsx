@@ -1,9 +1,9 @@
-type ModalBackgroundProps = {
+interface Props {
   onClick?: React.MouseEventHandler<HTMLButtonElement | HTMLDivElement | HTMLAnchorElement>
   active?: boolean
 }
 
-export const ModalBackground = ({ onClick, active }: ModalBackgroundProps ) => {
+export const ModalBackground = ({ onClick, active }: Props ) => {
 
   return (
     <div className={`fixed w-full h-dvh top-0 left-0 z-[999] ${ active ? "animate-enterBackgroundModal" : "animate-leaveBackgroundModal opacity-0" }`} onClick={ onClick }>
