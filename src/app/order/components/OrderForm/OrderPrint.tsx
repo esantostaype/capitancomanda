@@ -115,8 +115,9 @@ export const OrderPrint = forwardRef<HTMLDivElement, Props>(({ orderData }, ref)
         </table>
         {
           orderData.notes &&
-          <div className="border-t border-t-black py-3">
-            Nota: <span className="font-semibold">{ orderData.notes }</span>
+          <div className="py-3">
+            <span className="overflow-hidden w-1 text-nowrap text-base">  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  </span>
+            <div className="mt-2">Nota: <span className="font-semibold">{ orderData.notes }</span></div>
           </div>
         }
       </div>

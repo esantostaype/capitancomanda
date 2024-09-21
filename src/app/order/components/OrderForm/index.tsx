@@ -154,18 +154,37 @@ export const OrderForm = ({ token }: Props) => {
                       </div>
                     )}
                   </div>
-                  <div className="col-span-1">
-                    <TextField placeholder='Nombre' type='text' name='client.fullName' value={clientSelected?.fullName || ''} disabled={ isClientSelected } />
-                  </div>
-                  <div className="col-span-1">
-                    <TextField placeholder='DNI' type='text' name='client.dni' value={clientSelected?.dni || ''} disabled={ isClientSelected } />
-                  </div>
-                  <div className="col-span-1">
-                    <TextField placeholder='Teléfono' type='text' name='client.phone' value={clientSelected?.phone || ''} disabled={ isClientSelected } />
-                  </div>
-                  <div className="col-span-1">
-                    <TextField placeholder='Correo Electrónico' type='text' name='client.email' value={clientSelected?.email || ''} disabled={ isClientSelected } />
-                  </div>
+                  {
+                    isClientSelected
+                    ? <>
+                    <div className="col-span-1">
+                      <TextField placeholder='Nombre' type='text' name='client.fullName' value={clientSelected?.fullName || ''} disabled />
+                    </div>
+                    <div className="col-span-1">
+                      <TextField placeholder='DNI' type='text' name='client.dni' value={clientSelected?.dni || ''} disabled />
+                    </div>
+                    <div className="col-span-1">
+                      <TextField placeholder='Teléfono' type='text' name='client.phone' value={clientSelected?.phone || ''} disabled />
+                    </div>
+                    <div className="col-span-1">
+                      <TextField placeholder='Correo Electrónico' type='text' name='client.email' value={clientSelected?.email || ''} disabled />
+                    </div>
+                    </>
+                    : <>
+                    <div className="col-span-1">
+                      <TextField placeholder='Nombre' type='text' name='client.fullName'/>
+                    </div>
+                    <div className="col-span-1">
+                      <TextField placeholder='DNI' type='text' name='client.dni'/>
+                    </div>
+                    <div className="col-span-1">
+                      <TextField placeholder='Teléfono' type='text' name='client.phone'/>
+                    </div>
+                    <div className="col-span-1">
+                      <TextField placeholder='Correo Electrónico' type='text' name='client.email'/>
+                    </div>
+                    </>
+                  }
                 </div>
               </div>
 
