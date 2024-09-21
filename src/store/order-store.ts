@@ -21,10 +21,14 @@ interface OrderStore {
   setOrder: ( newOrder: OrderItemFull[] ) => void
   findLastOrder: () => Promise<string>
   delivery: boolean
-  selectedFloor: string | null
-  selectedTable: string | null
-  setSelectedFloor: (floor: string | null) => void
-  setSelectedTable: (table: string | null) => void
+  selectedFloorName: string | null
+  selectedTableNumber: string | null
+  setSelectedFloorName: (floorName: string | null) => void
+  setSelectedTableNumber: (tableNumber: string | null) => void
+  selectedFloorId: string | null
+  selectedTableId: string | null
+  setSelectedFloorId: ( floorId: string | null ) => void
+  setSelectedTableId: ( tableId: string | null ) => void
 }
 
 export const useOrderStore = create<OrderStore>(( set, get ) => {
@@ -36,10 +40,14 @@ export const useOrderStore = create<OrderStore>(( set, get ) => {
   }
 
   return {
-    selectedFloor: null,
-    selectedTable: null,
-    setSelectedFloor: (floor) => set({ selectedFloor: floor }),
-    setSelectedTable: (table) => set({ selectedTable: table }),
+    selectedFloorName: null,
+    selectedTableNumber: null,
+    selectedFloorId: null,
+    selectedTableId: null,
+    setSelectedFloorName: (floorName) => set({ selectedFloorName: floorName }),
+    setSelectedTableNumber: (tableNumber) => set({ selectedTableNumber: tableNumber }),
+    setSelectedFloorId: (floorId) => set({ selectedFloorId: floorId }),
+    setSelectedTableId: (tableId) => set({ selectedTableId: tableId }),
     order: [],
     delivery: false,
     addToOrder: ( product, quantity) => {

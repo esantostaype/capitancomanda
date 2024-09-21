@@ -1,21 +1,17 @@
 'use client'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useOrderStore } from '@/store/order-store'
-import { Formik, Form, FormikHelpers } from 'formik'
-import { Branch, Client, Color, OrderItemFull, OrderType, Size, Variant } from '@/interfaces'
+import { Formik, Form } from 'formik'
+import { Client, Color, OrderItemFull, OrderType, Size, Variant } from '@/interfaces'
 import { toast } from 'react-toastify'
-import { Button, ModalBody, ModalFooter, ModalPage, RestaurantTable, Spinner, TextField } from '@/components'
+import { Button, ModalBody, ModalFooter, ModalPage, Spinner, TextField } from '@/components'
 import { addOrder } from '@/actions/order-actions'
 import { useUiStore } from '@/store/ui-store'
-import { Tab, TabList, TabPanel, Tabs } from 'react-tabs'
 import OrderFormTypeItem from './OrderFormTypeItem'
 import { useGlobalStore } from '@/store/global-store'
-import { setSession } from '@/utils/session'
-import { fetchData } from '@/utils'
 import { ClientSearch } from './ClientSearch'
 import { OrderPrint } from './OrderPrint'
-import ReactToPrint, { useReactToPrint } from 'react-to-print'
-import { useBranch } from '@/hooks'
+import { useReactToPrint } from 'react-to-print'
 
 interface Props {
   token?: string
@@ -33,10 +29,9 @@ interface FormValues {
   client?: Client | null
 }
 
-export const OrderForm = ({ token, branchId, waiter }: Props) => {
+export const OrderForm = ({ token, waiter }: Props) => {
 
   const order = useOrderStore(( state ) => state.order )
-  const { data: branch } = useBranch({ branchId, token })
   const setOrder = useOrderStore((state) => state.setOrder)
   const clearOrder = useOrderStore(( state ) => state.clearOrder )
   const total = useMemo(() => order.reduce(( total, item ) => total + ( item.quantity * item.price ), 0), [ order ])
@@ -47,7 +42,16 @@ export const OrderForm = ({ token, branchId, waiter }: Props) => {
   const [ isClientSelected, setIsClientSelected ] = useState( false )
   const { toggleUpdateTrigger, updateTrigger } = useGlobalStore()
 
-  const { selectedFloor, setSelectedFloor, selectedTable, setSelectedTable } = useOrderStore()
+  const {
+    selectedFloorId,
+    selectedFloorName,
+    setSelectedFloorId,
+    setSelectedFloorName,
+    selectedTableId,
+    selectedTableNumber,
+    setSelectedTableId,
+    setSelectedTableNumber
+  } = useOrderStore()
   const [ selectedOrderType, setSelectedOrderType ] = useState<OrderType>( OrderType.DINE_IN )
   const [ notes, setNotes ] = useState<string>('')
 
@@ -68,7 +72,7 @@ export const OrderForm = ({ token, branchId, waiter }: Props) => {
       setIsClientSelected( false )
       setNotes('')
     }
-  }, [ activeModalPage, setSelectedFloor, setSelectedTable ])
+  }, [ activeModalPage ])
 
   const initialValues: FormValues = {
     floor: '',
@@ -101,24 +105,28 @@ export const OrderForm = ({ token, branchId, waiter }: Props) => {
     
     const orderData = {
       order,
-      floor: selectedFloor,
-      table: selectedTable,
+      floor: selectedFloorId,
+      table: selectedTableId,
       total,
       orderType: selectedOrderType,
       notes: values.notes,
       client: values.client || clientSelected
     }
 
-    if( !selectedTable ) {
+    if( !selectedTableId ) {
       toast.error('Por favor, selecciona una mesa')
       return
     }
 
-    if( !selectedFloor ) {
+    if( !selectedFloorId ) {
       toast.error('Por favor, selecciona un ambiente')
       return
     }
     await addOrder( orderData )
+    setSelectedFloorName('')
+    setSelectedFloorId('')
+    setSelectedTableId('')
+    setSelectedTableNumber('')
     handlePrint()
     closeModalPage()
     clearOrder()
@@ -220,8 +228,8 @@ export const OrderForm = ({ token, branchId, waiter }: Props) => {
                 <h3 className="text-lg md:text-2xl text-gray500 font-bold mb-2 md:mb-4">Selecciona una Mesa</h3>
                 <Tabs selectedIndex={ tabFloorIndex } onSelect={( index ) => {
                     setTabFloorIndex( index )
-                    setSelectedFloor( branch?.floors[index].name || null )
-                    setSelectedTable( null )
+                    setSelectedFloorId( branch?.floors[index].name || null )
+                    setSelectedTableId( null )
                   }} className="flex flex-col flex-1">
                   <TabList className="border-b border-b-gray50 mb-6 z-[999] flex gap-4 md:gap-6 text-base font-500 leading-none text-gray500">
                     { branch?.floors.map(( floor, index ) => (
@@ -235,13 +243,13 @@ export const OrderForm = ({ token, branchId, waiter }: Props) => {
                           <div
                             key={ tableIndex }
                             className="flex items-center justify-center aspect-square cursor-pointer"
-                            onClick={() => setSelectedTable(( tableIndex + 1 ).toString())}
+                            onClick={() => setSelectedTableId(( tableIndex + 1 ).toString())}
                           >
                             <div className="relative flex items-center justify-center w-16 h-16 md:h-24 md:w-24">
-                              <span className={`relative z-20 text-lg font-bold ${ selectedTable === ( tableIndex + 1 ).toString() ? 'text-gray50' : ' text-gray600'}`}>
+                              <span className={`relative z-20 text-lg font-bold ${ selectedTableId === ( tableIndex + 1 ).toString() ? 'text-gray50' : ' text-gray600'}`}>
                                 { tableIndex + 1 }
                               </span>                              
-                              <RestaurantTable className={`w-16 h-16 md:w-24 md:h-24 absolute z-10 transition-all ${selectedTable === ( tableIndex + 1 ).toString() ? 'fill-gray900' : 'fill-gray50'}`} />
+                              <RestaurantTable className={`w-16 h-16 md:w-24 md:h-24 absolute z-10 transition-all ${selectedTableId === ( tableIndex + 1 ).toString() ? 'fill-gray900' : 'fill-gray50'}`} />
                             </div>
                           </div>
                         ))}
@@ -288,8 +296,8 @@ export const OrderForm = ({ token, branchId, waiter }: Props) => {
         <OrderPrint ref={ componentRef } orderData={{
           order,
           orderNumber,
-          floor: selectedFloor || '',
-          table: selectedTable || '',
+          floor: selectedFloorName || '',
+          table: selectedTableNumber || '',
           total,
           orderType: selectedOrderType,
           notes,
