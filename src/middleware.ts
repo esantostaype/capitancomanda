@@ -12,6 +12,9 @@ export async function middleware( req: NextRequest ) {
   const { pathname } = req.nextUrl
 
   if ( token.role !== Role.ADMIN && token.role !== Role.OWNER ) {
+    if ( token.role === Role.WAITER ) {
+      return NextResponse.redirect( new URL('/order/tables', req.url))
+    }
     return NextResponse.redirect( new URL('/', req.url))
   }
 
@@ -23,5 +26,5 @@ export async function middleware( req: NextRequest ) {
 }
 
 export const config = { 
-  matcher: ['/admin/:path*', '/kitchen/:path*', '/order/:path*']
+  matcher: ['/admin/:path*', '/kitchen/:path*']
 }

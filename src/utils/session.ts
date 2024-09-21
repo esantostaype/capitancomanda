@@ -9,7 +9,7 @@ export async function setSession() {
   const role = session?.user?.role
   const userId = session?.user?.id
   const branchId = session?.user?.branchId
-  const fullName = session?.user?.fullName
+  const fullName = session?.user?.userFullName
   return {
     token, email, role, userId, branchId, fullName
   }

@@ -11,6 +11,7 @@ import { useParams, usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { fetchData } from '@/utils'
 import { UserFormSkeleton } from './UserFormSkeleton'
+import { useBranches } from '@/hooks'
 
 interface FormValues {
   email: string,
@@ -33,7 +34,7 @@ export const UserForm = ({ token, isJustPage }: Props) => {
   const { id } = useParams()
 
   const [ user, setUser ] = useState<User | null>(null)
-  const [ branches, setBranches ] = useState<Branch[] | null>(null)
+  const { data: branches } = useBranches({ token })
 
   const { closeModalPage, activeModalPage } = useUiStore()
   const { data: session } = useSession()
@@ -54,18 +55,6 @@ export const UserForm = ({ token, isJustPage }: Props) => {
       }
     }
     fetchUser()
-    const fetchBranches = async () => {
-      if ( id ) {
-        try {
-          const fetchedBranches = await fetchData<Branch[]>({ url: `/branches`, token })
-          setBranches( fetchedBranches )
-        } catch (error) {
-          toast.error('Error al obtener la sucursal')
-        } finally {
-        }
-      }
-    }
-    fetchBranches()
   }, [ id, token ])
 
   const userRole = session?.user.role

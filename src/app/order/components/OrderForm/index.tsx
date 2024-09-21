@@ -14,11 +14,13 @@ import { setSession } from '@/utils/session'
 import { fetchData } from '@/utils'
 import { ClientSearch } from './ClientSearch'
 import { OrderPrint } from './OrderPrint'
-import ReactToPrint from 'react-to-print'
+import ReactToPrint, { useReactToPrint } from 'react-to-print'
 import { useBranch } from '@/hooks'
 
 interface Props {
   token?: string
+  branchId?: string
+  waiter: string
 }
 
 interface FormValues {
@@ -31,9 +33,10 @@ interface FormValues {
   client?: Client | null
 }
 
-export const OrderForm = ({ token }: Props) => {
+export const OrderForm = ({ token, branchId, waiter }: Props) => {
 
   const order = useOrderStore(( state ) => state.order )
+  const { data: branch } = useBranch({ branchId, token })
   const setOrder = useOrderStore((state) => state.setOrder)
   const clearOrder = useOrderStore(( state ) => state.clearOrder )
   const total = useMemo(() => order.reduce(( total, item ) => total + ( item.quantity * item.price ), 0), [ order ])
@@ -89,6 +92,11 @@ export const OrderForm = ({ token }: Props) => {
     fetchOrderNumber()
   }, [ findLastOrder, updateTrigger ])
 
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    onAfterPrint: () => closeModal(true),
+  })
+  
   const handleSubmit = async ( values: FormValues ) => {
     
     const orderData = {
@@ -111,8 +119,7 @@ export const OrderForm = ({ token }: Props) => {
       return
     }
     await addOrder( orderData )
-    console.log("orderData GAAA", { orderData })
-    toast.success('¡Comanda enviada!')
+    handlePrint()
     closeModalPage()
     clearOrder()
     toggleUpdateTrigger()
@@ -256,9 +263,13 @@ export const OrderForm = ({ token }: Props) => {
           <ModalFooter>
             <div className="pb-16 md:pb-0 flex justify-end gap-4 w-full">
               <Button variant={ Variant.GHOST } text="Cancelar" size={ Size.LG } onClick={ ()=> closeModalPage() }/>
-              <ReactToPrint
-                trigger={() => <Button submit onClick={ () => closeModal(true) } className="flex-1" text='Enviar' color={Color.ACCENT} size={Size.LG} variant={ Variant.CONTAINED } />}
-                content={() => componentRef.current }
+              <Button
+                submit
+                className="flex-1"
+                text='Enviar'
+                color={Color.ACCENT}
+                size={Size.LG}
+                variant={Variant.CONTAINED}
               />
               {/* <Button
                 text='Enviar Comanda'
@@ -282,7 +293,8 @@ export const OrderForm = ({ token }: Props) => {
           total,
           orderType: selectedOrderType,
           notes,
-          client: clientSelected
+          client: clientSelected,
+          waiter: waiter
         }} />
       </div>
     </ModalPage>

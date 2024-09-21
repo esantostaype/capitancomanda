@@ -12,6 +12,7 @@ interface Props {
     orderType: OrderType
     notes: string
     client?: Client | null
+    waiter?: string
   }
 }
 
@@ -51,17 +52,17 @@ export const OrderPrint = forwardRef<HTMLDivElement, Props>(({ orderData }, ref)
       <div>
         <div className="pb-2 flex justify-between gap-4 leading-tight">
           <div>
-            <div>Mozo: <span className="font-semibold">Pedro Ramirez</span></div>
+            <div>Mozo: <span className="font-semibold">{ orderData.waiter }</span></div>
             <div>Tipo: <span className="font-semibold">{ orderTypeTranslations[ orderData.orderType ] }</span></div>            
             { orderData.client && (
               <div>
-                Cliente: <span>Juan Pérez</span>
+                Cliente: <span>orderData.client</span>
               </div>
             )}
           </div>
           <div className="text-right font-semibold">
-            <div>Mesa: 3</div>
-            <div>Terraza</div>
+            <div>Mesa: { orderData.table }</div>
+            <div>{ orderData.floor || 'Salón' }</div>
           </div>
         </div>
       </div>

@@ -80,7 +80,7 @@ export const authOptions: NextAuthOptions = {
       session.user.role = token.role as any
       session.user.id = token.id as any
       session.user.branchId = token.branchId as any
-      session.user.fullName = token.fullName as any
+      session.user.userFullName = token.userFullName as any
       return session
     },
     async jwt({ token, user }) {
