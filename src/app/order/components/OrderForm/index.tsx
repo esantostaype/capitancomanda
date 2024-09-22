@@ -122,7 +122,7 @@ export const OrderForm = ({ token, waiter }: Props) => {
       toast.error('Por favor, selecciona un ambiente')
       return
     }
-    await addOrder( orderData )
+    // await addOrder( orderData )
     setSelectedFloorName('')
     setSelectedFloorId('')
     setSelectedTableId('')

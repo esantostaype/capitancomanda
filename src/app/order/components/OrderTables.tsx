@@ -38,8 +38,8 @@ export const OrderTables = ({ token, branchId }: Props) => {
         setTabFloorIndex( index )
         setSelectedFloorId( branch?.floors[index].id || null )
       }}>
-        <div className="flex flex-1 flex-col md:flex-initial p-4 md:px-6 md:py-4 md:border-b md:border-b-gray50 sticky top-14 z-[999] md:bg-surface">          
-          <TabList className="tables-tab grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(180px,1fr))] md:flex md:flex-wrap md:items-center gap-4 md:gap-3">
+        <div className="flex flex-1 flex-col md:flex-initial p-4 md:px-6 md:py-4 md:border-b md:border-b-gray50 sticky md:top-14 z-[999] md:bg-surface">          
+          <TabList className="tables-tab md:flex md:flex-wrap md:items-center gap-4 md:gap-3">
             { branch?.floors.map(( floor, index ) => (
               <Tab key={ index }>{ floor.name }</Tab>
             ))}

@@ -1,9 +1,6 @@
 import { OrderStatus, OrderWithProducts } from '@/interfaces'
 import styles from './Comanda.module.css'
-import moment from "moment"
-import 'moment/locale/es'
 import { ComandaButton } from './ComandaButton'
-moment.locale('es')
 
 interface Props {
   order: OrderWithProducts
@@ -14,10 +11,7 @@ interface Props {
 
 export const Comanda = ({ order, className, status, textButton }: Props) => {
 
-  const timeAgo = moment( order.date ).fromNow();
-  const isLate = moment().diff(moment( order.date ), 'minutes' ) > 30;
-
-  const combinedClassName = `${ styles.comanda} ${className || '' } ${ isLate && order.status != OrderStatus.READY ? styles.isLate : '' }`;
+  const combinedClassName = `${ styles.comanda} ${className || '' } ${ order.status != OrderStatus.READY ? styles.isLate : '' }`;
 
   return (
     <li  className={ combinedClassName.trim() }>

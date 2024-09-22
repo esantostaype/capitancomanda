@@ -1,6 +1,7 @@
 import React, { forwardRef, useMemo } from 'react'
 import { OrderItemFull, Client, OrderType, orderTypeTranslations, Category } from '@/interfaces'
 import { useRestaurantStore } from '@/store/global-store'
+import { format } from '@formkit/tempo'
 
 interface Props {
   orderData: {
@@ -17,6 +18,8 @@ interface Props {
 }
 
 export const OrderPrint = forwardRef<HTMLDivElement, Props>(({ orderData }, ref) => {
+
+  const date = new Date()
 
   const groupedOrder = useMemo(() => {
     const grouped = orderData.order.reduce((acc, item) => {
@@ -40,8 +43,8 @@ export const OrderPrint = forwardRef<HTMLDivElement, Props>(({ orderData }, ref)
   return (
     <div ref={ref} className="uppercase leading-[1.125em] text-lg w-[105mm] text-black">
       <div className="mb-3 text-center">
-        <div>
-          03/09/2024 - 11:06:32
+        <div className="normal-case">
+          { format( date, "DD-MM-YYYY", 'es' )} - { format( date, "H:mm:ss", 'es') }
         </div>
         <h1 className="text-2xl font-bold leading-none mt-2 mb-1 flex gap-2 items-center">
           <span className="flex-1 font-normal text-base overflow-hidden w-1 text-nowrap"> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </span>
