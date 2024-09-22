@@ -97,7 +97,7 @@ export const OrderProductDetail = ({ token }: Props) => {
   return (
     <Modal withBackRoute isOpen={ activeModal } size={ Size._5XL }>
       <ModalHeader>
-        <>
+        <div>
         {
           product &&
           <>
@@ -119,7 +119,7 @@ export const OrderProductDetail = ({ token }: Props) => {
           }
           </>
         }
-        </>
+        </div>
       </ModalHeader>
         <Formik
           initialValues={ initialValues }
