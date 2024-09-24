@@ -8,18 +8,18 @@ interface Props {
 	}
 }
 
-// export async function generateStaticParams() {
-//   const responseProducts = await fetch(`${ apiUrl }/products`)
-//   const products: Product[] = await responseProducts.json()
+export async function generateStaticParams() {
+  const responseProducts = await fetch(`${ apiUrl }/products`)
+  const products: Product[] = await responseProducts.json()
 
-//   const staticProducts = products.map(( product ) => ({
-//     product: product.id,
-//   }))
+  const staticProducts = products.map(( product ) => ({
+    product: product.id,
+  }))
 
-//   return staticProducts.map(({ product }) => ({
-//     product: product
-//   }))
-// }
+  return staticProducts.map(({ product }) => ({
+    product: product
+  }))
+}
 
 export default async function OrderMenuProductPage({ params }: Props) {
   const responseProduct = await fetch(`${ apiUrl }/products/${ params.product }`)

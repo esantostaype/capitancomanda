@@ -8,18 +8,18 @@ interface Props {
 	}
 }
 
-// export async function generateStaticParams() {
-//   const responseCategories = await fetch(`${ apiUrl }/categories`)
-//   const categories: Category[] = await responseCategories.json()
+export async function generateStaticParams() {
+  const responseCategories = await fetch(`${ apiUrl }/categories`)
+  const categories: Category[] = await responseCategories.json()
 
-//   const staticPokemons = categories.map(( category ) => ({
-//     category: category.id,
-//   }))
+  const staticPokemons = categories.map(( category ) => ({
+    category: category.id,
+  }))
 
-//   return staticPokemons.map(({ category }) => ({
-//     category: category
-//   }))
-// }
+  return staticPokemons.map(({ category }) => ({
+    category: category
+  }))
+}
 
 export default async function OrderMenuCategoryPage({ params }: Props) {
   const responseProducts = await fetch(`${ apiUrl }/products/category/${ params.category }`)
