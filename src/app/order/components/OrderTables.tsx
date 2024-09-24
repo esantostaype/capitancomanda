@@ -62,7 +62,7 @@ export const OrderTables = ({ token, branchId }: Props) => {
                       <span className={`relative z-20 text-lg font-bold ${ selectedTableId === table.id ? 'text-gray50' : ' text-gray600'}`}>
                         { table.number }
                       </span>                              
-                      <RestaurantTable className={`w-16 h-16 md:w-24 md:h-24 absolute z-10 transition-all ${selectedTableId === table.id ? 'fill-gray900' : 'fill-gray50'}`} />
+                      <RestaurantTable className={`w-16 h-16 md:w-24 md:h-24 absolute z-10 transition-all ${selectedTableId === table.id ? 'fill-accent' : 'fill-gray100'}`} />
                     </div>
                   </div>
                 ))}

@@ -29,10 +29,10 @@ export const OrderHeader = ({ fullName }: Props) => {
         <nav className="flex items-center w-full md:w-auto">
           <ul className="text-center justify-between text-[9px] md:text-sm flex items-center md:gap-6 uppercase md:font-semibold w-full text-gray600">
             <li className="hidden md:block ">
-              <Link href="/order" className="flex justify-center">
+              <div className="flex justify-center">
                 <Image src="/images/logo-restify-light.svg" className="block dark:hidden" width="24" height="24" alt="Capitán Comanda" />
                 <Image src="/images/logo-restify-dark.svg" className="hidden dark:block" width="24" height="24" alt="Capitán Comanda" />
-              </Link>
+              </div>
             </li>
             <li className={`${ pathname === '/order/tables' && !activeOrderSummary ? "text-accent" : "" } flex-1 md:flex-auto`}>
               <Link href='/order/tables' className="flex flex-col gap-[6px]" onClick={() => closeModal() }>
@@ -47,16 +47,16 @@ export const OrderHeader = ({ fullName }: Props) => {
               </Link>
             </li>
             <li className="flex-1 md:flex-auto block md:hidden">
-              <Link href="/order" className="flex justify-center" onClick={() => closeModal() }>
+              <div className="flex justify-center" onClick={() => closeModal() }>
                 <Image src="/images/logo-restify-light.svg" className="block dark:hidden" width="24" height="24" alt="Capitán Comanda" />
                 <Image src="/images/logo-restify-dark.svg" className="hidden dark:block" width="24" height="24" alt="Capitán Comanda" />
-              </Link>
+              </div>
             </li>
             <li className={`${ pathname === '/order/orders' && !activeOrderSummary ? "text-accent" : "" } flex-1 md:flex-auto`}>
-              <Link href='/order/orders' className="flex flex-col gap-[6px]" onClick={() => closeModal() }>
+              <div className="flex flex-col gap-[6px]" onClick={() => closeModal() }>
                 <i className="block md:hidden fi fi-rr-list text-base"></i>
                 Historial
-              </Link>
+              </div>
             </li>
             <li className={`${ activeOrderSummary ? "text-accent" : "" } flex-1 md:flex-auto block md:hidden`}>
               <button onClick={ !activeOrderSummary ? handleOpenOrderSummary : handleCloseOrderSummary } className="flex flex-col gap-[6px] items-center uppercase text-center w-full">
