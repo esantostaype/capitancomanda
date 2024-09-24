@@ -7,11 +7,10 @@ import { useUiStore } from '@/store/ui-store'
 import { useQueryClient } from '@tanstack/react-query'
 
 interface Props {
-  token?: string
   product: OrderItemFull
 }
 
-export const OrderProductItem = ({ product, token } : Props ) => {
+export const OrderProductItem = ({ product } : Props ) => {
 
   const displayedPrice = getMinVariantPrice( product )
   const hasVariationPrices = displayedPrice !== product.price
@@ -34,7 +33,7 @@ export const OrderProductItem = ({ product, token } : Props ) => {
     
   return (
     <li className="relative flex flex-col justify-between cursor-pointer group active:scale-[0.98] bg-surface group hover:bg-gray50 rounded-lg ">
-      <Link href={`?p=${ product.id }`} onClick={ () => openModal() } className="flex flex-col flex-1">
+      <Link href={`/order/menu/product/${ product.id }`} className="flex flex-col flex-1">
         <div className="flex flex-1 gap-4 p-4 md:p-6">
           <div>
             <div className="relative z-20 bg-gray50 flex items-center justify-center rounded md:rounded-lg h-12 w-12 md:h-16 md:w-16 overflow-hidden">

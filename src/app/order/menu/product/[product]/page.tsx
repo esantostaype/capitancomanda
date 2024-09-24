@@ -1,16 +1,16 @@
-import { fetchData, setSession } from '@/utils';
-import { OrderMenuNav, OrderProducts } from "../../components"
+import { fetchData, setSession } from '@/utils'
 import { Category, OrderItemFull } from '@/interfaces'
+import { OrderMenuNav, OrderProductDetail } from '@/app/order/components'
 
 interface Props {
   params: {
-		category: string
+		product: string
 	}
 }
 
-export default async function OrderMenuCategoryPage({ params }: Props) {
+export default async function OrderMenuProductPage({ params }: Props) {
   const { token } = await setSession()
-  const products = await fetchData<OrderItemFull[]>({ url: `/products/category/${ params.category }`, token })
+  const product = await fetchData<OrderItemFull>({ url: `/products/${ params.product }`, token })
   const categories = await fetchData<Category[]>({ url: `/categories`, token })
   return (
     <>
@@ -18,7 +18,7 @@ export default async function OrderMenuCategoryPage({ params }: Props) {
       <OrderMenuNav categories={ categories }/>
     </div>
     <div className="flex flex-1 flex-col p-4 md:p-6">
-      <OrderProducts products={ products }/>
+      <OrderProductDetail product={ product }/>
     </div>
     </>
   )

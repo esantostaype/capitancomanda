@@ -3,18 +3,17 @@ import { OrderProductItem } from './OrderProductItem'
 import { EmptyData, IconButton, LoadingData } from '@/components'
 import { useParams } from 'next/navigation'
 import { useCategory, useOrderProducts } from '@/hooks'
-import { Color, Size, Variant } from '@/interfaces'
+import { Color, OrderItemFull, Product, Size, Variant } from '@/interfaces'
 
 interface Props {
+  products: OrderItemFull[]
   token?: string
 }
 
-export const OrderProducts = ({ token }: Props) => {
+export const OrderProducts = ({ products, token }: Props) => {
 
-  const { category } = useParams()
-  const categoryKey = Array.isArray( category ) ? category[0] : category
-  const { isLoading, data:products } = useOrderProducts({ token, categoryKey })
-  const { data:categoryData } = useCategory({ token, id: category })
+  const { id } = useParams()
+  const { data:categoryData } = useCategory({ token, id: id })
 
   return (
     <>
@@ -23,23 +22,14 @@ export const OrderProducts = ({ token }: Props) => {
           <IconButton iconName='arrow-left' size={ Size.SM } href="/order/menu"/>
         </div>
         <h1 className="text-lg xl:text-xl font-semibold xl:min-h-[1.72rem]">
-          { category ? categoryData?.name : "Todo" }
+          { id ? categoryData?.id : "Todo" }
         </h1>
       </div>
-      { isLoading
-      ? ( <LoadingData text="Productos"/> )
-      : ( products && products.length === 0
-        ? ( <EmptyData text='Productos' /> )
-        : (
-          <>
-            <ul className="mt-16 md:mt-0 xl:mt-0 grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
-              { products?.map( ( product ) => (
-                <OrderProductItem key={ product.id } product={ product } />
-              ))}
-            </ul>
-          </>
-        )
-      )}
+      <ul className="mt-16 md:mt-0 xl:mt-0 grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
+        { products.map( ( product ) => (
+          <OrderProductItem key={ product.id } product={ product } />
+        ))}
+      </ul>
     </>
   )
 }

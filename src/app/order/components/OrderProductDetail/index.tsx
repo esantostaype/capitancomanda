@@ -14,16 +14,13 @@ import { useOrderProduct } from '@/hooks'
 import { OrderProductDetailHeaderSkeleton } from './OrderProductDetailHeaderSkeleton'
 
 interface Props {
-  token?: string
+  product: OrderItemFull
 }
 
-export const OrderProductDetail = ({ token }: Props) => {
+export const OrderProductDetail = ({ product }: Props) => {
 
   const searchParams = useSearchParams()
-  const pathName = usePathname()
   const productId = searchParams.get('p')
-
-  const { data: product } = useOrderProduct({ productId: productId, token })
 
   const addToOrder = useOrderStore(( state ) => state.addToOrder )
   const { activeModal, openModal, closeModal } = useUiStore()
@@ -95,9 +92,9 @@ export const OrderProductDetail = ({ token }: Props) => {
   const hasAdditionals = product?.additionals.length !== 0
 
   return (
-    <Modal withBackRoute isOpen={ activeModal } size={ Size._5XL }>
-      <ModalHeader>
-        <div>
+    <>
+    <div className="w-[calc(100%+2rem)] md:w-[calc(100%+3rem)] -ml-4 -mt-4 md:-ml-6 md:-mt-6 flex items-center md:h-auto p-4 md:p-6 md:py-4 lg:py-6 lg:p-8 xl:px-10 border-b border-b-gray50 bg-surface sticky top-0 z-20">
+      <div>
         {
           product &&
           <>
@@ -119,116 +116,116 @@ export const OrderProductDetail = ({ token }: Props) => {
           }
           </>
         }
-        </div>
-      </ModalHeader>
-        <Formik
-          initialValues={ initialValues }
-          onSubmit={ handleAddToOrder }
-        >
-          {({ values, setFieldValue }) => (
-            <Form className="overflow-y-auto flex flex-col flex-1">
-              <ModalBody>
-                <div className={`w-full flex flex-1 flex-col md:grid grid-cols-6 gap-6 xl:gap-8 relative ${ !product ? "" : "items-start" } `}>
-                  <div className='hidden md:block col-span-2 sticky top-4 md:top-8 xl:top-10'>
-                    <div className="relative z-20 bg-gray50 flex items-center justify-center rounded-lg w-full aspect-square overflow-hidden">
-                    { product?.image ? (
-                      <Image src={ product.image } alt={ product.name } width={ 512 } height={ 512 } className="object-cover aspect-square" />
-                    ) : (
-                      <i className="fi fi-tr-image-slash text-3xl text-gray500"></i>
-                    )}
-                    </div>
-                  </div>
-                  { !product
-                    ? <div className='w-full col-span-4 flex flex-1 items-center justify-center'><SimpleSpinner/></div>
-                    : <div className='w-full col-span-4 flex flex-1 flex-col gap-8'> 
-                      <div className="flex md:hidden flex-col gap-4">
-                        <div className="flex items-center gap-1 leading-tight">
-                          Precio: 
-                          { hasVariationPrices && <span className="text-gray500">Desde:</span> }
-                          <span className="text-base md:text-xl font-bold text-accent opacity-60 leading-tight">{ formatCurrency( product.price ) }</span>
-                        </div>                     
-                        {
-                          product.description &&
-                          <div className="text-gray500">{ product.description }</div>
-                        }
-                      </div>
-                      { product && 
-                        <>
-                        <OrderProductDetailVariantSelector
-                          variations={ product?.variations.filter( variation => variation.hasPrice )}
-                          selectedVariants={ values.selectedVariantWithPrice }
-                          handleVariantChange={( variationName, option ) => {
-                            setFieldValue(`selectedVariantWithPrice.${variationName}`, option)
-                          }}
-                        />
-                        <OrderProductDetailVariantSelector
-                          variations={ product?.variations.filter( variation => !variation.hasPrice )}
-                          selectedVariants={ values.selectedVariants }
-                          handleVariantChange={( variationName, option ) => {
-                            setFieldValue(`selectedVariants.${variationName}`, option)
-                          }}
-                        />
-                        </>
-                      }
-
-                      { product && 
-                        <>
-                        {
-                          hasAdditionals &&
-                          <div>
-                            <h3 className="text-base font-semibold mb-2">Adicionales:</h3>
-                            {
-                              product?.additionals.map(( additional, index ) => (
-                                <div key={ index } className={`${ values.selectedAdditionals[ additional.name ] > 0 ? "border-accent" : "border-transparent" } mb-2 flex items-center bg-gray50 rounded border-2`}>
-                                  <div className="flex-1 px-4 py-2">
-                                    <div>{ additional.name }</div>
-                                    <div className="text-base font-bold">{ formatCurrency( additional.price ) }</div>
-                                  </div>
-                                  <Counter
-                                    value={ values.selectedAdditionals[ additional.name ] || 0 }
-                                    onQuantityChange={( count ) => setFieldValue(`selectedAdditionals.${additional.name}`, count)}
-                                    acceptZero
-                                  />
-                                </div>
-                              ))
-                            }
-                          </div>
-                        }
-                        </>
-                      }
-                      <div>
-                        <h3 className="text-base font-semibold mb-2">Notas:</h3>
-                        <TextField
-                          name='notes'
-                          typeField='textarea'
-                          placeholder='Puedes ingresar indicaciones finales para este producto'
-                        />
-                      </div>
-                    </div>
-                  }
+      </div>
+    </div>
+    <Formik
+      initialValues={ initialValues }
+      onSubmit={ handleAddToOrder }
+    >
+      {({ values, setFieldValue }) => (
+        <Form className="flex flex-col flex-1">
+          <div className="relative flex flex-col flex-1 py-4 md:py-6 lg:py-8 xl:py-10">
+            <div className={`w-full flex flex-1 flex-col md:grid grid-cols-6 gap-6 xl:gap-8 relative ${ !product ? "" : "items-start" } `}>
+              <div className='hidden md:block col-span-2 sticky top-4 md:top-8 xl:top-10'>
+                <div className="relative z-20 bg-gray50 flex items-center justify-center rounded-lg w-full aspect-square overflow-hidden">
+                { product?.image ? (
+                  <Image src={ product.image } alt={ product.name } width={ 512 } height={ 512 } className="object-cover aspect-square" />
+                ) : (
+                  <i className="fi fi-tr-image-slash text-3xl text-gray500"></i>
+                )}
                 </div>
-              </ModalBody>
-              <ModalFooter>
-                <div className="pb-16 md:pb-0 flex justify-between md:justify-end items-center gap-4 w-full">
-                  <Counter value={ quantity } onQuantityChange={ setQuantity } />
-                  <Button
-                    text="Agregar"
-                    size={ Size.LG }
-                    color={ Color.ACCENT }
-                    variant={ Variant.CONTAINED }
-                    disabled={
-                      !product ||
-                      ( product?.variations || product?.additionals ) && 
-                      ( !product || ( hasVariations && !areAllVariantsSelected( values )))
+              </div>
+              { !product
+                ? <div className='w-full col-span-4 flex flex-1 items-center justify-center'><SimpleSpinner/></div>
+                : <div className='w-full col-span-4 flex flex-1 flex-col gap-8'> 
+                  <div className="flex md:hidden flex-col gap-4">
+                    <div className="flex items-center gap-1 leading-tight">
+                      Precio: 
+                      { hasVariationPrices && <span className="text-gray500">Desde:</span> }
+                      <span className="text-base md:text-xl font-bold text-accent opacity-60 leading-tight">{ formatCurrency( product.price ) }</span>
+                    </div>                     
+                    {
+                      product.description &&
+                      <div className="text-gray500">{ product.description }</div>
                     }
-                    className="w-full md:w-auto"
-                    submit
-                  />
+                  </div>
+                  { product && 
+                    <>
+                    <OrderProductDetailVariantSelector
+                      variations={ product?.variations.filter( variation => variation.hasPrice )}
+                      selectedVariants={ values.selectedVariantWithPrice }
+                      handleVariantChange={( variationName, option ) => {
+                        setFieldValue(`selectedVariantWithPrice.${variationName}`, option)
+                      }}
+                    />
+                    <OrderProductDetailVariantSelector
+                      variations={ product?.variations.filter( variation => !variation.hasPrice )}
+                      selectedVariants={ values.selectedVariants }
+                      handleVariantChange={( variationName, option ) => {
+                        setFieldValue(`selectedVariants.${variationName}`, option)
+                      }}
+                    />
+                    </>
+                  }
+
+                  { product && 
+                    <>
+                    {
+                      hasAdditionals &&
+                      <div>
+                        <h3 className="text-base font-semibold mb-2">Adicionales:</h3>
+                        {
+                          product?.additionals.map(( additional, index ) => (
+                            <div key={ index } className={`${ values.selectedAdditionals[ additional.name ] > 0 ? "border-accent" : "border-transparent" } mb-2 flex items-center bg-gray50 rounded border-2`}>
+                              <div className="flex-1 px-4 py-2">
+                                <div>{ additional.name }</div>
+                                <div className="text-base font-bold">{ formatCurrency( additional.price ) }</div>
+                              </div>
+                              <Counter
+                                value={ values.selectedAdditionals[ additional.name ] || 0 }
+                                onQuantityChange={( count ) => setFieldValue(`selectedAdditionals.${additional.name}`, count)}
+                                acceptZero
+                              />
+                            </div>
+                          ))
+                        }
+                      </div>
+                    }
+                    </>
+                  }
+                  <div>
+                    <h3 className="text-base font-semibold mb-2">Notas:</h3>
+                    <TextField
+                      name='notes'
+                      typeField='textarea'
+                      placeholder='Puedes ingresar indicaciones finales para este producto'
+                    />
+                  </div>
                 </div>
-              </ModalFooter>
-            </Form>
-          )}
-        </Formik>
-    </Modal>
+              }
+            </div>
+          </div>
+          <div className="w-[calc(100%+2rem)] md:w-[calc(100%+3rem)] -ml-4 -mb-4 md:-ml-6 md:-mb-6 flex items-center justify-end gap-4 border-t border-t-gray50 sticky bg-surface z-[999] p-4 md:py-6 md:px-8 xl:py-8 xl:px-10">
+            <div className="flex justify-between md:justify-end items-center gap-4 w-full">
+              <Counter value={ quantity } onQuantityChange={ setQuantity } />
+              <Button
+                text="Agregar"
+                size={ Size.LG }
+                color={ Color.ACCENT }
+                variant={ Variant.CONTAINED }
+                disabled={
+                  !product ||
+                  ( product?.variations || product?.additionals ) && 
+                  ( !product || ( hasVariations && !areAllVariantsSelected( values )))
+                }
+                className="w-full md:w-auto"
+                submit
+              />
+            </div>
+          </div>
+        </Form>
+      )}
+    </Formik>
+    </>
   )
 }

@@ -16,11 +16,11 @@ export const OrderMenuNavItem = ({ category } : Props ) => {
   return (
     <>
     { category.products.length !== 0 &&
-    <li className={ `${ isActive ? "bg-accent text-white" : "bg-surface hover:bg-gray50 md:hover:bg-gray100 md:bg-gray50" } active:scale-[0.97] leading-tight text-center block rounded aspect-square md:aspect-auto`}>
-      <Link href={ `/order/menu/${ category.id }` } className="flex items-center justify-center h-full px-5 py-3">
+    <li className={ `${ isActive ? "bg-accent text-white" : "bg-surface hover:bg-gray50 md:hover:bg-gray100 md:bg-gray50" } active:scale-[0.97] leading-tight text-center block rounded`}>
+      <Link href={ `/order/menu/${ category.id }` } className="flex items-center justify-center h-full p-4 md:py-3">
         <div>
           <div className="font-bold md:font-normal">{ category.name }</div>
-          <div className="text-gray500 text-xs mt-2 md:hidden">
+          <div className="text-gray500 text-xs mt-1 md:hidden">
             { category.products.length } Producto{ category.products.length !== 0 && "s" }
           </div>
         </div>

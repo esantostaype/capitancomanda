@@ -16,7 +16,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <OrderSummary/>
     </section>
     <OrderForm token={ data.token } branchId={ data.branchId } waiter={ data.fullName || 'Varios' }/>
-    <OrderProductDetail token={ data.token } />
+    {/* <OrderProductDetail token={ data.token } /> */}
     </>
   )
 }
