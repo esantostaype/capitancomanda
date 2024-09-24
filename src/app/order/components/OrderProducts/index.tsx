@@ -1,19 +1,15 @@
 'use client'
 import { OrderProductItem } from './OrderProductItem'
-import { EmptyData, IconButton, LoadingData } from '@/components'
-import { useParams } from 'next/navigation'
-import { useCategory, useOrderProducts } from '@/hooks'
-import { Color, OrderItemFull, Product, Size, Variant } from '@/interfaces'
+import { IconButton } from '@/components'
+import { OrderItemFull, Size } from '@/interfaces'
 
 interface Props {
+  categoryName?: string
   products: OrderItemFull[]
   token?: string
 }
 
-export const OrderProducts = ({ products, token }: Props) => {
-
-  const { id } = useParams()
-  const { data:categoryData } = useCategory({ token, id: id })
+export const OrderProducts = ({ categoryName, products }: Props) => {
 
   return (
     <>
@@ -22,7 +18,7 @@ export const OrderProducts = ({ products, token }: Props) => {
           <IconButton iconName='arrow-left' size={ Size.SM } href="/order/menu"/>
         </div>
         <h1 className="text-lg xl:text-xl font-semibold xl:min-h-[1.72rem]">
-          { id ? categoryData?.id : "Todo" }
+          { categoryName || "Todo" }
         </h1>
       </div>
       <ul className="mt-16 md:mt-0 xl:mt-0 grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">

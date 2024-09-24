@@ -1,11 +1,13 @@
-import { fetchData, setSession } from '@/utils'
+import { apiUrl, fetchData, setSession } from '@/utils'
 import { OrderMenuNav, OrderProducts } from '../components'
 import { Category, Order, OrderItemFull } from '@/interfaces'
 
 export default async function OrderMenuPage() {
-  const { token } = await setSession()
-  const products = await fetchData<OrderItemFull[]>({ url: `/products`, token })
-  const categories = await fetchData<Category[]>({ url: `/categories`, token })
+  const responseProducts = await fetch(`${ apiUrl }/products`)
+  const products: OrderItemFull[] = await responseProducts.json()
+  const responseCategories = await fetch(`${ apiUrl }/categories`)
+  const categories: Category[] = await responseCategories.json()
+  console.log("CAT:", { categories })
   return (
     <>
     <div className="flex flex-1 flex-col md:flex-initial p-4 md:px-6 md:py-4 md:border-b md:border-b-gray50 sticky top-14 z-[999] md:bg-surface">
