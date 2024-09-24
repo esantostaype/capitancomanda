@@ -205,7 +205,7 @@ export const OrderProductDetail = ({ product }: Props) => {
               }
             </div>
           </div>
-          <div className="w-[calc(100%+2rem)] md:w-[calc(100%+3rem)] -ml-4 -mb-4 md:-ml-6 md:-mb-6 flex items-center justify-end gap-4 border-t border-t-gray50 sticky bg-surface z-[999] p-4 md:py-6 md:px-8 xl:py-8 xl:px-10">
+          <div className="w-[calc(100%+2rem)] md:w-[calc(100%+3rem)] -ml-4 -mb-4 md:-ml-6 md:-mb-6 flex items-center justify-end gap-4 border-t border-t-gray50 sticky bottom-16 md:bottom-0 bg-surface z-[999] p-4 md:py-6 md:px-8 xl:py-8 xl:px-10">
             <div className="flex justify-between md:justify-end items-center gap-4 w-full">
               <Counter value={ quantity } onQuantityChange={ setQuantity } />
               <Button
