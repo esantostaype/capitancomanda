@@ -7,7 +7,6 @@ export default async function OrderMenuPage() {
   const products: OrderItemFull[] = await responseProducts.json()
   const responseCategories = await fetch(`${ apiUrl }/categories`)
   const categories: Category[] = await responseCategories.json()
-  console.log("CAT:", { categories })
   return (
     <>
     <div className="flex flex-1 flex-col md:flex-initial p-4 md:px-6 md:py-4 md:border-b md:border-b-gray50 sticky top-14 z-[999] md:bg-surface">
